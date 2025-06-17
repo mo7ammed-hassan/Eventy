@@ -1,16 +1,28 @@
-# eventy
+# Smart Event Planner 🎉
 
-A new Flutter project.
+Smart Event Planner is a modern Flutter-based event management app powered by a RESTful API backend. It allows users to create, manage, and organize events with ease — perfect for conferences, meetups, weddings, or any type of gathering.
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter application.
+- 📅 Create and update events
+- 👥 Manage attendees and invitations
+- ✅ Task tracking and checklists
+- 📍 Venue selection and location management
+- 🔔 Notifications and reminders
+- 📊 Advanced dashboard and stats
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Frontend:** Flutter (Mobile + Web)
+- **Backend API:** Node.js / Express or any custom REST API
+- **State Management:** BLoC / Cubit
+- **Networking:** Dio (for RESTful API calls)
+- **Authentication:** JWT / OAuth2 (depends on backend)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📦 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/SmartEventTech/smart-event-planner.git
+cd smart-event-planner
