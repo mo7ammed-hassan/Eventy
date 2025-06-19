@@ -29,7 +29,7 @@ class AuthInterceptor extends Interceptor {
     ErrorInterceptorHandler handler,
   ) async {
     if (err.response?.statusCode == 401) {
-      // ❌ Skip refresh if it's a logout request
+      // Skip refresh if it's a logout request
       if (err.requestOptions.path.contains('/logout')) {
         return handler.next(err);
       }

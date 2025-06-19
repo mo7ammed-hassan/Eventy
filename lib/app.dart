@@ -2,6 +2,7 @@ import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/services/system_ui_service.dart';
 import 'package:eventy/core/services/theme_service.dart';
 import 'package:eventy/core/storage/app_storage.dart';
+import 'package:eventy/core/utils/helpers/app_focus_handler.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
@@ -24,17 +25,19 @@ class MyApp extends StatelessWidget {
       builder: (context, currentThemeMode, child) {
         return BlocProvider.value(
           value: getIt.get<UserCubit>(),
-          child: MaterialApp(
-            title: 'Smart Event Planner',
-            debugShowCheckedModeBanner: false,
-            navigatorKey: AppContext.navigatorKey,
-            themeMode: ThemeMode.system,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            locale: const Locale('en'),
-            supportedLocales: const [Locale('en')],
-            onGenerateRoute: (settings) => appRouter.generateRoute(settings),
-            initialRoute: initialRoute,
+          child: AppFocusHandler(
+            child: MaterialApp(
+              title: 'Smart Event Planner',
+              debugShowCheckedModeBanner: false,
+              navigatorKey: AppContext.navigatorKey,
+              themeMode: ThemeMode.system,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              locale: const Locale('en'),
+              supportedLocales: const [Locale('en')],
+              onGenerateRoute: (settings) => appRouter.generateRoute(settings),
+              initialRoute: initialRoute,
+            ),
           ),
         );
       },

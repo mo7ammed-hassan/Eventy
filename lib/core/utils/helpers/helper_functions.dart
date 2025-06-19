@@ -20,4 +20,14 @@ class HelperFunctions {
 
   static Color randomColorGenerator() =>
       randomColors[Random().nextInt(randomColors.length)];
+
+  static bool isCurrentScreen(BuildContext context) {
+    return ModalRoute.of(context)?.isCurrent ?? true;
+
+    // if (!isCurrentScreen) {
+    //   Future.delayed(Duration(seconds: 1), () {
+    //     return const SizedBox.shrink();
+    //   });
+    // }
+  }
 }

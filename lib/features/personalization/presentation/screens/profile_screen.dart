@@ -37,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const UserInfoSection(),
+                  const UserInfoSection(key: ValueKey('profile_info_section')),
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
                   const TSectionHeader(title: 'Account', showTrailing: false),

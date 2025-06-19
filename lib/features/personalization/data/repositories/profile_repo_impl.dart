@@ -58,9 +58,11 @@ class ProfileRepoImpl extends ProfileRepo {
   }
 
   @override
-  Future<Either<ApiError, UserEntity>> updateUserProfile() async {
+  Future<Either<ApiError, UserEntity>> updateUserProfile({
+    required Map<String, dynamic> data,
+  }) async {
     try {
-      final user = await profileRemoteDataSource.updateUserProfile();
+      final user = await profileRemoteDataSource.updateUserProfile(data: data);
       return Right(user.toEntity());
     } catch (e) {
       return Left(ErrorHandler.handle(e));

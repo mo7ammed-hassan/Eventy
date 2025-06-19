@@ -1,7 +1,6 @@
-import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
-import 'package:eventy/features/personalization/presentation/widgets/edit_personal_info_card.dart';
+import 'package:eventy/features/personalization/presentation/widgets/user_info_form_section.dart';
 import 'package:eventy/features/personalization/presentation/widgets/user_info_section.dart';
 import 'package:eventy/shared/widgets/event_widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
@@ -31,48 +30,10 @@ class EditPersonalInfoScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppSizes.spaceBtwItems),
 
-              const UserInfoSection(),
+              const UserInfoSection(key: ValueKey('edit_info_section')),
               const SizedBox(height: AppSizes.spaceBtwSections),
 
-              EditPersonalInfoCard(
-                title: 'Name',
-                initialValue: 'Mohamed Hasan H.',
-                onTap: () {},
-              ),
-              const SizedBox(height: AppSizes.spaceBtwItems + 2),
-
-              EditPersonalInfoCard(
-                title: 'Location',
-                initialValue: 'Egypt ',
-                onTap: () {},
-              ),
-              const SizedBox(height: AppSizes.spaceBtwItems + 2),
-
-              EditPersonalInfoCard(
-                title: 'Address',
-                initialValue: 'Al Sharqiya, Zagazig',
-                onTap: () {},
-              ),
-              const SizedBox(height: AppSizes.spaceBtwItems + 2),
-
-              EditPersonalInfoCard(
-                title: 'Phone Number',
-                initialValue: '+201096493188',
-                onTap: () {},
-              ),
-              SizedBox(height: AppSizes.spaceBtwSections * 1.5),
-
-              // -- Save Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.eventyPrimaryColor,
-                  ),
-                  onPressed: () {},
-                  child: const Text('Save Changes'),
-                ),
-              ),
+              const UserInfoFormSection(),
               const SizedBox(height: AppSizes.spaceBtwSections),
             ],
           ),

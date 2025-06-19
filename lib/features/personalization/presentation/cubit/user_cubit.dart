@@ -2,6 +2,7 @@ import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/core/utils/dialogs/custom_dialogs.dart';
 import 'package:eventy/features/auth/domain/repositories/auth_repo.dart';
+import 'package:eventy/features/personalization/data/mappers/user_mappers.dart';
 import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
 import 'package:eventy/features/user_events/user_events_injection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,12 +83,69 @@ class UserCubit extends Cubit<UserState> {
     });
   }
 
-  // // update profile
-  // Future<void> updateProfile() async {
-  //   emit(UserLoadingState());
-  //   final result = await _profileRepo.updateProfile();
-  //   result.fold((l) => emit(UserErrorState(l)), (r) => emit(UserLoadedState(r)));
-  // }
+  Future<void> updateProfile(Map<String, dynamic> data) async {
+    final currentUser = state.user;
+    if (currentUser == null || data.isEmpty) return;
+
+    final updatedUser = currentUser.copyWith(
+      name: data['name'],
+      phone: data['phone'],
+      address: data['address'],
+      location: data['location'],
+    );
+
+    if (updatedUser.isEqual(currentUser)) return;
+
+    emit(state.copyWith(isUpdating: true));
+
+    final result = await _profileRepo.updateUserProfile(
+      data: updatedUser.toModel().toJson(),
+    );
+
+    result.fold(
+      (error) => emit(
+        state.copyWith(
+          errorMessage: error.message,
+          isUpdating: false,
+          isUpdatingImage: false,
+        ),
+      ),
+      (_) => emit(
+        state.copyWith(
+          isUpdating: false,
+          user: updatedUser,
+          successMessage: 'Profile updated successfully',
+        ),
+      ),
+    );
+  }
+
+  Future<void> updateProfileImage(String imagePath) async {
+    if (imagePath.isEmpty) return;
+
+    emit(state.copyWith(isUpdatingImage: true));
+
+    final result = await _profileRepo.updateUserProfile(
+      data: {'image': imagePath},
+    );
+
+    result.fold(
+      (error) => emit(
+        state.copyWith(
+          isUpdatingImage: false,
+          updateImageSuccess: false,
+          errorMessage: error.message,
+        ),
+      ),
+      (updatedUser) => emit(
+        state.copyWith(
+          isUpdatingImage: false,
+          updateImageSuccess: true,
+          user: state.user?.copyWith(imageUrl: imagePath),
+        ),
+      ),
+    );
+  }
 
   // Future.wait
   Future<void> getUserData() async {

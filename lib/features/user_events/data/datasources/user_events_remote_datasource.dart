@@ -18,6 +18,7 @@ class UserEventsRemoteDataSourceImpl implements UserEventsRemoteDataSource {
       method: 'GET',
       path: 'ce6e.up.railway.app/api/events/customized',
       // headers: {'Authorization': 'Bearer $token'},
+      queryParameters: {'limit': 20, 'skip': 0},
     );
 
     final events = res.data['data'] as List<dynamic>;
@@ -42,6 +43,7 @@ class UserEventsRemoteDataSourceImpl implements UserEventsRemoteDataSource {
     final res = await _apiClient.request(
       method: 'GET',
       path: 'ce6e.up.railway.app/api/events/pending',
+       queryParameters: {'limit': 20, 'page': 1},
     );
 
     final events = res.data['pendingEvents'] as List<dynamic>;

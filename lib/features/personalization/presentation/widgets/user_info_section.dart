@@ -37,7 +37,6 @@ class UserInfoSection extends StatelessWidget {
             const SizedBox(height: AppSizes.md),
 
             if (showUserContact) const _UserContactText(),
-
             if (showUserJobTitle) const _UserJobTitle(),
           ],
         );
@@ -51,20 +50,18 @@ class _UserNameText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<UserCubit, UserState, String>(
-      selector: (state) => state.user?.name ?? '',
+    final name = context.select(
+      (UserCubit cubit) => cubit.state.user?.name ?? '',
+    );
 
-      builder: (context, name) {
-        return Text(
-          name,
-          textAlign: TextAlign.center,
-          softWrap: true,
+    return Text(
+      name,
+      textAlign: TextAlign.center,
+      softWrap: true,
 
-          style: Theme.of(
-            context,
-          ).textTheme.titleLarge?.copyWith(color: AppColors.eventyPrimaryColor),
-        );
-      },
+      style: Theme.of(
+        context,
+      ).textTheme.titleLarge?.copyWith(color: AppColors.eventyPrimaryColor),
     );
   }
 }
@@ -133,4 +130,29 @@ class _LoadingUserInfo extends StatelessWidget {
       ],
     );
   }
+}
+
+// -- Cached Wrapper
+class CachedUserInfoSection extends StatelessWidget {
+  const CachedUserInfoSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedWidgets.cache(
+      'user_info_section',
+      () => const UserInfoSection(),
+    );
+  }
+}
+
+// -- Cached widget holder (Singleton style)
+class CachedWidgets {
+  static final Map<String, Widget> _cache = {};
+
+  static Widget cache(String key, Widget Function() builder) {
+    return _cache.putIfAbsent(key, builder);
+  }
+
+  static void invalidate(String key) => _cache.remove(key);
+  static void clear() => _cache.clear();
 }

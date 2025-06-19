@@ -8,6 +8,9 @@ extension UserModelMapper on UserModel {
       id: id ?? 'unknown',
       name: name ?? 'Guest',
       email: email ?? 'unknown@email',
+      phone: '+00000000000',
+      location: 'Unknown',
+      address: 'Unknown',
       imageUrl: image ?? AppImages.defaultUserImageUrl,
     );
   }

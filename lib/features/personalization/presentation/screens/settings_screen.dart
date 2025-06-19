@@ -34,7 +34,6 @@ class SettingsScreen extends StatelessWidget {
                     showBorder: true,
                     showEditButton: true,
                     radius: DeviceUtils.screenWidth(context) * 0.15,
-                    editOnTap: () {},
                   ),
                   const SizedBox(height: AppSizes.spaceBtwItems),
 

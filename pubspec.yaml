@@ -61,6 +61,8 @@ dependencies:
   qr_flutter: ^4.1.0
   webview_flutter: ^4.10.0
   animations: ^2.0.11
+  # Flutter plugin for selecting images from the Android and iOS image library, and taking new pictures with the camera.
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
