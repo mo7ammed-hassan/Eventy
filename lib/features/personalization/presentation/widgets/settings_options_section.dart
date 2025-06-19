@@ -11,6 +11,7 @@ class SettingsOptionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         // -- Account Settings Group
@@ -53,7 +54,7 @@ class SettingsOptionsSection extends StatelessWidget {
               title: 'Theme',
               leadingIcon: Iconsax.moon,
               showTrailing: true,
-              trailingText: 'Light mode',
+              trailingText: isDarkMode ? 'Dark mode' : 'Light mode',
               onTap: () {},
             ),
           ],

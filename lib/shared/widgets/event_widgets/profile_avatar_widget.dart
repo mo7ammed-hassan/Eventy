@@ -89,9 +89,6 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
         title: 'Image Selection Error',
         message: 'Failed to select image: ${e.toString()}',
       );
-      if (mounted) {
-        setState(() => _isOpenToUpload = false);
-      }
     } finally {
       if (mounted) {
         setState(() => _isOpenToUpload = false);
@@ -198,20 +195,25 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
                         shape: BoxShape.circle,
                         color: widget.editButtonBgColor,
                       ),
-                      child: _isOpenToUpload
-                          ? SizedBox(
-                              width: widget.editButtonSize,
-                              height: widget.editButtonSize,
-                              child: const CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.blue,
-                              ),
-                            )
-                          : Icon(
-                              Iconsax.edit_2,
-                              size: widget.editButtonSize,
-                              color: widget.editButtonColor,
-                            ),
+                      child: BlocSelector<UserCubit, UserState, bool>(
+                        selector: (state) => state.isUpdatingImage,
+                        builder: (context, isUpdatingImage) {
+                          return isUpdatingImage || _isOpenToUpload
+                              ? SizedBox(
+                                  width: widget.editButtonSize,
+                                  height: widget.editButtonSize,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.blue,
+                                  ),
+                                )
+                              : Icon(
+                                  Iconsax.edit_2,
+                                  size: widget.editButtonSize,
+                                  color: widget.editButtonColor,
+                                );
+                        },
+                      ),
                     ),
                   ),
                 ),

@@ -147,6 +147,18 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
+  void transientAllMessage() {
+    emit(
+      state.copyWith(
+        errorMessage: null,
+        successMessage: null,
+        isUpdating: false,
+        isUpdatingImage: false,
+        updateImageSuccess: false,
+      ),
+    );
+  }
+
   // Future.wait
   Future<void> getUserData() async {
     await Future.wait([getUserProfile(), shareProfileLink()]);

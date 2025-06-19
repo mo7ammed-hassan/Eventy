@@ -1,12 +1,16 @@
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
+import 'package:eventy/core/widgets/popups/loaders.dart';
+import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
+import 'package:eventy/features/personalization/presentation/cubit/user_state.dart';
 import 'package:eventy/features/personalization/presentation/widgets/interestes_section.dart';
 import 'package:eventy/features/personalization/presentation/widgets/settings_options_section.dart';
 import 'package:eventy/features/personalization/presentation/widgets/user_info_section.dart';
 import 'package:eventy/shared/widgets/appBar/eventy_appbar.dart';
 import 'package:eventy/shared/widgets/event_widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -30,10 +34,22 @@ class SettingsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // -- Profile Avatar Widget
-                  ProfileAvatar(
-                    showBorder: true,
-                    showEditButton: true,
-                    radius: DeviceUtils.screenWidth(context) * 0.15,
+                  BlocListener<UserCubit, UserState>(
+                    listener: (context, state) {
+                      if (state.updateImageSuccess) {
+                        Loaders.successSnackBar(
+                          title: 'Image Updated',
+                          message:
+                              'Your profile image has been updated successfully.',
+                        );
+                        context.read<UserCubit>().transientAllMessage();
+                      }
+                    },
+                    child: ProfileAvatar(
+                      showBorder: true,
+                      showEditButton: true,
+                      radius: DeviceUtils.screenWidth(context) * 0.15,
+                    ),
                   ),
                   const SizedBox(height: AppSizes.spaceBtwItems),
 
