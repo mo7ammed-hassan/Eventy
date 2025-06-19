@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, avoid_print
-
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
@@ -101,6 +99,7 @@ class _ChatBotBodyState extends State<ChatBotBody> {
     return InputOptions(
       sendOnEnter: true,
       alwaysShowSend: true,
+
       cursorStyle: CursorStyle(
         color: isDark
             ? const Color.fromARGB(255, 59, 139, 173)
@@ -162,6 +161,7 @@ class _ChatBotBodyState extends State<ChatBotBody> {
 
     try {
       gemini
+          // ignore: deprecated_member_use
           .streamGenerateContent(chatMessage.text)
           .listen(
             (event) {

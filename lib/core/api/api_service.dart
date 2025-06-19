@@ -124,6 +124,16 @@ class ApiServices {
       method: 'POST',
     );
   }
+
+  Future<List<dynamic>> chatWithBot(String message) async {
+    final response = await apiClient.request(
+      path: 'ce6e.up.railway.app/chat',
+      method: 'POST',
+      data: {'message': message},
+    );
+
+    return response.data['response'];
+  }
 }
 
 // class ApiServices {

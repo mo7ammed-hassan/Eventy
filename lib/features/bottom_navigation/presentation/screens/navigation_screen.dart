@@ -1,6 +1,7 @@
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/core/utils/dialogs/custom_dialogs.dart';
+import 'package:eventy/features/home/presentation/widgets/chat_bot_floating_button.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/features/bottom_navigation/presentation/widgets/navigation_screen_body.dart';
@@ -60,6 +61,7 @@ class NavigationScreenState extends State<NavigationScreen> {
             onTap: _onTabTapped,
           ),
         ),
+        floatingActionButton: ChatBotFloatingActionButton(),
       ),
     );
   }

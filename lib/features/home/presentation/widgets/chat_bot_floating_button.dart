@@ -11,6 +11,7 @@ class ChatBotFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(1.0),
       decoration: BoxDecoration(
         gradient: AppColors.interestedCardColor,
         shape: BoxShape.circle,
