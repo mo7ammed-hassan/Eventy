@@ -41,16 +41,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
-
-        // Align(
-        //   alignment: Alignment.center,
-        //   child: Text(
-        //     'ادعولي اتجوز الله  يصلح حالنا وحالكم يارب',
-        //     style: Theme.of(
-        //       context,
-        //     ).textTheme.headlineMedium?.copyWith(color: Colors.blue),
-        //   ),
-        // ),
+        
         Positioned(
           left: 20,
           right: 20,
