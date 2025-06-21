@@ -59,7 +59,9 @@ class NavigationScreenState extends State<NavigationScreen> {
             onTap: _onTabTapped,
           ),
         ),
-        floatingActionButton: ChatBotFloatingActionButton(),
+        floatingActionButton: _currentIndex == 0
+            ? ChatBotFloatingActionButton()
+            : null,
       ),
     );
   }
