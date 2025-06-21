@@ -1,3 +1,7 @@
+import 'package:eventy/config/service_locator.dart';
+import 'package:eventy/core/constants/app_constants.dart';
+import 'package:eventy/core/storage/app_storage.dart';
+import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/features/home/presentation/screens/event_home_screen.dart';
 import 'package:eventy/features/onboarding/screens/onboarding_screen.dart';
 import 'package:eventy/features/personalization/presentation/screens/edit_personal_info_screen.dart';
@@ -65,6 +69,20 @@ class AppRouter {
     Routes.editPersonalInfoScreen: (_) => const EditPersonalInfoScreen(),
     Routes.settingsScreen: (_) => const SettingsScreen(),
   };
+
+  static Future<String> getInitialRoute() async {
+    final secureStorage = getIt.get<SecureStorage>();
+    final appStorage = getIt<AppStorage>();
+
+    bool? onBoardingShown = appStorage.getBool(kOnBoardingShown);
+    final accessToken = await secureStorage.getAccessToken();
+
+    if (!onBoardingShown) {
+      return Routes.onboardingScreen;
+    } else {
+      return accessToken != null ? Routes.navigationScreen : Routes.loginScreen;
+    }
+  }
 
   Route<dynamic>? generateRoute(RouteSettings settings) {
     final pageBuilder = _routes[settings.name];

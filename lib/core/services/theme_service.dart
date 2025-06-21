@@ -1,14 +1,16 @@
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/storage/app_storage.dart';
 import 'package:flutter/material.dart';
 
 class ThemeService {
+  static final appStorage = getIt<AppStorage>();
   static final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(
     ThemeMode.system,
   );
 
   static Future<void> init() async {
-    final isDark = AppStorage.getBool('isDarkMode');
-    if (isDark != null) {
+    final isDark = appStorage.getBool('isDarkMode');
+    if (isDark) {
       themeNotifier.value = isDark ? ThemeMode.dark : ThemeMode.light;
     } else {
       themeNotifier.value = ThemeMode.system;
@@ -21,7 +23,7 @@ class ThemeService {
   }
 
   static void setTheme(ThemeMode mode) {
-    AppStorage.setValue('isDarkMode', mode == ThemeMode.dark);
+    appStorage.setBool('isDarkMode', mode == ThemeMode.dark);
     themeNotifier.value = mode;
   }
 

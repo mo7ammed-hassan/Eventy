@@ -21,6 +21,9 @@ class SignInCubit extends Cubit<SignInState> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
+  // Storage
+  final appStorage = getIt.get<AppStorage>();
+
   bool validateForm() {
     return formKey.currentState?.validate() ?? false;
   }
@@ -28,8 +31,8 @@ class SignInCubit extends Cubit<SignInState> {
   // show email and password that is storage in get storage
   void getStorageEmailAndPassword() {
     Future.microtask(() {
-      emailController.text = AppStorage.getString('REMEMBER_ME_EMAIL');
-      passwordController.text = AppStorage.getString('REMEMBER_ME_PASSWORD');
+      emailController.text = appStorage.getString('REMEMBER_ME_EMAIL');
+      passwordController.text = appStorage.getString('REMEMBER_ME_PASSWORD');
     });
   }
 
@@ -40,14 +43,14 @@ class SignInCubit extends Cubit<SignInState> {
 
     // handle remember me
     if (isRememberMe) {
-      AppStorage.setString('REMEMBER_ME_EMAIL', emailController.text.trim());
-      AppStorage.setString(
+      appStorage.setString('REMEMBER_ME_EMAIL', emailController.text.trim());
+      appStorage.setString(
         'REMEMBER_ME_PASSWORD',
         passwordController.text.trim(),
       );
     } else {
-      AppStorage.remove('REMEMBER_ME_EMAIL');
-      AppStorage.remove('REMEMBER_ME_PASSWORD');
+      appStorage.remove('REMEMBER_ME_EMAIL');
+      appStorage.remove('REMEMBER_ME_PASSWORD');
     }
 
     // Construct user creation model

@@ -15,6 +15,7 @@ class NavigationScreen extends StatefulWidget {
 }
 
 class NavigationScreenState extends State<NavigationScreen> {
+  final appStorage = getIt.get<AppStorage>();
   int _currentIndex = 0;
 
   final List<int> _navigationHistory = [0];
@@ -25,11 +26,8 @@ class NavigationScreenState extends State<NavigationScreen> {
     super.initState();
   }
 
-  bool show = false;
-
   void _onTabTapped(int index) async {
-    await AppStorage.init();
-    final showFlage = AppStorage.getBool('show');
+    final showFlage = appStorage.getBool('show');
 
     if (_currentIndex != index) {
       setState(() {
@@ -78,8 +76,7 @@ class NavigationScreenState extends State<NavigationScreen> {
       );
 
       if (res == true) {
-        show = true;
-        AppStorage.setValue('show', true);
+        appStorage.setBool('show', true);
         CustomDialogs.showConfirmationDialog(
           iconData: Icons.sentiment_very_satisfied,
           iconColor: Colors.blue,
@@ -89,8 +86,7 @@ class NavigationScreenState extends State<NavigationScreen> {
           textDirection: TextDirection.rtl,
         );
       } else {
-        show = false;
-        AppStorage.setValue('show', false);
+        appStorage.setBool('show', false);
         CustomDialogs.showConfirmationDialog(
           iconData: Icons.sentiment_very_dissatisfied,
           title: 'طول عمرك عبيط',

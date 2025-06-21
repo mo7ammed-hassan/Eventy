@@ -1,3 +1,4 @@
+import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/features/personalization/personalization_injection.dart';
 import 'package:eventy/features/user_events/user_events_injection.dart';
 import 'package:get_it/get_it.dart';
@@ -15,6 +16,7 @@ Future<void> initializeDependencies() async {
     () => ApiServices(getIt<ApiClient>()),
   );
   getIt.registerLazySingleton<SecureStorage>(() => SecureStorage());
+  getIt.registerLazySingleton<AppStorage>(() => AppStorage());
 
   /// ------------ Features ------------
   // --- Auth ---
