@@ -11,6 +11,11 @@ class PendingEventsCubit extends BaseEventsCubit {
 
   @override
   Future<Either<ApiError, List<EventEntity>>> getEvents() async {
-    return await getPendingEventsUsecase.call();
+    return await getPendingEventsUsecase.call(page: page, limit: limit);
+  }
+
+  @override
+  Future<void> onLoadMore() {
+    return getEventsList(isLoadMore: true);
   }
 }

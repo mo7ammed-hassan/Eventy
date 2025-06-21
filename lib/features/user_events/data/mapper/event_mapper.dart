@@ -13,7 +13,7 @@ extension EventMapper on EventModel {
     status: status ?? 'unknown',
     hostCompany: hostCompany ?? 'unknown',
     isRecurring: isRecurring ?? 'unknown',
-    date: date ?? DateTime.now().toString(),
+    date: _parseDate(date),
     time: time ?? 'unknown',
     price: price ?? 'unknown',
     type: type ?? 'unknown',
@@ -22,6 +22,11 @@ extension EventMapper on EventModel {
     attendees: attendees ?? [],
     v: v ?? 0,
   );
+
+  DateTime _parseDate(String? value) {
+    if (value == null) return DateTime.now();
+    return DateTime.tryParse(value) ?? DateTime.now();
+  }
 }
 
 extension EventEntityMapper on EventEntity {
@@ -34,7 +39,7 @@ extension EventEntityMapper on EventEntity {
     status: status,
     hostCompany: hostCompany,
     isRecurring: isRecurring,
-    date: date,
+    date: date.toIso8601String(),
     time: time,
     price: price,
     type: type,

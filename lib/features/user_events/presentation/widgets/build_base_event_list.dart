@@ -1,4 +1,6 @@
 import 'package:eventy/core/constants/app_sizes.dart';
+import 'package:eventy/core/widgets/shimmer/horizontal_event_card_shimmer.dart';
+import 'package:eventy/features/user_events/presentation/cubits/base_events_cubit.dart';
 import 'package:eventy/features/user_events/presentation/cubits/base_events_state.dart';
 import 'package:eventy/features/user_events/presentation/widgets/shimmer_event_list.dart';
 import 'package:eventy/shared/widgets/event_widgets/horizontal_event_card.dart';
@@ -26,16 +28,29 @@ class BuildBaseEventList<T extends Cubit<BaseEventsState>>
             if (state.events.isEmpty) {
               return Center(child: Text('No events found'));
             }
-            return ListView.separated(
-              padding: const EdgeInsets.only(
-                bottom: AppSizes.spaceBtwSections,
-                top: 6,
+
+            return NotificationListener<ScrollNotification>(
+              onNotification: (scrollInfo) {
+                if (scrollInfo.metrics.pixels >=
+                    scrollInfo.metrics.maxScrollExtent - 200) {
+                  final cubit = context.read<T>() as BaseEventsCubit;
+                  cubit.onLoadMore();
+                }
+                return true;
+              },
+              child: ListView.separated(
+                padding: const EdgeInsets.only(
+                  bottom: AppSizes.spaceBtwSections,
+                  top: 6,
+                ),
+                itemCount: state.events.length + (state.isLoadingMore ? 1 : 0),
+                itemBuilder: (context, index) =>
+                    state.isLoadingMore && index == state.events.length
+                    ? HorizontalEventCardShimmer()
+                    : HorizontalEventCard(event: state.events[index]),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: AppSizes.spaceBtwItems),
               ),
-              itemCount: state.events.length,
-              itemBuilder: (context, index) =>
-                  HorizontalEventCard(event: state.events[index]),
-              separatorBuilder: (context, index) =>
-                  const SizedBox(height: AppSizes.spaceBtwItems),
             );
           }
           return SizedBox();

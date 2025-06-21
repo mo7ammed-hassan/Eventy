@@ -2,9 +2,9 @@ import 'package:eventy/core/api/api_client.dart';
 import 'package:eventy/features/user_events/data/models/event_model.dart';
 
 abstract class UserEventsRemoteDataSource {
-  Future<List<EventModel>> getFavoriteEvents();
-  Future<List<EventModel>> getCreatedEvents();
-  Future<List<EventModel>> getPendingEvents();
+  Future<List<EventModel>> getFavoriteEvents({int page = 1, int limit = 15});
+  Future<List<EventModel>> getCreatedEvents({int page = 1, int limit = 15});
+  Future<List<EventModel>> getPendingEvents({int page = 1, int limit = 15});
 }
 
 class UserEventsRemoteDataSourceImpl implements UserEventsRemoteDataSource {
@@ -13,41 +13,53 @@ class UserEventsRemoteDataSourceImpl implements UserEventsRemoteDataSource {
   UserEventsRemoteDataSourceImpl(this._apiClient);
 
   @override
-  Future<List<EventModel>> getCreatedEvents() async {
+  Future<List<EventModel>> getCreatedEvents({
+    int page = 1,
+    int limit = 15,
+  }) async {
     final res = await _apiClient.request(
       method: 'GET',
       path: 'ce6e.up.railway.app/api/events/customized',
-      // headers: {'Authorization': 'Bearer $token'},
-      queryParameters: {'limit': 20, 'skip': 0},
+      queryParameters: {'limit': limit, 'page': page},
     );
 
-    final events = res.data['data'] as List<dynamic>;
-
-    return events.map((e) => EventModel.fromJson(e)).toList();
+    final events = res.data['data'];
+    return _parseEvents(events);
   }
 
   @override
-  Future<List<EventModel>> getFavoriteEvents() async {
+  Future<List<EventModel>> getFavoriteEvents({
+    int page = 1,
+    int limit = 15,
+  }) async {
     final res = await _apiClient.request(
       method: 'GET',
       path: 'ce6e.up.railway.app/api/events/favorites',
+      queryParameters: {'limit': limit, 'page': page},
     );
 
-    final events = res.data['data'] as List<dynamic>;
-
-    return events.map((e) => EventModel.fromJson(e)).toList();
+    final events = res.data['data'];
+    return _parseEvents(events);
   }
 
   @override
-  Future<List<EventModel>> getPendingEvents() async {
+  Future<List<EventModel>> getPendingEvents({
+    int page = 1,
+    int limit = 15,
+  }) async {
     final res = await _apiClient.request(
       method: 'GET',
       path: 'ce6e.up.railway.app/api/events/pending',
-       queryParameters: {'limit': 20, 'page': 1},
+      queryParameters: {'limit': limit, 'page': page},
     );
 
-    final events = res.data['pendingEvents'] as List<dynamic>;
+    final events = res.data['results'];
+    return _parseEvents(events);
+  }
 
-    return events.map((e) => EventModel.fromJson(e)).toList();
+  /// Method Extraction
+  List<EventModel> _parseEvents(dynamic raw) {
+    if (raw == null || raw is! List || raw.isEmpty) return [];
+    return raw.map((e) => EventModel.fromJson(e)).toList();
   }
 }

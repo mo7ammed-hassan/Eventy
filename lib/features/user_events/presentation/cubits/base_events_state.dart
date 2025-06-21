@@ -24,8 +24,10 @@ class BaseEventLoading extends BaseEventsState {
 
 class BaseEventLoaded extends BaseEventsState {
   final List<EventEntity> events;
+  final bool isLoadingMore;
+  final bool hasMore;
 
-  BaseEventLoaded(this.events);
+  BaseEventLoaded(this.events, this.isLoadingMore, this.hasMore);
 
   @override
   List<Object?> get props => [events];

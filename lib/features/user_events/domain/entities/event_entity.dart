@@ -9,7 +9,7 @@ class EventEntity {
   final String status;
   final String hostCompany;
   final String isRecurring;
-  final String date;
+  final DateTime date;
   final String time;
   final String price;
   final String type;
@@ -47,7 +47,7 @@ class EventEntity {
       status: 'unknown',
       hostCompany: 'unknown',
       isRecurring: 'unknown',
-      date: DateTime.now().toString(),
+      date: DateTime.now(),
       time: 'unknown',
       price: 'unknown',
       type: 'unknown',

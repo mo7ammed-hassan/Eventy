@@ -50,11 +50,14 @@ class EventModel {
     isRecurring: json['isRecurring'] as String?,
     date: json['date'] as String?,
     time: json['time'] as String?,
-    price: json['price'] as String?,
+    price: json['price'].toString(),
     type: json['type'] as String?,
     paid: json['paid'] as bool?,
     host: json['host'] as String?,
-    attendees: json['attendees'] as List<dynamic>?,
+    attendees: (json['attendees'] is List)
+        ? List<dynamic>.from(json['attendees'])
+        : [],
+
     v: json['__v'] as int?,
   );
 

@@ -37,9 +37,10 @@ class ErrorHandler {
       return _handleDioError(error);
     } else if (error is ApiError) {
       return error;
-    } else {
+    } else if (error is Exception) {
       return NetworkError('Unknown error occurred', details: error.toString());
     }
+    return NetworkError('An unexpected error occurred $error', details: error);
   }
 
   static ApiError _handleDioError(DioException error) {
@@ -96,8 +97,11 @@ class ErrorHandler {
       case 403:
         return NetworkError('Forbidden', details: data);
       case 500:
-        return ServerError('Internal server error',
-            statusCode: code, details: data);
+        return ServerError(
+          'Internal server error',
+          statusCode: code,
+          details: data,
+        );
       default:
         return ServerError(message, statusCode: code, details: data);
     }

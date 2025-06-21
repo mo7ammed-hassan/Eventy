@@ -7,7 +7,9 @@ class GetPendingEventsUsecase {
   final UserEventsRepository repository;
 
   GetPendingEventsUsecase(this.repository);
-  
-  Future<Either<ApiError, List<EventEntity>>> call() =>
-      repository.getPendingEvents();
+
+  Future<Either<ApiError, List<EventEntity>>> call({
+    int page = 1,
+    int limit = 15,
+  }) => repository.getPendingEvents(page: page, limit: limit);
 }

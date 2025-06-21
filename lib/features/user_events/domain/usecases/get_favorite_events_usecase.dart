@@ -8,6 +8,8 @@ class GetFavoriteEventsUsecase {
 
   GetFavoriteEventsUsecase(this.repository);
 
-  Future<Either<ApiError, List<EventEntity>>> call() =>
-      repository.getFavoriteEvents();
+  Future<Either<ApiError, List<EventEntity>>> call({
+    int page = 1,
+    int limit = 15,
+  }) => repository.getFavoriteEvents(page: page, limit: limit);
 }

@@ -9,22 +9,54 @@ abstract class BaseEventsCubit extends Cubit<BaseEventsState> {
 
   /// --- Method for fetching events ---
   Future<Either<ApiError, List<EventEntity>>> getEvents();
-  bool _isFetched = false;
 
-  Future<void> getEventsList() async {
-    if (_isFetched) return;
-    emit(BaseEventLoading());
+  final List<EventEntity> _eventsList = [];
+  int page = 1;
+  int limit = 15;
+  bool hasMore = true;
+  bool _isLoading = false;
+
+  Future<void> getEventsList({bool isLoadMore = false}) async {
+    if (!hasMore && isLoadMore) return;
+
+    if (_isLoading) return;
+
+    _isLoading = true;
+
+    if (_eventsList.isEmpty) {
+      emit(BaseEventLoading());
+    }
 
     final result = await getEvents();
 
-    result.fold((error) => emit(BaseEventError(error.message)), (eventList) {
-      _isFetched = true;
-      emit(BaseEventLoaded(eventList));
-    });
+    result.fold(
+      (error) {
+        hasMore = false;
+        emit(BaseEventError(error.message));
+      },
+      (eventList) {
+        if (eventList.isEmpty) {
+          hasMore = false;
+        }
+
+        _eventsList.addAll(eventList);
+        page++;
+
+        emit(BaseEventLoaded(List.of(_eventsList), isLoadMore, hasMore));
+      },
+    );
+    _isLoading = false;
+  }
+
+  Future<void> onLoadMore() async {
+    await getEventsList(isLoadMore: true);
   }
 
   Future<void> onRefresh() async {
+    hasMore = true;
+    page = 1;
+    _eventsList.clear();
     emit(BaseEventLoading());
-    await getEvents();
+    await getEventsList();
   }
 }

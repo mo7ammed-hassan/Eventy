@@ -47,7 +47,6 @@ class _PendingEventsScreenState extends State<PendingEventsScreen> {
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems),
 
-                // Favourite  Events List
                 const BuildBaseEventList<PendingEventsCubit>(),
               ],
             ),

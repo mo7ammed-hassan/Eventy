@@ -9,11 +9,7 @@ extension LocationMapper on LocationModel {
   );
 }
 
-
 extension LocationEntityMapper on LocationEntity {
-  LocationModel toModel() => LocationModel(
-    address: address,
-    latitude: latitude,
-    longitude: longitude,
-  );
+  LocationModel toModel() =>
+      LocationModel(address: address, latitude: latitude, longitude: longitude);
 }

@@ -8,6 +8,8 @@ class GetCreatedEventsUsecase {
 
   GetCreatedEventsUsecase(this.repository);
 
-  Future<Either<ApiError, List<EventEntity>>> call() =>
-      repository.getCreatedEventEntitys();
+  Future<Either<ApiError, List<EventEntity>>> call({
+    int page = 1,
+    int limit = 15,
+  }) => repository.getCreatedEventEntitys(page: page, limit: limit);
 }

@@ -10,9 +10,15 @@ class UserEventsRepositoryImpl implements UserEventsRepository {
 
   UserEventsRepositoryImpl(this.userEventsRemoteDataSource);
   @override
-  Future<Either<ApiError, List<EventEntity>>> getCreatedEventEntitys() async {
+  Future<Either<ApiError, List<EventEntity>>> getCreatedEventEntitys({
+    int page = 1,
+    int limit = 15,
+  }) async {
     try {
-      final res = await userEventsRemoteDataSource.getCreatedEvents();
+      final res = await userEventsRemoteDataSource.getCreatedEvents(
+        page: page,
+        limit: limit,
+      );
       return Right(res.map((e) => e.toEntity()).toList());
     } catch (e) {
       return Left(ErrorHandler.handle(e));
@@ -20,9 +26,15 @@ class UserEventsRepositoryImpl implements UserEventsRepository {
   }
 
   @override
-  Future<Either<ApiError, List<EventEntity>>> getFavoriteEvents() async {
+  Future<Either<ApiError, List<EventEntity>>> getFavoriteEvents({
+    int page = 1,
+    int limit = 15,
+  }) async {
     try {
-      final res = await userEventsRemoteDataSource.getFavoriteEvents();
+      final res = await userEventsRemoteDataSource.getFavoriteEvents(
+        page: page,
+        limit: limit,
+      );
       return Right(res.map((e) => e.toEntity()).toList());
     } catch (e) {
       return Left(ErrorHandler.handle(e));
@@ -30,9 +42,15 @@ class UserEventsRepositoryImpl implements UserEventsRepository {
   }
 
   @override
-  Future<Either<ApiError, List<EventEntity>>> getPendingEvents() async {
+  Future<Either<ApiError, List<EventEntity>>> getPendingEvents({
+    int page = 1,
+    int limit = 15,
+  }) async {
     try {
-      final res = await userEventsRemoteDataSource.getPendingEvents();
+      final res = await userEventsRemoteDataSource.getPendingEvents(
+        page: page,
+        limit: limit,
+      );
       return Right(res.map((e) => e.toEntity()).toList());
     } catch (e) {
       return Left(ErrorHandler.handle(e));
