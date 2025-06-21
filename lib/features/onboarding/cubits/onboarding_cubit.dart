@@ -1,3 +1,4 @@
+import 'package:eventy/core/constants/app_constants.dart';
 import 'package:eventy/core/storage/app_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,7 @@ class OnboardingCubit extends Cubit<int> {
     final nextIndex = state + 1;
     if (state == 2) {
       emit(nextIndex);
-      await AppStorage.setValue('isFirstLaunch', false);
+      await AppStorage.setValue(kOnBoardingShown, true);
       return;
     }
 

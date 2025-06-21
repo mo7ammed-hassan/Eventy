@@ -1,5 +1,5 @@
 import 'package:eventy/config/routing/routes.dart';
-import 'package:eventy/core/cubits/onboarding/onboarding_cubit.dart';
+import 'package:eventy/features/onboarding/cubits/onboarding_cubit.dart';
 import 'package:eventy/core/utils/helpers/extensions/navigation_extension.dart';
 import 'package:eventy/features/onboarding/widgets/onbboarding_page_view.dart';
 import 'package:eventy/features/onboarding/widgets/onboarding_dot_navigation.dart';

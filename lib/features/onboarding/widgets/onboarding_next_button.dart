@@ -1,6 +1,6 @@
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
-import 'package:eventy/core/cubits/onboarding/onboarding_cubit.dart';
+import 'package:eventy/features/onboarding/cubits/onboarding_cubit.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';

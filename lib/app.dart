@@ -1,4 +1,5 @@
 import 'package:eventy/config/service_locator.dart';
+import 'package:eventy/core/constants/app_constants.dart';
 import 'package:eventy/core/services/system_ui_service.dart';
 import 'package:eventy/core/services/theme_service.dart';
 import 'package:eventy/core/storage/app_storage.dart';
@@ -47,10 +48,10 @@ class MyApp extends StatelessWidget {
 
 Future<String> getInitialRoute() async {
   SecureStorage secureStorage = SecureStorage();
-  bool? isFirstLaunch = AppStorage.getBool('isFirstLaunch');
+  bool? onBoardingShown = AppStorage.getBool(kOnBoardingShown);
   final accessToken = await secureStorage.getAccessToken();
 
-  if (isFirstLaunch == true || isFirstLaunch == null) {
+  if (onBoardingShown == false || onBoardingShown == null) {
     return Routes.onboardingScreen;
   } else {
     if (accessToken != null) {
