@@ -43,7 +43,8 @@ class _PendingEventsScreenState extends State<PendingEventsScreen> {
               children: [
                 SearchBarWidget(
                   showSearchBar: PendingEventsScreen._showSearchBar,
-                  onChanged: (query) {},
+                  onChanged: (query) =>
+                      _pendingEventsCubit.searchEventsByTitle(query: query),
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems),
 

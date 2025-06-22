@@ -43,7 +43,8 @@ class _CreatedEventsScreenState extends State<CreatedEventsScreen> {
               children: [
                 SearchBarWidget(
                   showSearchBar: CreatedEventsScreen._showSearchBar,
-                  onChanged: (query) {},
+                  onChanged: (query) =>
+                      _createdEventsCubit.searchEventsByTitle(query: query),
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems),
 

@@ -10,20 +10,27 @@ abstract class BaseEventsCubit extends Cubit<BaseEventsState> {
   /// --- Method for fetching events ---
   Future<Either<ApiError, List<EventEntity>>> getEvents();
 
-  final List<EventEntity> _eventsList = [];
+  /// --- Search events by title ---
+  List<EventEntity> searchEvents({required String query});
+
+  final List<EventEntity> eventsList = [];
   int page = 1;
   int limit = 15;
   bool hasMore = true;
   bool _isLoading = false;
 
   Future<void> getEventsList({bool isLoadMore = false}) async {
+    if (eventsList.isNotEmpty && !isLoadMore) {
+      return;
+    }
+
     if (!hasMore && isLoadMore) return;
 
     if (_isLoading) return;
 
     _isLoading = true;
 
-    if (_eventsList.isEmpty) {
+    if (eventsList.isEmpty) {
       emit(BaseEventLoading());
     }
 
@@ -34,15 +41,15 @@ abstract class BaseEventsCubit extends Cubit<BaseEventsState> {
         hasMore = false;
         emit(BaseEventError(error.message));
       },
-      (eventList) {
-        if (eventList.isEmpty) {
+      (events) {
+        if (events.isEmpty) {
           hasMore = false;
         }
 
-        _eventsList.addAll(eventList);
+        eventsList.addAll(events);
         page++;
 
-        emit(BaseEventLoaded(List.of(_eventsList), isLoadMore, hasMore));
+        emit(BaseEventLoaded(List.of(eventsList), isLoadMore, hasMore));
       },
     );
     _isLoading = false;
@@ -52,10 +59,15 @@ abstract class BaseEventsCubit extends Cubit<BaseEventsState> {
     await getEventsList(isLoadMore: true);
   }
 
+  void searchEventsByTitle({required String query}) {
+    final filterList = searchEvents(query: query);
+    emit(BaseEventLoaded(filterList, false, false));
+  }
+
   Future<void> onRefresh() async {
     hasMore = true;
     page = 1;
-    _eventsList.clear();
+    eventsList.clear();
     emit(BaseEventLoading());
     await getEventsList();
   }

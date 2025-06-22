@@ -43,7 +43,8 @@ class _FavoriteEventsScreenState extends State<FavoriteEventsScreen> {
               children: [
                 SearchBarWidget(
                   showSearchBar: FavoriteEventsScreen._showSearchBar,
-                  onChanged: (query) {},
+                  onChanged: (query) =>
+                      _favoriteEventsCubit.searchEventsByTitle(query: query),
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems),
 

@@ -1,5 +1,5 @@
 import 'package:eventy/shared/widgets/event_widgets/horizontal_event_card.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 
 class FilterEventsList extends StatelessWidget {

@@ -7,7 +7,8 @@ class SearchBarWidget extends StatelessWidget {
   const SearchBarWidget({
     super.key,
     required this.showSearchBar,
-    this.onChanged, this.hintText,
+    this.onChanged,
+    this.hintText,
   });
 
   final ValueNotifier<bool> showSearchBar;
@@ -35,6 +36,7 @@ class SearchBarWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: TextField(
+                      onChanged: onChanged,
                       decoration: InputDecoration(
                         hintText: hintText ?? 'Type to search',
                         border: InputBorder.none,

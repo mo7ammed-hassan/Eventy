@@ -64,6 +64,7 @@ dependencies:
   # Flutter plugin for selecting images from the Android and iOS image library, and taking new pictures with the camera.
   image_picker: ^1.1.2
   animated_text_kit: ^4.2.3
+  step_progress: ^2.5.1
 
 dev_dependencies:
   flutter_test:

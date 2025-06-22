@@ -18,4 +18,13 @@ class PendingEventsCubit extends BaseEventsCubit {
   Future<void> onLoadMore() {
     return getEventsList(isLoadMore: true);
   }
+
+  @override
+  searchEvents({required String query}) {
+    return eventsList
+        .where(
+          (event) => event.name.toLowerCase().contains(query.toLowerCase()),
+        )
+        .toList();
+  }
 }

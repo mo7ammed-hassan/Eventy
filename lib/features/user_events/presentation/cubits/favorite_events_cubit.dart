@@ -18,5 +18,11 @@ class FavoriteEventsCubit extends BaseEventsCubit {
   Future<void> onLoadMore() {
     return getEventsList(isLoadMore: true);
   }
+  
+  @override
+  List<EventEntity> searchEvents({required String query}) {
+    // TODO: implement searchEvents
+    throw UnimplementedError();
+  }
 }
 
