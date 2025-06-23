@@ -6,13 +6,14 @@ class CustomInputDecorationTheme {
 
   static InputDecorationTheme lightInputDecorationTheme = InputDecorationTheme(
     errorMaxLines: 1,
-    contentPadding: EdgeInsets.symmetric(vertical: 6),
+    contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
     prefixIconColor: Colors.grey,
     suffixIconColor: Colors.grey,
     labelStyle: const TextStyle().copyWith(fontSize: 14, color: Colors.black),
     hintStyle: const TextStyle().copyWith(fontSize: 14, color: Colors.black),
     errorStyle: const TextStyle().copyWith(fontStyle: FontStyle.normal),
     floatingLabelStyle: TextStyle(color: Colors.black.withValues(alpha: 0.8)),
+
     border: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(22),
       borderSide: const BorderSide(
@@ -45,6 +46,7 @@ class CustomInputDecorationTheme {
     errorMaxLines: 1,
     prefixIconColor: Colors.grey,
     suffixIconColor: Colors.grey,
+    contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
     labelStyle: const TextStyle().copyWith(fontSize: 14, color: Colors.white),
     hintStyle: const TextStyle().copyWith(fontSize: 14, color: Colors.white),
     errorStyle: const TextStyle().copyWith(fontStyle: FontStyle.normal),

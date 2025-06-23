@@ -20,7 +20,8 @@ class CategoryItem extends StatelessWidget {
       padding: const EdgeInsets.only(right: AppSizes.lg, bottom: AppSizes.md),
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           //padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 13.0),
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.sizeOf(context).width * 0.04,

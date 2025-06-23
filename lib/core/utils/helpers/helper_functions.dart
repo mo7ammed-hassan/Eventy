@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/core/enums/enums.dart';
 import 'package:flutter/material.dart';
 
 class HelperFunctions {
@@ -29,5 +31,29 @@ class HelperFunctions {
     //     return const SizedBox.shrink();
     //   });
     // }
+  }
+
+  static Color getColor(StepStatus status, BuildContext context) {
+    switch (status) {
+      case StepStatus.completed:
+        return Color(0xFF26c37f);
+      case StepStatus.inProgress:
+        return isDarkMode(context)
+            ? Color.fromARGB(255, 35, 31, 145)
+            : Color(0xFF3833f1);
+      case StepStatus.pending:
+        return isDarkMode(context) ? AppColors.dark : Color(0xFFbfbfc1);
+    }
+  }
+
+  static IconData getIcon(StepStatus status) {
+    switch (status) {
+      case StepStatus.completed:
+        return Icons.check;
+      case StepStatus.inProgress:
+        return Icons.lock_open;
+      case StepStatus.pending:
+        return Icons.lock_outline;
+    }
   }
 }

@@ -4,10 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class CustomEventAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomEventAppBar({super.key, required this.showSearchBar, this.title});
+  const CustomEventAppBar({
+    super.key,
+    required this.showSearchBar,
+    this.title,
+    this.showSearch = true,
+  });
 
   final ValueNotifier<bool> showSearchBar;
   final String? title;
+  final bool showSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +41,11 @@ class CustomEventAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
 
         actions: [
-          IconButton(
-            icon: Icon(Iconsax.search_normal, size: 24),
-            onPressed: () => showSearchBar.value = !showSearchBar.value,
-          ),
+          if (showSearch)
+            IconButton(
+              icon: Icon(Iconsax.search_normal, size: 24),
+              onPressed: () => showSearchBar.value = !showSearchBar.value,
+            ),
         ],
       ),
     );

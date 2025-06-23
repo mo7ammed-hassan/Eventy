@@ -21,7 +21,6 @@ class CreatedEventsCubit extends BaseEventsCubit {
   
   @override
   List<EventEntity> searchEvents({required String query}) {
-    // TODO: implement searchEvents
     throw UnimplementedError();
   }
 }

@@ -152,3 +152,46 @@ class CreateEventScreenBody extends StatelessWidget {
     );
   }
 }
+
+
+
+// class CreateEventScreen extends StatelessWidget {
+//   const CreateEventScreen({super.key, this.isNavBar = false});
+
+//   final bool isNavBar;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final isDark = Theme.of(context).brightness == Brightness.dark;
+//     return Scaffold(
+//       appBar: _buildAppBar(context, isDark),
+//       body: const CreateEventScreenBody(),
+//     );
+//   }
+
+//   AppBar _buildAppBar(BuildContext context, bool isDark) {
+//     return AppBar(
+//       title: const Text('Create Event'),
+//       titleSpacing: isNavBar ? null : 0,
+//       backgroundColor: isDark ? Colors.black : AppColors.white,
+//       elevation: 1,
+//       titleTextStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(
+//         fontSize: 20,
+//         fontWeight: FontWeight.w600,
+//       ),
+//       leading: isNavBar
+//           ? null
+//           : GestureDetector(
+//               onTap: () => Navigator.pop(context),
+//               child: SvgPicture.asset(
+//                 AppImages.arrowLeft,
+//                 fit: BoxFit.scaleDown,
+//                 colorFilter: ColorFilter.mode(
+//                   isDark ? Colors.white : AppColors.secondaryColor,
+//                   BlendMode.srcIn,
+//                 ),
+//               ),
+//             ),
+//     );
+//   }
+// }
