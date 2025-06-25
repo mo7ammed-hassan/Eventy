@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:eventy/core/api/api_error.dart';
-import 'package:eventy/features/user_events/data/datasources/user_events_remote_datasource.dart';
+import 'package:eventy/features/user_events/data/datasources/user_events_remote_data_source.dart';
 import 'package:eventy/features/user_events/data/mapper/event_mapper.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/features/user_events/domain/repositories/user_events_repository.dart';
