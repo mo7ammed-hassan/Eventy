@@ -8,7 +8,7 @@ class StepperWidgetData {
   final StepStatus? status;
   final Widget? builder;
 
-  StepperWidgetData({
+ const StepperWidgetData({
     this.builder,
     required this.stepTitle,
     required this.contentTitle,

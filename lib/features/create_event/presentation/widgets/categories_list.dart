@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/features/create_event/presentation/widgets/category_item.dart';
 
-class CategoryList extends StatefulWidget {
-  const CategoryList({super.key});
+class CategoriesList extends StatefulWidget {
+  const CategoriesList({super.key});
 
   @override
-  State<CategoryList> createState() => _CategoryListState();
+  State<CategoriesList> createState() => _CategoriesListState();
 }
 
-class _CategoryListState extends State<CategoryList> {
+class _CategoriesListState extends State<CategoriesList> {
   String? selectedEvent;
 
   final List<String> events = [
