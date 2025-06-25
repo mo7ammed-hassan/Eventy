@@ -42,43 +42,41 @@ class StepIndicator extends StatelessWidget {
               ),
             ),
             // -- Step Icon
-            Container(
-              alignment: Alignment.center,
-              child: AnimatedContainer(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              // padding: status != StepStatus.completed
+              //     ? const EdgeInsets.all(1.5)
+              //     : null,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: color, width: 2),
+              ),
+              child: AnimatedPadding(
                 duration: const Duration(milliseconds: 300),
                 padding: status != StepStatus.completed
-                    ? const EdgeInsets.all(1.5)
-                    : null,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: color, width: 2),
-                ),
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: color,
-                  child: Icon(icon, size: 16, color: Colors.white),
+                    ? const EdgeInsets.all(1.5 * 2)
+                    : EdgeInsets.zero,
+                child: AnimatedScale(
+                  scale: status == StepStatus.inProgress ? 1.1 : 1.0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  child: CircleAvatar(
+                    radius: 16,
+                    backgroundColor: color,
+                    child: Icon(icon, size: 16, color: Colors.white),
+                  ),
                 ),
               ),
             ),
 
-            // Line
-            (!isLast)
-                ? Expanded(
-                    flex: 1,
-                    child: Container(
-                      color: color,
-                      //margin: const EdgeInsets.symmetric(horizontal: 1),
-                      height: 3,
-                    ),
-                  )
-                : Expanded(
-                    flex: 1,
-                    child: Container(
-                      color: Colors.transparent,
-                      //margin: const EdgeInsets.symmetric(horizontal: 1),
-                      height: 3,
-                    ),
-                  ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: !isLast ? color : Colors.transparent,
+                //margin: const EdgeInsets.symmetric(horizontal: 5),
+                height: 3,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 8),
@@ -120,28 +118,3 @@ class StepIndicator extends StatelessWidget {
     );
   }
 }
-
-
-/*
- (!isFirst)
-                ? Expanded(
-                    flex: 1,
-                    child: Container(
-                      //margin: const EdgeInsets.symmetric(horizontal: 1),
-                      height: 3,
-                      color: HelperFunctions.getColor(
-                        stepStatus,
-                        context,
-                      ), // last index
-                    ),
-                  )
-                : Expanded(
-                    flex: 1,
-                    child: Container(
-                      //margin: const EdgeInsets.symmetric(horizontal: 1),
-                      height: 3,
-                      color: Colors.transparent,
-                    ),
-                  ),
-
- */
