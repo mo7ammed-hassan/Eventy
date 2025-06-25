@@ -26,6 +26,7 @@ class StepIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = HelperFunctions.getColor(status, context);
     final icon = HelperFunctions.getIcon(status);
+    final isDark = HelperFunctions.isDarkMode(context);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -84,10 +85,9 @@ class StepIndicator extends StatelessWidget {
         // Title
         Text(
           title ?? '',
-          style: const TextStyle(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: Colors.black54,
+            fontWeight: FontWeight.w600,
           ),
         ),
 
@@ -95,7 +95,10 @@ class StepIndicator extends StatelessWidget {
         if (subTitle.isNotEmpty)
           Text(
             subTitle,
-            style: const TextStyle(fontSize: 10, color: Colors.grey),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
+            ),
           ),
 
         const SizedBox(height: 4),
@@ -104,7 +107,7 @@ class StepIndicator extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
+            color: color.withValues(alpha: isDark ? 0.4 : 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
