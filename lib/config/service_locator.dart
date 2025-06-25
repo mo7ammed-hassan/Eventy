@@ -2,8 +2,8 @@ import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/features/personalization/personalization_injection.dart';
 import 'package:eventy/features/user_events/user_events_injection.dart';
 import 'package:get_it/get_it.dart';
-import 'package:eventy/core/api/api_client.dart';
-import 'package:eventy/core/api/api_service.dart';
+import 'package:eventy/core/network/api_client.dart';
+import 'package:eventy/core/network/api_service.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/features/auth/auth_injection.dart';
 

@@ -1,4 +1,4 @@
-import 'package:eventy/core/api/api_client.dart';
+import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/features/user_events/data/models/event_model.dart';
 
 abstract class UserEventsRemoteDataSource {

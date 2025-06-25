@@ -6,8 +6,6 @@ import 'package:eventy/features/personalization/data/mappers/user_mappers.dart';
 import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
 import 'package:eventy/features/user_events/user_events_injection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eventy/core/api/api_error.dart';
-import 'package:eventy/core/api/retry_manger.dart';
 import 'package:eventy/features/personalization/domain/repositories/profile_repo.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_state.dart';
 
@@ -32,11 +30,6 @@ class UserCubit extends Cubit<UserState> {
 
     result.fold(
       (error) {
-        if (error.message == "No internet connection" ||
-            error is NetworkError) {
-          RetryManger.addToQueue(getUserProfile);
-        }
-
         emit(state.copyWith(errorMessage: error.message));
       },
       (fetchedUser) {

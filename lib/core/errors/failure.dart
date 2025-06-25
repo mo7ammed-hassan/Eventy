@@ -1,10 +1,8 @@
-// failures.dart
-import 'package:eventy/core/errors/exceptions.dart';
+import 'package:eventy/core/errors/api_error.dart';
 
 abstract class Failure {
   final String message;
   final int? code;
-
   const Failure({required this.message, this.code});
 
   @override
@@ -13,10 +11,6 @@ abstract class Failure {
 
 class ServerFailure extends Failure {
   ServerFailure({required super.message, super.code});
-
-  factory ServerFailure.fromException(ServerException exception) {
-    return ServerFailure(message: exception.message, code: exception.code);
-  }
 }
 
 class NetworkFailure extends Failure {
@@ -29,4 +23,16 @@ class ValidationFailure extends Failure {
 
 class CacheFailure extends Failure {
   CacheFailure({required super.message, super.code});
+}
+
+Failure mapErrorToFailure(ApiError error) {
+  if (error is ValidationError) {
+    return ValidationFailure(message: error.message, code: error.statusCode);
+  } else if (error is NetworkError) {
+    return NetworkFailure(message: error.message, code: error.statusCode);
+  } else if (error is CacheError) {
+    return CacheFailure(message: error.message, code: error.statusCode);
+  } else {
+    return ServerFailure(message: error.message, code: error.statusCode);
+  }
 }

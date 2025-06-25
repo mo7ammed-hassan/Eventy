@@ -2,9 +2,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:eventy/core/api/api_error.dart';
-import 'package:eventy/core/api/interceptors/auth_interceptor.dart';
-import 'package:eventy/core/api/interceptors/connectivity_interceptor.dart';
+import 'package:eventy/core/errors/error_handler.dart';
+import 'package:eventy/core/network/interceptors/auth_interceptor.dart';
+import 'package:eventy/core/network/interceptors/connectivity_interceptor.dart';
 
 class ApiClient {
   static final ApiClient _instance = ApiClient._internal();

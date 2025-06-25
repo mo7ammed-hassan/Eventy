@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:eventy/core/api/api_error.dart';
+import 'package:eventy/core/errors/error_handler.dart';
+import 'package:eventy/core/errors/failure.dart';
 import 'package:eventy/features/user_events/data/models/event_model.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/features/personalization/data/datasources/profile_remote_data_souces.dart';
@@ -18,7 +19,7 @@ class ProfileRepoImpl extends ProfileRepo {
   Future<String?> _getUserId() async => await _storage.getUserId();
 
   @override
-  Future<Either<ApiError, List<EventModel>>> getCreatedEvents() async {
+  Future<Either<Failure, List<EventModel>>> getCreatedEvents() async {
     try {
       final userId = await _getUserId();
       final token = await _getToken();
@@ -29,23 +30,25 @@ class ProfileRepoImpl extends ProfileRepo {
       );
       return Right(events);
     } catch (e) {
-      return Left(ErrorHandler.handle(e));
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
     }
   }
 
   @override
-  Future<Either<ApiError, UserEntity>> getUserProfile() async {
+  Future<Either<Failure, UserEntity>> getUserProfile() async {
     try {
       final userId = await _getUserId();
       final user = await profileRemoteDataSource.getUserProfile(userId: userId);
       return Right(user.toEntity());
     } catch (e) {
-      return Left(ErrorHandler.handle(e));
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
     }
   }
 
   @override
-  Future<Either<ApiError, String>> shareProfileLink() async {
+  Future<Either<Failure, String>> shareProfileLink() async {
     try {
       final userId = await _getUserId();
       final link = await profileRemoteDataSource.shareProfileLink(
@@ -53,19 +56,21 @@ class ProfileRepoImpl extends ProfileRepo {
       );
       return Right(link);
     } catch (e) {
-      return Left(ErrorHandler.handle(e));
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
     }
   }
 
   @override
-  Future<Either<ApiError, UserEntity>> updateUserProfile({
+  Future<Either<Failure, UserEntity>> updateUserProfile({
     required Map<String, dynamic> data,
   }) async {
     try {
       final user = await profileRemoteDataSource.updateUserProfile(data: data);
       return Right(user.toEntity());
     } catch (e) {
-      return Left(ErrorHandler.handle(e));
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
     }
   }
 }

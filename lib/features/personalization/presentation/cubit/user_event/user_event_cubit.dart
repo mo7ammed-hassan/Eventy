@@ -1,5 +1,3 @@
-import 'package:eventy/core/api/api_error.dart';
-import 'package:eventy/core/api/retry_manger.dart';
 import 'package:eventy/core/widgets/popups/loaders.dart';
 import 'package:eventy/features/personalization/domain/repositories/profile_repo.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_event/user_event_state.dart';
@@ -21,10 +19,6 @@ class UserEventCubit extends Cubit<UserEventState> {
 
     result.fold(
       (error) {
-        if (error.message == "No internet connection" ||
-            error is NetworkError) {
-          RetryManger.addToQueue(fetchCustomizedEvents);
-        }
         emit(const UserEventError("Failed to load events"));
         Loaders.warningSnackBar(title: "Error", message: error.message);
       },

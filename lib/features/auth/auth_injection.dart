@@ -1,4 +1,4 @@
-import 'package:eventy/core/api/api_client.dart';
+import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:eventy/features/auth/data/repositories/auth_repo_impl.dart';

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:eventy/core/api/api_client.dart';
+import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/features/auth/data/models/login_model.dart';
 import 'package:eventy/features/auth/data/models/reset_passwor_model.dart';
 import 'package:eventy/features/auth/data/models/signup_model.dart';

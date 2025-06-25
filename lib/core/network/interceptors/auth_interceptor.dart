@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:eventy/config/service_locator.dart';
-import 'package:eventy/core/api/api_client.dart';
+import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 

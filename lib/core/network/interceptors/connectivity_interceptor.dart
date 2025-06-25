@@ -1,6 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:eventy/core/api/retry_manger.dart';
+import 'package:eventy/core/network/retry_manger.dart';
 
 class ConnectivityInterceptor extends Interceptor {
   final Connectivity _connectivity = Connectivity();

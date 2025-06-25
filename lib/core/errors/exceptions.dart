@@ -1,4 +1,3 @@
-// exceptions.dart
 import 'package:dio/dio.dart';
 
 class ServerException implements Exception {

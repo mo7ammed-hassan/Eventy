@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:eventy/core/api/api_error.dart';
+import 'package:eventy/core/errors/failure.dart';
+import 'package:eventy/core/errors/error_handler.dart';
 import 'package:eventy/features/user_events/data/datasources/user_events_remote_data_source.dart';
 import 'package:eventy/features/user_events/data/mapper/event_mapper.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
@@ -10,7 +11,7 @@ class UserEventsRepositoryImpl implements UserEventsRepository {
 
   UserEventsRepositoryImpl(this.userEventsRemoteDataSource);
   @override
-  Future<Either<ApiError, List<EventEntity>>> getCreatedEventEntitys({
+  Future<Either<Failure, List<EventEntity>>> getCreatedEventEntitys({
     int page = 1,
     int limit = 15,
   }) async {
@@ -21,12 +22,13 @@ class UserEventsRepositoryImpl implements UserEventsRepository {
       );
       return Right(res.map((e) => e.toEntity()).toList());
     } catch (e) {
-      return Left(ErrorHandler.handle(e));
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
     }
   }
 
   @override
-  Future<Either<ApiError, List<EventEntity>>> getFavoriteEvents({
+  Future<Either<Failure, List<EventEntity>>> getFavoriteEvents({
     int page = 1,
     int limit = 15,
   }) async {
@@ -37,12 +39,13 @@ class UserEventsRepositoryImpl implements UserEventsRepository {
       );
       return Right(res.map((e) => e.toEntity()).toList());
     } catch (e) {
-      return Left(ErrorHandler.handle(e));
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
     }
   }
 
   @override
-  Future<Either<ApiError, List<EventEntity>>> getPendingEvents({
+  Future<Either<Failure, List<EventEntity>>> getPendingEvents({
     int page = 1,
     int limit = 15,
   }) async {
@@ -53,7 +56,8 @@ class UserEventsRepositoryImpl implements UserEventsRepository {
       );
       return Right(res.map((e) => e.toEntity()).toList());
     } catch (e) {
-      return Left(ErrorHandler.handle(e));
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
     }
   }
 }

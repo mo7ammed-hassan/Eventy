@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eventy/config/service_locator.dart';
-import 'package:eventy/core/api/api_client.dart';
-import 'package:eventy/core/api/api_service.dart';
+import 'package:eventy/core/network/api_client.dart';
+import 'package:eventy/core/network/api_service.dart';
 import 'package:eventy/core/cubits/otp_verification/otp_verification_state.dart';
 import 'package:eventy/features/auth/domain/repositories/auth_repo.dart'
     as auth_repo;
