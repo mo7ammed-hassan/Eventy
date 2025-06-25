@@ -36,11 +36,9 @@ class HelperFunctions {
   static Color getColor(StepStatus status, BuildContext context) {
     switch (status) {
       case StepStatus.completed:
-        return Color(0xFF26c37f);
+        return const Color.fromARGB(255, 11, 79, 139);
       case StepStatus.inProgress:
-        return isDarkMode(context)
-            ? Color.fromARGB(255, 35, 31, 145)
-            : Color(0xFF3833f1);
+        return AppColors.secondaryColor;
       case StepStatus.pending:
         return isDarkMode(context) ? AppColors.dark : Color(0xFFbfbfc1);
     }

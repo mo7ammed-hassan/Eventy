@@ -1,3 +1,4 @@
+import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/enums/enums.dart';
 import 'package:eventy/core/widgets/progress_steps/step_indicator.dart';
@@ -144,31 +145,37 @@ class _CustomStepperIndicatorWidgetState
 
                 /// --- Bottom Buttons
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SizeTransition(
-                            sizeFactor: animation,
-                            axis: Axis.horizontal,
-                            child: child,
-                          ),
-                        );
-                      },
-                      child: currentStep > 0
-                          ? _buildButton(
+                    Expanded(
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: currentStep > 0 ? 1.0 : 0.0,
+                        child: IgnorePointer(
+                          /// -- To disable the button
+                          ignoring: currentStep <= 0,
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            height: currentStep > 0 ? 48 : 0,
+                            child: _buildButton(
                               title: 'Previous',
                               onTap: _previousStep,
-                            )
-                          : const SizedBox(key: ValueKey('empty')),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
 
-                    _buildButton(
-                      onTap: _isLastStep ? widget.onSubmit : _nextStep,
-                      title: _isLastStep ? widget.finishButtonText : 'Next',
+                    const SizedBox(width: 12.0),
+
+                    Expanded(
+                      child: _buildButton(
+                        key: const ValueKey('next'),
+                        backgroundColor: _isLastStep
+                            ? AppColors.primaryColor
+                            : null,
+                        onTap: _isLastStep ? widget.onSubmit : _nextStep,
+                        title: _isLastStep ? widget.finishButtonText : 'Next',
+                      ),
                     ),
                   ],
                 ),
@@ -182,12 +189,18 @@ class _CustomStepperIndicatorWidgetState
     );
   }
 
-  Widget _buildButton({required String title, required VoidCallback? onTap}) {
+  Widget _buildButton({
+    required String title,
+    required VoidCallback? onTap,
+    Color? backgroundColor,
+    Key? key,
+  }) {
     return ElevatedButton(
+      key: key,
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        backgroundColor: const Color(0xFF3833f1),
+        backgroundColor: backgroundColor ?? AppColors.secondaryColor,
       ),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
