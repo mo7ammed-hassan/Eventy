@@ -10,9 +10,9 @@ class CreateEventInitial extends CreateEventState {}
 
 class CreateEventLoading extends CreateEventState {}
 
-class CreateEventError extends CreateEventState {
+class CreateEventFailure extends CreateEventState {
   final String message;
-  const CreateEventError(this.message);
+  const CreateEventFailure(this.message);
 }
 
 class CreateEventSuccess extends CreateEventState {
