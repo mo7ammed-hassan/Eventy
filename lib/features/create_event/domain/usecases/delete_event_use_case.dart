@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:eventy/core/errors/failure.dart';
 import 'package:eventy/features/create_event/domain/repositories/event_repository.dart';
 
 class DeleteEventUseCase {
@@ -5,5 +7,6 @@ class DeleteEventUseCase {
 
   DeleteEventUseCase(this._eventRepository);
 
-  //Future<Either<ApiError, void>> call() => _eventRepository.deleteEvent();
+  Future<Either<Failure, void>> call({required String eventId}) =>
+      _eventRepository.deleteEvent(eventId: eventId);
 }
