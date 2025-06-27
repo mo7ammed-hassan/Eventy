@@ -90,4 +90,6 @@ class AppColors {
   static const Color eventyPrimaryColor = Color(0xFF6464d7);
 
   static const Color primary = Color(0xFF4b68ff);
+
+  static const Color locationScreenColor = Color(0xFF6564db);
 }

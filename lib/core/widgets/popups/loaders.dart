@@ -41,11 +41,12 @@ class Loaders {
     required String title,
     String message = '',
     int duration = 3,
+    Color? backgroundColor,
   }) {
     _showSnackBar(
       title: title,
       message: message,
-      backgroundColor: Colors.green,
+      backgroundColor: backgroundColor ?? Colors.green,
       icon: const Icon(Iconsax.check, color: Colors.white),
       duration: duration,
     );

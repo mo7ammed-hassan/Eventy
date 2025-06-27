@@ -23,7 +23,11 @@ class CustomDialogs {
       context: AppContext.overlayContext,
       builder: (context) => AlertDialog(
         backgroundColor: isDark ? AppColors.mainblackColor : AppColors.white,
-        icon: Icon(iconData ?? Iconsax.logout, size: 40, color: iconColor ?? Colors.red),
+        icon: Icon(
+          iconData ?? Iconsax.logout,
+          size: 40,
+          color: iconColor ?? Colors.red,
+        ),
         content: Text(
           title ?? 'Are you sure you want to logout?',
           textDirection: textDirection,
@@ -51,6 +55,22 @@ class CustomDialogs {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  static Future<bool?> showLocationDialog() async {
+    final isDark = HelperFunctions.isDarkMode(AppContext.overlayContext);
+    return showDialog(
+      context: AppContext.overlayContext,
+      builder: (context) => Container(
+        color: isDark ? AppColors.mainblackColor : AppColors.white,
+        child: Column(
+          children: [
+            // -- Location Image -- //
+            Image.asset('assets/images/location.png'),
+          ],
+        ),
       ),
     );
   }

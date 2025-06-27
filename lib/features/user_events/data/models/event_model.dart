@@ -1,4 +1,4 @@
-import 'location_model.dart';
+import '../../../location/data/location_model.dart';
 
 class EventModel {
   String? id;

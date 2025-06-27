@@ -1,0 +1,130 @@
+import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/core/constants/app_sizes.dart';
+import 'package:eventy/core/utils/device/device_utils.dart';
+import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
+import 'package:eventy/core/widgets/popups/loaders.dart';
+import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
+import 'package:eventy/features/location/presentation/cubits/location_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iconsax/iconsax.dart';
+
+class RequestLocationScreen extends StatelessWidget {
+  const RequestLocationScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LocationCubit(),
+      child: BlocListener<LocationCubit, LocationState>(
+        listener: (context, state) {
+          if (state.isLoading) {
+            LoadingDialogs.showLoadingDialog(
+              context,
+              color: AppColors.white,
+              enableConstraints: true,
+              enabledBackground: true,
+            );
+          }
+
+          if (state.errorMessage != null && !state.isLoading) {
+            Loaders.warningSnackBar(
+              title: 'Location Denied',
+              message: state.errorMessage ?? '',
+            );
+          }
+
+          if (state.message != null && !state.isLoading) {
+            LoadingDialogs.hideLoadingDialog(context);
+            Loaders.successSnackBar(
+              title: 'Location Granted',
+              message: state.message ?? '',
+              backgroundColor: const Color.fromARGB(255, 122, 120, 236),
+            );
+          }
+
+          if (state.location != null && !state.isLoading) {
+            // LoadingDialogs.hideLoadingDialog(context);
+            // Navigator.pop(context);
+          }
+        },
+        child: Scaffold(
+          backgroundColor: AppColors.locationScreenColor,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Iconsax.arrow_left, size: 24, color: Colors.white),
+            ),
+          ),
+
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.defaultPadding,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Location image
+                  Expanded(
+                    child: SvgPicture.asset('assets/icons/location.svg'),
+                  ),
+                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.04)),
+
+                  Text(
+                    'Location Access',
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Colors.white,
+                      fontSize: 26,
+                    ),
+                  ),
+                  const SizedBox(height: AppSizes.spaceBtwSections),
+
+                  Text(
+                    'Allow Eventy to access your location to find events near you. This data will not be shared with any third parties.',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.12)),
+
+                  // Button
+                  SizedBox(
+                    width: DeviceUtils.getScaledWidth(context, 0.4),
+                    child: Builder(
+                      builder: (context) {
+                        return ElevatedButton(
+                          onPressed: () => context
+                              .read<LocationCubit>()
+                              .detectUserLocation(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            side: BorderSide(color: Colors.white),
+                          ),
+                          child: const Text(
+                            'Allow Location',
+                            style: TextStyle(color: AppColors.blueTextColor),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.21)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

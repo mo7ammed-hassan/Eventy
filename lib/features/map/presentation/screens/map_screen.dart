@@ -1,7 +1,4 @@
-// ignore_for_file: avoid_print
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -21,7 +18,7 @@ class _MapScreenState extends State<MapScreen> {
 
   bool _isLocationServiceEnabled = false;
   PermissionStatus? _permissionStatus;
-  LatLng? _confirmedLocation; // To store the confirmed location
+  LatLng? _confirmedLocation;
   StreamSubscription<LocationData>? _locationSubscription;
 
   @override
@@ -67,17 +64,19 @@ class _MapScreenState extends State<MapScreen> {
     try {
       var locationData = await location.getLocation();
       _updateLocationAndMarker(
-          LatLng(locationData.latitude!, locationData.longitude!));
+        LatLng(locationData.latitude!, locationData.longitude!),
+      );
 
-      _locationSubscription =
-          location.onLocationChanged.listen((LocationData newLocation) {
+      _locationSubscription = location.onLocationChanged.listen((
+        LocationData newLocation,
+      ) {
         if (mounted) {
           _updateLocationAndMarker(
-              LatLng(newLocation.latitude!, newLocation.longitude!));
+            LatLng(newLocation.latitude!, newLocation.longitude!),
+          );
         }
       });
     } catch (e) {
-      print("Error getting location: $e");
       currentLocation = null;
     }
   }
@@ -87,16 +86,14 @@ class _MapScreenState extends State<MapScreen> {
       setState(() {
         currentLocation = newLocation;
         markers.clear();
-        markers.add(Marker(
-          width: 80.0,
-          height: 80.0,
-          point: currentLocation!,
-          child: const Icon(
-            Icons.location_on,
-            color: Colors.red,
-            size: 40.0,
+        markers.add(
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: currentLocation!,
+            child: const Icon(Icons.location_on, color: Colors.red, size: 40.0),
           ),
-        ));
+        );
       });
     }
   }
@@ -104,92 +101,95 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: (!_isLocationServiceEnabled ||
+      body:
+          (!_isLocationServiceEnabled ||
               _permissionStatus != PermissionStatus.granted)
           ? const Center(child: CircularProgressIndicator()) // Or a message
           : currentLocation == null
-              ? const Center(child: CircularProgressIndicator())
-              : SafeArea(
-                  child: Stack(
+          ? const Center(child: CircularProgressIndicator())
+          : SafeArea(
+              child: Stack(
+                children: [
+                  FlutterMap(
+                    mapController: mapController,
+                    options: MapOptions(
+                      initialCenter: currentLocation!,
+                      initialZoom: 12.0,
+                      onTap: (TapPosition tapPosition, LatLng point) {
+                        _updateLocationAndMarker(point);
+                        mapController.move(point, mapController.camera.zoom);
+                      },
+                    ),
                     children: [
-                      FlutterMap(
-                        mapController: mapController,
-                        options: MapOptions(
-                          initialCenter: currentLocation!,
-                          initialZoom: 12.0,
-                          onTap: (TapPosition tapPosition, LatLng point) {
-                            _updateLocationAndMarker(point);
-                            mapController.move(
-                                point, mapController.camera.zoom);
-                          },
-                        ),
-                        children: [
-                          TileLayer(
-                            urlTemplate:
-                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            userAgentPackageName:
-                                'com.example.app', // Replace with your app's name
-                          ),
-                          MarkerLayer(markers: markers),
-                        ],
+                      TileLayer(
+                        urlTemplate:
+                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        userAgentPackageName:
+                            'com.example.app', // Replace with your app's name
                       ),
-                      Positioned(
-                        bottom: 20,
-                        left: 20,
-                        right: 20,
-                        child: ElevatedButton(
-                          onPressed: currentLocation != null
-                              ? () {
-                                  setState(() {
-                                    _confirmedLocation = currentLocation;
-                                  });
-                                  print(
-                                      "Confirmed Location: $_confirmedLocation");
-                                }
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(352, 55),
-                            backgroundColor: const Color(
-                                0xFF0E377C), // Dark blue background color
-                            foregroundColor: Colors.white, // White text color
-                            textStyle: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight
-                                    .w600), // Adjust text size as needed
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 12), // Adjust padding
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(22), // Rounded corners
-                            ),
-                          ),
-                          child: const Text("Confirm Location"),
-                        ),
-                      ),
-                      Positioned(
-                        top: 20,
-                        left: 20,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(
-                                0xFF0E377C), // Make background transparent
-                            // padding: EdgeInsets.zero, // Remove padding
-                            // minimumSize: Size.zero, // Remove minimum size
-                            tapTargetSize: MaterialTapTargetSize
-                                .shrinkWrap, // Adjust tap target size
-                          ),
-                          child: const Icon(
-                            Icons.arrow_back_ios_new_outlined,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                      MarkerLayer(markers: markers),
                     ],
                   ),
-                ),
+                  Positioned(
+                    bottom: 20,
+                    left: 20,
+                    right: 20,
+                    child: ElevatedButton(
+                      onPressed: currentLocation != null
+                          ? () {
+                              setState(() {
+                                _confirmedLocation = currentLocation;
+                              });
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(352, 55),
+                        backgroundColor: const Color(
+                          0xFF0E377C,
+                        ), // Dark blue background color
+                        foregroundColor: Colors.white, // White text color
+                        textStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ), // Adjust text size as needed
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ), // Adjust padding
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            22,
+                          ), // Rounded corners
+                        ),
+                      ),
+                      child: const Text("Confirm Location"),
+                    ),
+                  ),
+                  Positioned(
+                    top: 20,
+                    left: 20,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(
+                          0xFF0E377C,
+                        ), // Make background transparent
+                        // padding: EdgeInsets.zero, // Remove padding
+                        // minimumSize: Size.zero, // Remove minimum size
+                        tapTargetSize: MaterialTapTargetSize
+                            .shrinkWrap, // Adjust tap target size
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

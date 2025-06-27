@@ -1,5 +1,5 @@
 import 'package:eventy/core/utils/helpers/extensions/json_extensions.dart';
-import 'package:eventy/features/user_events/data/models/location_model.dart';
+import 'package:eventy/features/location/data/location_model.dart';
 
 class CreateEventModel {
   final String? name;
