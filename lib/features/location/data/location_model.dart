@@ -7,8 +7,12 @@ class LocationModel {
 
   factory LocationModel.fromJson(Map<String, dynamic> json) => LocationModel(
     address: json['address'] as String?,
-    latitude: (json['latitude'] as num).toDouble(),
-    longitude: (json['longitude'] as num).toDouble(),
+    latitude: json['latitude'] is num
+        ? (json['latitude'] as num).toDouble()
+        : null,
+    longitude: json['longitude'] is num
+        ? (json['longitude'] as num).toDouble()
+        : null,
   );
 
   Map<String, dynamic> toJson() => {

@@ -18,7 +18,7 @@ class RequestLocationScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LocationCubit(),
       child: BlocListener<LocationCubit, LocationState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state.isLoading) {
             LoadingDialogs.showLoadingDialog(
               context,
@@ -29,6 +29,7 @@ class RequestLocationScreen extends StatelessWidget {
           }
 
           if (state.errorMessage != null && !state.isLoading) {
+            LoadingDialogs.hideLoadingDialog(context);
             Loaders.warningSnackBar(
               title: 'Location Denied',
               message: state.errorMessage ?? '',
@@ -45,8 +46,7 @@ class RequestLocationScreen extends StatelessWidget {
           }
 
           if (state.location != null && !state.isLoading) {
-            // LoadingDialogs.hideLoadingDialog(context);
-            // Navigator.pop(context);
+            Navigator.pop(context, state.location);
           }
         },
         child: Scaffold(
@@ -55,7 +55,7 @@ class RequestLocationScreen extends StatelessWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(context, null),
               icon: Icon(Iconsax.arrow_left, size: 24, color: Colors.white),
             ),
           ),
@@ -68,11 +68,10 @@ class RequestLocationScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Location image
                   Expanded(
                     child: SvgPicture.asset('assets/icons/location.svg'),
                   ),
-                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.04)),
+                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.05)),
 
                   Text(
                     'Location Access',
@@ -92,7 +91,7 @@ class RequestLocationScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.12)),
+                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.14)),
 
                   // Button
                   SizedBox(
@@ -118,7 +117,8 @@ class RequestLocationScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.21)),
+
+                  SizedBox(height: DeviceUtils.getScaledHeight(context, 0.17)),
                 ],
               ),
             ),

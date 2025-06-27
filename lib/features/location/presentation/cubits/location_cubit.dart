@@ -1,4 +1,8 @@
+import 'package:eventy/config/service_locator.dart';
+import 'package:eventy/core/storage/app_storage.dart';
+import 'package:eventy/features/location/data/location_model.dart';
 import 'package:eventy/features/location/presentation/cubits/location_state.dart';
+import 'package:eventy/features/user_events/data/mapper/location_mapper.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,15 +10,24 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit() : super(LocationState());
+  LocationCubit() : super(LocationState()) {
+    _init();
+  }
+
+  void _init() {
+    final location = getLocation();
+    if (location != null) emit(state.copyWith(location: location));
+  }
+
+  final _storage = getIt<AppStorage>();
 
   /// --- Detect user location --- ///
   Future<void> detectUserLocation() async {
     try {
+      emit(state.copyWith(isLoading: true));
+
       final hasPermission = await _checkLocationPermission();
       if (!hasPermission) return;
-
-      emit(state.copyWith(isLoading: true));
 
       final LocationSettings locationSettings = _requestLocationSettings();
 
@@ -36,6 +49,9 @@ class LocationCubit extends Cubit<LocationState> {
         latitude: position.latitude,
         longitude: position.longitude,
       );
+
+      /// --- Save location --- ///
+      await saveLocation(userAddress);
 
       emit(
         state.copyWith(
@@ -68,15 +84,13 @@ class LocationCubit extends Cubit<LocationState> {
 
         if (placemarks.isNotEmpty) {
           final address = placemarks.first;
-          emit(
-            state.copyWith(
-              location: LocationEntity(
-                address: address.country ?? '',
-                latitude: position.latitude,
-                longitude: position.longitude,
-              ),
-            ),
+
+          final userAddress = LocationEntity(
+            address: address.country ?? '',
+            latitude: position.latitude,
+            longitude: position.longitude,
           );
+          emit(state.copyWith(location: userAddress));
         }
       }
     } catch (e) {
@@ -85,7 +99,7 @@ class LocationCubit extends Cubit<LocationState> {
   }
 
   /// --- Listen to location updates --- ///
-  Stream<LocationEntity> listenToLocationUpdates() {
+  Stream<void> listenToLocationUpdates() {
     return Geolocator.getPositionStream(
       locationSettings: _requestLocationSettings(),
     ).asyncMap((position) async {
@@ -93,11 +107,31 @@ class LocationCubit extends Cubit<LocationState> {
         position.latitude,
         position.longitude,
       );
-      return LocationEntity(
-        address: placemarks.isEmpty ? '' : placemarks.first.country ?? '',
+
+      final address = placemarks.first;
+
+      final userAddress = LocationEntity(
+        address: address.country ?? '',
         latitude: position.latitude,
         longitude: position.longitude,
       );
+
+      /// --- Save location --- ///
+      await saveLocation(userAddress);
+
+      emit(
+        state.copyWith(
+          location: userAddress,
+          errorMessage: null,
+          message: 'Location updated successfully',
+        ),
+      );
+
+      // return LocationEntity(
+      //   address: address.country ?? '',
+      //   latitude: position.latitude,
+      //   longitude: position.longitude,
+      // );
     });
   }
 
@@ -192,5 +226,19 @@ class LocationCubit extends Cubit<LocationState> {
       );
       return false;
     }
+  }
+
+  /// --- Get Permission Location --- ///
+  Future<LocationPermission> getPermissionLocation() async {
+    return await Geolocator.checkPermission();
+  }
+
+  Future<void> saveLocation(LocationEntity location) async {
+    await _storage.setJson('location', location.toModel().toJson());
+  }
+
+  LocationEntity? getLocation() {
+    final json = _storage.getJson('location');
+    return (LocationModel.fromJson(json)).toEntity();
   }
 }

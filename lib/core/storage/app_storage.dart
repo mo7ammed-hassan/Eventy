@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppStorage {
@@ -14,6 +16,18 @@ class AppStorage {
   Future<void> setString(String key, String value) async {
     await _storage.setString(key, value);
   }
+
+  Future<void> setJson(String key, Map<String, dynamic> value) async {
+    await _storage.setString(key, json.encode(value));
+  }
+
+  Map<String, dynamic> getJson(String key) {
+    final json = _storage.getString(key);
+    if (json != null && json.isNotEmpty) {
+      return jsonDecode(json);
+    }
+    return {};
+  } 
 
   bool getBool(String key) => _storage.getBool(key) ?? false;
 
