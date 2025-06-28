@@ -3,7 +3,7 @@ import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 
-class CreateEventDetailsSection extends StatelessWidget  {
+class CreateEventDetailsSection extends StatelessWidget {
   const CreateEventDetailsSection({super.key});
 
   @override

@@ -257,7 +257,7 @@ class _BuildNavigationButton extends StatelessWidget {
             ),
           );
         },
-        child: FittedBox(child: Text(title, key: ValueKey(title))),
+        child: FittedBox(key: ValueKey(title), child: Text(title)),
       ),
     );
   }
