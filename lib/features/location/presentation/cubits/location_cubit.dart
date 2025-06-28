@@ -239,6 +239,7 @@ class LocationCubit extends Cubit<LocationState> {
 
   LocationEntity? getLocation() {
     final json = _storage.getJson('location');
+    if (json == null) return null;
     return (LocationModel.fromJson(json)).toEntity();
   }
 }

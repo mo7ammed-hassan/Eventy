@@ -1,4 +1,3 @@
-import 'package:eventy/config/routing/routes.dart';
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/services/system_ui_service.dart';
 import 'package:eventy/core/services/theme_service.dart';
@@ -34,8 +33,7 @@ class MyApp extends StatelessWidget {
               locale: const Locale('en'),
               supportedLocales: const [Locale('en')],
               onGenerateRoute: (settings) => appRouter.generateRoute(settings),
-              //initialRoute: initialRoute,
-              initialRoute: Routes.requestLocationScreen,
+              initialRoute: initialRoute,
             ),
           ),
         );

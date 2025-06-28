@@ -21,12 +21,12 @@ class AppStorage {
     await _storage.setString(key, json.encode(value));
   }
 
-  Map<String, dynamic> getJson(String key) {
+  Map<String, dynamic>? getJson(String key) {
     final json = _storage.getString(key);
     if (json != null && json.isNotEmpty) {
       return jsonDecode(json);
     }
-    return {};
+    return null;
   } 
 
   bool getBool(String key) => _storage.getBool(key) ?? false;

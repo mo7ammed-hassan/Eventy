@@ -1,3 +1,5 @@
+import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
+import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/utils/helpers/app_context.dart';
@@ -43,6 +45,22 @@ class TFullScreenLoader {
   static void stopLoading() {
     Navigator.of(
       AppContext.overlayContext,
-    ).pop(); // Close the dialog using the Navigator
+      rootNavigator: true,
+    ).pop(null); // Close the dialog using the Navigator
   }
+
+  static Future<LocationEntity?> openLocationAccessWidget(BuildContext context) {
+    return showDialog<LocationEntity?>(
+      context: context,
+      useSafeArea: false,
+      animationStyle: AnimationStyle(
+        reverseDuration: Duration(milliseconds: 400),
+        curve: Curves.fastOutSlowIn,
+        reverseCurve: Curves.fastOutSlowIn,
+      ),
+      builder: (_) => const RequestLocationScreen(),
+    );
+  }
+
+  // close
 }

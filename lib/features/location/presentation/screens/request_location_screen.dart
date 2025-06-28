@@ -1,10 +1,11 @@
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
+import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
-import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
-import 'package:eventy/core/widgets/popups/loaders.dart';
 import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
 import 'package:eventy/features/location/presentation/cubits/location_state.dart';
+import 'package:eventy/features/location/presentation/helper/request_location_state_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,44 +19,18 @@ class RequestLocationScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LocationCubit(),
       child: BlocListener<LocationCubit, LocationState>(
-        listener: (context, state) async {
-          if (state.isLoading) {
-            LoadingDialogs.showLoadingDialog(
-              context,
-              color: AppColors.white,
-              enableConstraints: true,
-              enabledBackground: true,
-            );
-          }
-
-          if (state.errorMessage != null && !state.isLoading) {
-            LoadingDialogs.hideLoadingDialog(context);
-            Loaders.warningSnackBar(
-              title: 'Location Denied',
-              message: state.errorMessage ?? '',
-            );
-          }
-
-          if (state.message != null && !state.isLoading) {
-            LoadingDialogs.hideLoadingDialog(context);
-            Loaders.successSnackBar(
-              title: 'Location Granted',
-              message: state.message ?? '',
-              backgroundColor: const Color.fromARGB(255, 122, 120, 236),
-            );
-          }
-
-          if (state.location != null && !state.isLoading) {
-            Navigator.pop(context, state.location);
-          }
-        },
+        listener: (context, state) =>
+            handleLocationStateListener(context: context, state: state),
         child: Scaffold(
           backgroundColor: AppColors.locationScreenColor,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(
-              onPressed: () => Navigator.pop(context, null),
+              onPressed: () {
+                getIt<AppStorage>().setBool('location_permission_denied', true);
+                Navigator.pop(context, null);
+              },
               icon: Icon(Iconsax.arrow_left, size: 24, color: Colors.white),
             ),
           ),
@@ -68,7 +43,7 @@ class RequestLocationScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
+                  Flexible(
                     child: SvgPicture.asset('assets/icons/location.svg'),
                   ),
                   SizedBox(height: DeviceUtils.getScaledHeight(context, 0.05)),

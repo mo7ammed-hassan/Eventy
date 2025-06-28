@@ -26,7 +26,7 @@ class LoadingDialogs {
                     shape: BoxShape.circle,
                   ),
                   child: FittedBox(
-                    child: CircularProgressIndicator(
+                    child: CircularProgressIndicator.adaptive(
                       constraints: enableConstraints
                           ? BoxConstraints(
                               maxWidth: 35,
@@ -35,12 +35,16 @@ class LoadingDialogs {
                               minHeight: 35,
                             )
                           : null,
-                      color: isDark ? AppColors.white : color ?? Colors.blue,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        isDark ? AppColors.white : Colors.blue,
+                      ),
                     ),
                   ),
                 )
-              : CircularProgressIndicator(
-                  color: isDark ? AppColors.white : color ?? Colors.blue,
+              : CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    isDark ? AppColors.white : Colors.blue,
+                  ),
                 ),
         ),
       ),
@@ -48,6 +52,12 @@ class LoadingDialogs {
   }
 
   static void hideLoadingDialog(BuildContext context) {
-    Navigator.of(context).pop();
+    final navigator = Navigator.of(context, rootNavigator: true);
+
+    if (navigator.canPop()) {
+      navigator.pop();
+    } else {
+      debugPrint("🛑 Tried to pop, but nothing to pop.");
+    }
   }
 }
