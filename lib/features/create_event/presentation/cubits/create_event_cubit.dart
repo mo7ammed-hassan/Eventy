@@ -10,7 +10,9 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   Future<void> createEvent() async {
     emit(CreateEventLoading());
 
-    // final result = await _createEventUsecase.call(event: event);
+    // final result = await _createEventUsecase.call(
+    //   event: ,
+    // );
 
     // result.fold((failure) => emit(CreateEventFailure(failure.message)), (_) {
     //   emit(CreateEventSuccess('Event created successfully'));

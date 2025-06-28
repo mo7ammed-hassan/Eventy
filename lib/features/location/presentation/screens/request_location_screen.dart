@@ -19,8 +19,11 @@ class RequestLocationScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LocationCubit(),
       child: BlocListener<LocationCubit, LocationState>(
-        listener: (context, state) =>
-            handleLocationStateListener(context: context, state: state),
+        listener: (context, state) => handleLocationStateListener(
+          context: context,
+          state: state,
+          cubit: context.read<LocationCubit>(),
+        ),
         child: Scaffold(
           backgroundColor: AppColors.locationScreenColor,
           appBar: AppBar(

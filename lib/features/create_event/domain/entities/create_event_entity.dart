@@ -40,4 +40,6 @@ class CreateEventEntity {
     required this.formatedDate,
     required this.id,
   });
+
+  
 }

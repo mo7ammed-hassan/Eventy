@@ -28,7 +28,7 @@ class SignupForm extends StatelessWidget {
         child: AutofillGroup(
           child: Form(
             key: context.read<SignupCubit>().formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            //autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
                 _nameField(context),

@@ -58,6 +58,7 @@ class LocationCubit extends Cubit<LocationState> {
           isLoading: false,
           location: userAddress,
           errorMessage: null,
+          permission: null,
           message: 'Location detected successfully',
         ),
       );
@@ -66,6 +67,7 @@ class LocationCubit extends Cubit<LocationState> {
         state.copyWith(
           isLoading: false,
           message: null,
+          permission: null,
           errorMessage: 'Failed to detect location: ${e.toString()}',
         ),
       );
@@ -181,6 +183,7 @@ class LocationCubit extends Cubit<LocationState> {
           state.copyWith(
             isLoading: false,
             message: null,
+            permission: null,
             errorMessage: 'Location service is disabled. Please enable it.',
           ),
         );
@@ -197,6 +200,7 @@ class LocationCubit extends Cubit<LocationState> {
               isLoading: false,
               message: null,
               errorMessage: 'Location permissions are denied.',
+              permission: permission,
             ),
           );
           return false;
@@ -207,6 +211,7 @@ class LocationCubit extends Cubit<LocationState> {
             state.copyWith(
               isLoading: false,
               message: null,
+              permission: permission,
               errorMessage:
                   'Location permissions are permanently denied, we cannot request permissions.',
             ),
@@ -221,6 +226,7 @@ class LocationCubit extends Cubit<LocationState> {
         state.copyWith(
           isLoading: false,
           message: null,
+          permission: null,
           errorMessage: 'Permission check failed: ${e.toString()}',
         ),
       );
@@ -231,6 +237,26 @@ class LocationCubit extends Cubit<LocationState> {
   /// --- Get Permission Location --- ///
   Future<LocationPermission> getPermissionLocation() async {
     return await Geolocator.checkPermission();
+  }
+
+  /// --- Recheck permission and detect location --- ///
+  Future<bool> recheckPermissionAndDetect() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    permission = await Geolocator.requestPermission();
+
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      return false;
+    } else {
+      final newPermission = permission;
+      emit(state.copyWith(permission: newPermission));
+      return true;
+    }
+  }
+
+  /// --- Open Settings --- ///
+  Future<void> openAppSettings() async {
+    await Geolocator.openAppSettings();
   }
 
   Future<void> saveLocation(LocationEntity location) async {

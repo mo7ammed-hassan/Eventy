@@ -12,8 +12,8 @@ class HomeCubit extends Cubit<HomeState> {
   final _storage = getIt<AppStorage>();
 
   void init() async {
-    //_storage.remove('location');
-    //_storage.remove('location_permission_denied');
+    _storage.remove('location');
+    _storage.remove('location_permission_denied');
 
     final location = getLocation();
     final denied = _storage.getBool('location_permission_denied');

@@ -29,7 +29,7 @@ class LoginForm extends StatelessWidget {
         ),
         child: Form(
           key: context.read<SignInCubit>().formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          //autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               _emailField(context),

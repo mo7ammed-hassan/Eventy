@@ -19,12 +19,12 @@ class OnBoardingSkip extends StatelessWidget {
         },
         child: BlocBuilder<OnboardingCubit, int>(
           builder: (context, state) {
-            return state <= 2
-                ? const SizedBox.shrink()
-                : Text(
+            return state < 2
+                ? Text(
                     AppStrings.skip,
                     style: Theme.of(context).textTheme.bodyLarge,
-                  );
+                  )
+                : const SizedBox.shrink();
           },
         ),
       ),

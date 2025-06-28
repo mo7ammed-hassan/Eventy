@@ -91,4 +91,6 @@ class CreateEventModel {
     'formattedDate': formatedDate,
     'id': id,
   };
+
+  static empty() => const CreateEventModel();
 }
