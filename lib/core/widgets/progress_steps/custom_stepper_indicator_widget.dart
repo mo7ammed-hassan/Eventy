@@ -1,12 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_colors.dart';
-import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/enums/enums.dart';
 import 'package:eventy/core/widgets/progress_steps/step_indicator.dart';
 import 'package:eventy/core/widgets/progress_steps/stepper_widget_data.dart';
-import 'package:flutter/material.dart';
 
 /// A custom stepper widget with visual indicators and step-by-step content.
-///
 /// Supports dynamic step navigation, animated transitions, and custom UI for each step.
 /// Use it for onboarding flows, forms, or multi-step processes.
 class CustomStepperIndicatorWidget extends StatefulWidget {
@@ -15,28 +13,41 @@ class CustomStepperIndicatorWidget extends StatefulWidget {
     required this.steps,
     this.padding,
     this.controller,
-    this.contentpadding,
+    this.contentTitlePadding,
     this.onSubmit,
     this.finishButtonText = 'Submit',
+    this.nextButtonText = 'Next',
+    this.previousButtonText = 'Previous',
+    this.stepIndicatorBuilder,
   });
 
-  /// List of steps to show in the stepper.
+  /// List of steps to show in the stepper
   final List<StepperWidgetData> steps;
 
-  /// Padding around the step content.
+  /// Padding around the step content
   final EdgeInsetsGeometry? padding;
 
-  /// Padding around the step content.
-  final EdgeInsetsGeometry? contentpadding;
+  /// Padding around the content title
+  final EdgeInsetsGeometry? contentTitlePadding;
 
-  /// Optional external controller to control step changes programmatically.
+  /// Optional external controller to control step changes programmatically
   final StepperController? controller;
 
-  /// Function to be called when the "Finish" button is tapped.
-  final Function()? onSubmit;
+  /// Callback when the "Finish" button is tapped
+  final VoidCallback? onSubmit;
 
-  /// Text for the "Finish" button.
+  /// Text for the "Finish" button
   final String finishButtonText;
+
+  /// Text for the "Next" button
+  final String nextButtonText;
+
+  /// Text for the "Previous" button
+  final String previousButtonText;
+
+  /// Custom builder for step indicators (optional)
+  final Widget Function(BuildContext context, int index, StepStatus status)?
+  stepIndicatorBuilder;
 
   @override
   State<CustomStepperIndicatorWidget> createState() =>
@@ -45,156 +56,190 @@ class CustomStepperIndicatorWidget extends StatefulWidget {
 
 class _CustomStepperIndicatorWidgetState
     extends State<CustomStepperIndicatorWidget> {
-  late int currentStep;
-  late int previousStep;
+  late int _currentStep;
+  late final List<Widget> stepIndicators;
+  late final StepperController _internalController;
 
   @override
   void initState() {
     super.initState();
-    currentStep = 0;
-    previousStep = 0;
-
-    widget.controller?._attach(this);
+    _currentStep = 0;
+    _internalController = StepperController(_handleStepChange);
+    widget.controller?.attach(_internalController);
   }
 
-  void _goToStep(int index) {
-    if (index >= 0 && index < widget.steps.length) {
+  @override
+  void dispose() {
+    widget.controller?.detach();
+    super.dispose();
+  }
+
+  void _handleStepChange(int newStep) {
+    if (newStep >= 0 && newStep < widget.steps.length) {
       setState(() {
-        previousStep = currentStep;
-        currentStep = index;
+        _currentStep = newStep;
       });
     }
   }
 
-  void _nextStep() => _goToStep(currentStep + 1);
+  void _nextStepTap() => _handleStepChange(_currentStep + 1);
+  void _previousStepTap() => _handleStepChange(_currentStep - 1);
 
-  void _previousStep() => _goToStep(currentStep - 1);
+  bool get _isLastStep => _currentStep == widget.steps.length - 1;
+  //bool get _isFirstStep => _currentStep == 0;
 
-  bool get _isLastStep => currentStep == widget.steps.length - 1;
+  StepStatus _getStepStatus(int index) {
+    if (index < _currentStep) return StepStatus.completed;
+    if (index == _currentStep) return StepStatus.inProgress;
+    return StepStatus.pending;
+  }
+
+  StepStatus _getPreviousStepStatus(int index) {
+    if (index - 1 < _currentStep) {
+      return StepStatus.completed;
+    } else {
+      return StepStatus.pending;
+    }
+  }
+
+  Widget _buildStepIndicator(BuildContext context, int index) {
+    final status = _getStepStatus(index);
+    final previousStatus = _getPreviousStepStatus(index);
+
+    if (widget.stepIndicatorBuilder != null) {
+      return widget.stepIndicatorBuilder!(context, index, status);
+    }
+
+    return GestureDetector(
+      onTap: () => _handleStepChange(index),
+      child: StepIndicator(
+        isFirst: index == 0,
+        isLast: index == widget.steps.length - 1,
+        title: widget.steps[index].stepTitle ?? '',
+        status: status,
+        subTitle: '',
+        index: index,
+        stepStatus: previousStatus,
+      ),
+    );
+  }
+
+  Widget _buildNavigationButtons(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: _currentStep > 0 ? 1.0 : 0.0,
+            child: IgnorePointer(
+              /// -- To disable the button
+              ignoring: _currentStep == 0,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: _currentStep > 0 ? 46 : 0,
+                child: _BuildNavigationButton(
+                  key: const ValueKey('previous'),
+                  title: 'Previous',
+                  onTap: _previousStepTap,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 12.0),
+        Expanded(
+          child: _BuildNavigationButton(
+            key: const ValueKey('next'),
+            title: _isLastStep
+                ? widget.finishButtonText
+                : widget.nextButtonText,
+            onTap: _isLastStep ? widget.onSubmit : _nextStepTap,
+            backgroundColor: _isLastStep ? AppColors.primaryColor : null,
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final stepData = widget.steps[currentStep];
+    final currentStepData = widget.steps[_currentStep];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 14),
 
-        /// --- Step Indicators Row
+        // Step Indicators
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(widget.steps.length, (index) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: GestureDetector(
-                onTap: () => _goToStep(index),
-                child: StepIndicator(
-                  isFirst: index == 0,
-                  isLast: index == widget.steps.length - 1,
-                  title: widget.steps[index].stepTitle ?? '',
-                  status: index < currentStep
-                      ? StepStatus.completed
-                      : index == currentStep
-                      ? StepStatus.inProgress
-                      : StepStatus.pending,
-                  stepStatus: index - 1 < currentStep
-                      ? StepStatus.completed
-                      : StepStatus.pending,
-                  subTitle: '',
-                  index: index,
-                ),
-              ),
-            );
-          }),
+          children: List.generate(
+            widget.steps.length,
+            (index) => Flexible(child: _buildStepIndicator(context, index)),
+          ),
         ),
         const SizedBox(height: 28),
 
-        /// --- Content Title
+        // Content Title
         Padding(
           padding:
-              widget.contentpadding ??
+              widget.contentTitlePadding ??
               const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            stepData.contentTitle ?? '',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontSize: 18),
+            currentStepData.contentTitle ?? '',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
-        const SizedBox(height: AppSizes.spaceBtwItems),
+        const SizedBox(height: 16.0),
 
-        /// --- Title
+        // Step Content
         Expanded(
           child: Padding(
             padding: widget.padding ?? const EdgeInsets.all(16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// Step Content
+                // Step Content
                 Expanded(
-                  child: IndexedStack(
-                    index: currentStep,
-                    children: widget.steps
-                        .map((step) => step.builder ?? const SizedBox.shrink())
-                        .toList(),
+                  child: SingleChildScrollView(
+                    child: IndexedStack(
+                      index: _currentStep,
+                      children: widget.steps
+                          .map(
+                            (step) => step.builder ?? const SizedBox.shrink(),
+                          )
+                          .toList(),
+                    ),
                   ),
                 ),
+                const SizedBox(height: 16),
 
-                const SizedBox(height: AppSizes.spaceBtwItems),
-
-                /// --- Bottom Buttons
-                Row(
-                  children: [
-                    Expanded(
-                      child: AnimatedOpacity(
-                        duration: const Duration(milliseconds: 300),
-                        opacity: currentStep > 0 ? 1.0 : 0.0,
-                        child: IgnorePointer(
-                          /// -- To disable the button
-                          ignoring: currentStep <= 0,
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            height: currentStep > 0 ? 48 : 0,
-                            child: _buildButton(
-                              title: 'Previous',
-                              onTap: _previousStep,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(width: 12.0),
-
-                    Expanded(
-                      child: _buildButton(
-                        key: const ValueKey('next'),
-                        backgroundColor: _isLastStep
-                            ? AppColors.primaryColor
-                            : null,
-                        onTap: _isLastStep ? widget.onSubmit : _nextStep,
-                        title: _isLastStep ? widget.finishButtonText : 'Next',
-                      ),
-                    ),
-                  ],
-                ),
+                // Navigation Buttons
+                _buildNavigationButtons(context),
               ],
             ),
           ),
         ),
-
         const SizedBox(height: kToolbarHeight / 2),
       ],
     );
   }
+}
 
-  Widget _buildButton({
-    required String title,
-    required VoidCallback? onTap,
-    Color? backgroundColor,
-    Key? key,
-  }) {
+class _BuildNavigationButton extends StatelessWidget {
+  const _BuildNavigationButton({
+    super.key,
+    required this.title,
+    this.onTap,
+    this.backgroundColor,
+  });
+  final String title;
+  final Function()? onTap;
+  final Color? backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
     return ElevatedButton(
       key: key,
       onPressed: onTap,
@@ -214,26 +259,34 @@ class _CustomStepperIndicatorWidgetState
             ),
           );
         },
-        child: Text(title, key: ValueKey(title)),
+        child: FittedBox(child: Text(title, key: ValueKey(title))),
       ),
     );
   }
 }
 
-/// Controller to programmatically control [CustomStepperIndicatorWidget].
+/// Controller to programmatically control [CustomStepperIndicatorWidget]
 class StepperController {
-  _CustomStepperIndicatorWidgetState? _state;
+  void Function(int)? _stepHandler;
 
-  void _attach(_CustomStepperIndicatorWidgetState state) {
-    _state = state;
+  void attach(StepperController controller) {
+    _stepHandler = controller._stepHandler;
   }
 
+  void detach() {
+    _stepHandler = null;
+  }
+
+  StepperController(this._stepHandler);
+
   /// Go to the next step
-  void nextStep() => _state?._nextStep();
+  void nextStep() => _stepHandler?.call(_currentStep + 1);
 
   /// Go to the previous step
-  void previousStep() => _state?._previousStep();
+  void previousStep() => _stepHandler?.call(_currentStep - 1);
 
   /// Go to a specific step index
-  void goToStep(int index) => _state?._goToStep(index);
+  void goToStep(int index) => _stepHandler?.call(index);
+
+  final int _currentStep = 0;
 }

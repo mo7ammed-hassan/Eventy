@@ -12,14 +12,19 @@ class HomeCubit extends Cubit<HomeState> {
   final _storage = getIt<AppStorage>();
 
   void init() async {
+    //_storage.remove('location');
+    //_storage.remove('location_permission_denied');
+
     final location = getLocation();
     final denied = _storage.getBool('location_permission_denied');
 
+    emit(state.copyWith(isLoading: true));
+
     if (location != null && !denied) {
-      emit(state.copyWith(shouldRequestLocation: false));
+      emit(state.copyWith(shouldRequestLocation: false, isLoading: false));
       await fetchDependOnLocation(location);
     } else if (denied == true) {
-      emit(state.copyWith(shouldRequestLocation: false));
+      emit(state.copyWith(shouldRequestLocation: false, isLoading: false));
       await fetchEvents();
     } else if (location == null && denied == false) {
       emit(state.copyWith(shouldRequestLocation: true));

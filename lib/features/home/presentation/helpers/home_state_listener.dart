@@ -1,4 +1,3 @@
-import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
 import 'package:eventy/features/home/presentation/cubits/home_cubit.dart';
 import 'package:eventy/features/home/presentation/cubits/home_state.dart';
 import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
@@ -23,13 +22,13 @@ Future<void> handleHomeStateListener({
     return;
   }
 
-  if (state.isLoading) {
-    LoadingDialogs.showLoadingDialog(context);
-    return;
-  }
+  // if (state.isLoading) {
+  //   LoadingDialogs.showLoadingDialog(context);
+  //   return;
+  // }
 
-  if (state.fetchSuccess) {
-    LoadingDialogs.hideLoadingDialog(context);
-    return;
-  }
+  // if (state.fetchSuccess) {
+  //   LoadingDialogs.hideLoadingDialog(context);
+  //   return;
+  // }
 }
