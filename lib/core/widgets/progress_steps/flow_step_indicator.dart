@@ -2,7 +2,7 @@ import 'package:eventy/core/enums/enums.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 
-class StepIndicator extends StatelessWidget {
+class FlowStepIndicator extends StatelessWidget {
   final String? title;
   final String subTitle;
   final StepStatus status;
@@ -11,7 +11,7 @@ class StepIndicator extends StatelessWidget {
   final int index;
   final StepStatus stepStatus;
 
-  const StepIndicator({
+  const FlowStepIndicator({
     super.key,
     this.title,
     this.subTitle = '',

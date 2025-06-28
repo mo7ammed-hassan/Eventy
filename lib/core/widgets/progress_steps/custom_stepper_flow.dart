@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/enums/enums.dart';
-import 'package:eventy/core/widgets/progress_steps/step_indicator.dart';
-import 'package:eventy/core/widgets/progress_steps/stepper_widget_data.dart';
+import 'package:eventy/core/widgets/progress_steps/flow_step_indicator.dart';
+import 'package:eventy/core/widgets/progress_steps/flow_step_data.dart';
 
 /// A custom stepper widget with visual indicators and step-by-step content.
 /// Supports dynamic step navigation, animated transitions, and custom UI for each step.
 /// Use it for onboarding flows, forms, or multi-step processes.
-class CustomStepperIndicatorWidget extends StatefulWidget {
-  const CustomStepperIndicatorWidget({
+class CustomStepperFlow extends StatefulWidget {
+  const CustomStepperFlow({
     super.key,
     required this.steps,
     this.padding,
@@ -22,7 +22,7 @@ class CustomStepperIndicatorWidget extends StatefulWidget {
   });
 
   /// List of steps to show in the stepper
-  final List<StepperWidgetData> steps;
+  final List<FlowStepData> steps;
 
   /// Padding around the step content
   final EdgeInsetsGeometry? padding;
@@ -50,12 +50,10 @@ class CustomStepperIndicatorWidget extends StatefulWidget {
   stepIndicatorBuilder;
 
   @override
-  State<CustomStepperIndicatorWidget> createState() =>
-      _CustomStepperIndicatorWidgetState();
+  State<CustomStepperFlow> createState() => _CustomStepperFlowState();
 }
 
-class _CustomStepperIndicatorWidgetState
-    extends State<CustomStepperIndicatorWidget> {
+class _CustomStepperFlowState extends State<CustomStepperFlow> {
   late int _currentStep;
   late final List<Widget> stepIndicators;
   late final StepperController _internalController;
@@ -112,7 +110,7 @@ class _CustomStepperIndicatorWidgetState
 
     return GestureDetector(
       onTap: () => _handleStepChange(index),
-      child: StepIndicator(
+      child: FlowStepIndicator(
         isFirst: index == 0,
         isLast: index == widget.steps.length - 1,
         title: widget.steps[index].stepTitle ?? '',
