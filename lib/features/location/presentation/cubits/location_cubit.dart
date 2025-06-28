@@ -248,8 +248,7 @@ class LocationCubit extends Cubit<LocationState> {
         permission == LocationPermission.deniedForever) {
       return false;
     } else {
-      final newPermission = permission;
-      emit(state.copyWith(permission: newPermission));
+      emit(state.copyWith(permission: permission));
       return true;
     }
   }
