@@ -67,6 +67,7 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 16),
             SvgPicture.asset(
@@ -77,6 +78,7 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
             const SizedBox(height: 16),
             const Text(
               'You don\'t have location permission',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,

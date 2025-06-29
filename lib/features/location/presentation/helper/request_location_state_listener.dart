@@ -12,6 +12,7 @@ void handleLocationStateListener({
   required LocationState state,
   required LocationCubit cubit,
 }) async {
+  print({state.permission});
   if (state.isLoading) {
     LoadingDialogs.showLoadingDialog(
       context,

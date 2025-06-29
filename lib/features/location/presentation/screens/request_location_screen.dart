@@ -58,7 +58,7 @@ class RequestLocationScreen extends StatelessWidget {
                       fontSize: 26,
                     ),
                   ),
-                  const SizedBox(height: AppSizes.spaceBtwSections),
+                  const SizedBox(height: AppSizes.spaceBtwSections-4),
 
                   Text(
                     'Allow Eventy to access your location to find events near you. This data will not be shared with any third parties.',
