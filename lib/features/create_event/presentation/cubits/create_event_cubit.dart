@@ -35,6 +35,10 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   }
 
   void updateUserLocation(LocationEntity location) {
+    if (this.location?.latitude == location.latitude &&
+        this.location?.longitude == location.longitude) {
+      return;
+    }
     this.location = location;
     emit(UpdateField<LocationEntity>(location));
   }
