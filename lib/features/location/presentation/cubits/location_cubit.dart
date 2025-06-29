@@ -259,10 +259,12 @@ class LocationCubit extends Cubit<LocationState> {
     await Geolocator.openAppSettings();
   }
 
+  /// --- Save Location --- ///
   Future<void> saveLocation(LocationEntity location) async {
     await _storage.setJson('location', location.toModel().toJson());
   }
 
+  /// --- Get Location --- ///
   LocationEntity? getLocation() {
     final json = _storage.getJson('location');
     if (json == null) return null;

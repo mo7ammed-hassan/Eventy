@@ -24,7 +24,6 @@ import 'package:eventy/features/chat_bot/screens/chat_bot_screen.dart';
 import 'package:eventy/features/create_event/presentation/screens/create_event_screen.dart';
 import 'package:eventy/features/auth/presentation/screens/login_screen.dart';
 import 'package:eventy/features/auth/presentation/screens/signup_screen.dart';
-import 'package:eventy/features/map/presentation/screens/map_screen.dart';
 import 'package:eventy/features/search/presentation/screens/search_secreen.dart';
 import 'package:eventy/features/sceduale/presentation/screens/schedule_screen.dart';
 import 'package:eventy/features/bottom_navigation/presentation/screens/navigation_screen.dart';
@@ -63,7 +62,6 @@ class AppRouter {
 
     /// --- Other Screen ---
     Routes.chatBotScreen: (_) => const ChatBotScreen(),
-    Routes.mapScreen: (_) => const MapScreen(),
     Routes.requestLocationScreen: (_) => const RequestLocationScreen(),
 
     /// --- Personalization Screen ---

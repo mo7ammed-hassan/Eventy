@@ -24,7 +24,7 @@ class EditPersonalInfoCard extends StatelessWidget {
         Text(title, style: Theme.of(context).textTheme.bodyLarge),
         const SizedBox(height: AppSizes.spaceBtwItems / 2),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           decoration: BoxDecoration(
             color: isDark
                 ? AppColors.dark

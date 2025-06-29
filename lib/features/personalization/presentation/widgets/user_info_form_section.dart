@@ -119,6 +119,7 @@ class _UserInfoFormSectionState extends State<UserInfoFormSection> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  side: BorderSide.none,
                   backgroundColor: AppColors.eventyPrimaryColor,
                 ),
                 onPressed: _saveChanges,

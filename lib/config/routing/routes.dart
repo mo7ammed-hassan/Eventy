@@ -30,7 +30,6 @@ class Routes {
   /// --- Other Screens --- ///
   static const String chatBotScreen = '/chatBotScreen';
   static const String successScreen = '/successScreen';
-  static const String mapScreen = '/mapScreen';
 
   static const String requestLocationScreen = '/requestLocationScreen';
 }

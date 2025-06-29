@@ -70,6 +70,13 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    //final isDark = HelperFunctions.isDarkMode(context);
+    // String changeImageTheme() {
+    //   return isDark
+    //       ? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+    //       : 'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=vz1Vs4GzbqImWUSg1fzh';
+    // }
+
     return Column(
       children: [
         TextField(
@@ -115,16 +122,18 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
                   ],
                   showFlutterMapAttribution: true,
                 ),
-                MarkerLayer(
+                AnimatedMarkerLayer(
                   markers: [
-                    Marker(
-                      width: 28,
-                      height: 28,
-                      point: currentLocation,
-                      child: SvgPicture.asset(
-                        AppImages.locationPin,
-                        fit: BoxFit.scaleDown,
+                    AnimatedMarker(
+                      builder: (context, animation) => SizedBox(
+                        width: 28 * animation.value,
+                        height: 28 * animation.value,
+                        child: SvgPicture.asset(
+                          AppImages.locationPin,
+                          fit: BoxFit.scaleDown,
+                        ),
                       ),
+                      point: currentLocation,
                     ),
                   ],
                 ),
