@@ -18,43 +18,53 @@ class HomeCubit extends Cubit<HomeState> {
     final location = getLocation();
     final denied = _storage.getBool('location_permission_denied');
 
-    emit(state.copyWith(isLoading: true));
+    if (!isClosed) emit(state.copyWith(isLoading: true));
 
     if (location != null && !denied) {
-      emit(state.copyWith(shouldRequestLocation: false, isLoading: false));
+      if (!isClosed) {
+        emit(state.copyWith(shouldRequestLocation: false, isLoading: false));
+      }
       await fetchDependOnLocation(location);
     } else if (denied == true) {
-      emit(state.copyWith(shouldRequestLocation: false, isLoading: false));
+      if (!isClosed) {
+        emit(state.copyWith(shouldRequestLocation: false, isLoading: false));
+      }
       await fetchEvents();
     } else if (location == null && denied == false) {
-      emit(state.copyWith(shouldRequestLocation: true));
+      if (!isClosed) emit(state.copyWith(shouldRequestLocation: true));
     }
   }
 
   Future<void> fetchDependOnLocation(LocationEntity? location) async {
-    emit(state.copyWith(isLoading: true, shouldRequestLocation: false));
+    if (!isClosed) {
+      emit(state.copyWith(isLoading: true, shouldRequestLocation: false));
+    }
 
     // 1. Call your APIs or do the logic
     await Future.delayed(Duration(seconds: 4));
 
     // 2. Then stop loading
-    emit(state.copyWith(isLoading: false, fetchSuccess: true));
+    if (!isClosed) emit(state.copyWith(isLoading: false, fetchSuccess: true));
   }
 
   Future<void> fetchEvents() async {
-    emit(state.copyWith(isLoading: true, shouldRequestLocation: false));
+    if (!isClosed) {
+      emit(state.copyWith(isLoading: true, shouldRequestLocation: false));
+    }
 
     // 1. Call your APIs or do the logic
     await Future.delayed(Duration(seconds: 4));
 
     // 2. Then stop loading
-    emit(
-      state.copyWith(
-        isLoading: false,
-        fetchSuccess: true,
-        shouldRequestLocation: false,
-      ),
-    );
+    if (!isClosed) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          fetchSuccess: true,
+          shouldRequestLocation: false,
+        ),
+      );
+    }
   }
 
   LocationEntity? getLocation() {
