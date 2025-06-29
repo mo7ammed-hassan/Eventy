@@ -37,9 +37,6 @@ class AppImages {
   // -- User
   static const String userAvatar = 'assets/images/user/user-avatar.png';
 
-  // -- Arrows
-  static const String arrowLeft = 'assets/icons/arrow_left.svg';
-
   // -- Icons
   static const String lightChatBotIcon =
       'assets/icons/chat-bot/chatbot-icon.svg';
@@ -48,13 +45,8 @@ class AppImages {
   static const String programmingIcon = 'assets/icons/programming-icon.svg';
   static const String plusIcon = 'assets/icons/plus-icon.svg';
   static const String darkPlusIcon = 'assets/icons/plus_icon.svg';
-  static const String filterIcon = 'assets/icons/filtter-icon.svg';
   static const String saveIcon = 'assets/icons/archive-tick.svg';
   static const String unsaveIcon = 'assets/icons/archive-minus.svg';
-
-  // -- Events
-  static const String event2 = 'assets/images/events/event2.png';
-  static const String event1 = 'assets/images/events/event.png';
 
   // -- Location
   static const String locationPin = 'assets/icons/location_icon.svg';
@@ -74,7 +66,6 @@ class AppImages {
   static const String defaultImages =
       'assets/images/default/default_images.png';
 
-  // static const String defaultUserImageUrl = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
   static const String defaultUserImageUrl =
       'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D';
 }

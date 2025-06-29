@@ -31,7 +31,7 @@ abstract class BaseEventsCubit extends Cubit<BaseEventsState> {
     _isLoading = true;
 
     if (eventsList.isEmpty) {
-      emit(BaseEventLoading());
+      if (!isClosed) emit(BaseEventLoading());
     }
 
     final result = await getEvents();
@@ -39,7 +39,7 @@ abstract class BaseEventsCubit extends Cubit<BaseEventsState> {
     result.fold(
       (error) {
         hasMore = false;
-        emit(BaseEventError(error.message));
+        if (!isClosed) emit(BaseEventError(error.message));
       },
       (events) {
         if (events.isEmpty) {
@@ -49,7 +49,9 @@ abstract class BaseEventsCubit extends Cubit<BaseEventsState> {
         eventsList.addAll(events);
         page++;
 
-        emit(BaseEventLoaded(List.of(eventsList), isLoadMore, hasMore));
+        if (!isClosed) {
+          emit(BaseEventLoaded(List.of(eventsList), isLoadMore, hasMore));
+        }
       },
     );
     _isLoading = false;
@@ -61,14 +63,14 @@ abstract class BaseEventsCubit extends Cubit<BaseEventsState> {
 
   void searchEventsByTitle({required String query}) {
     final filterList = searchEvents(query: query);
-    emit(BaseEventLoaded(filterList, false, false));
+    if (!isClosed) emit(BaseEventLoaded(filterList, false, false));
   }
 
   Future<void> onRefresh() async {
     hasMore = true;
     page = 1;
     eventsList.clear();
-    emit(BaseEventLoading());
+    if (!isClosed) emit(BaseEventLoading());
     await getEventsList();
   }
 }

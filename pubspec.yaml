@@ -93,7 +93,6 @@ flutter:
     - assets/images/
     - assets/images/auth/
     - assets/icons/chat-bot/
-    - assets/images/events/
     - assets/logos/eventy/
     - assets/images/default/
     - assets/images/onboarding/
