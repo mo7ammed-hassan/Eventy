@@ -2,6 +2,7 @@ import 'package:eventy/core/constants/app_images.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/widgets/popups/loaders.dart';
+import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_animations/flutter_map_animations.dart';
@@ -18,7 +19,8 @@ class MapSection extends StatefulWidget {
 }
 
 class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
-  LatLng currentLocation = LatLng(30.583021, 31.501021);
+  late LatLng currentLocation;
+  late double initialZoom;
   late final AnimatedMapController animatedMapController;
   late final TextEditingController _searchController;
 
@@ -27,6 +29,43 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
     super.initState();
     _searchController = TextEditingController();
     animatedMapController = AnimatedMapController(vsync: this);
+    _detectLocation();
+  }
+
+  void _detectLocation() {
+    final location = getCurrentLocation();
+    if (location != null) {
+      currentLocation = location;
+      initialZoom = 12;
+    } else {
+      currentLocation = LatLng(26.8206, 30.8025);
+      initialZoom = 5;
+      // Delay to run after map builds
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        fitCountryToEgypt();
+      });
+    }
+  }
+
+  LatLng? getCurrentLocation() {
+    final location = LocationCubit().getLocation();
+    if (location != null) {
+      initialZoom = 12;
+      return LatLng(location.latitude, location.longitude);
+    }
+
+    return null;
+  }
+
+  void fitCountryToEgypt() {
+    final bounds = LatLngBounds(LatLng(22.0, 24.0), LatLng(32.0, 37.0));
+
+    final camera = CameraFit.bounds(
+      bounds: bounds,
+      padding: const EdgeInsets.all(10),
+    );
+
+    animatedMapController.mapController.fitCamera(camera);
   }
 
   @override
@@ -104,7 +143,7 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
               mapController: animatedMapController.mapController,
               options: MapOptions(
                 initialCenter: currentLocation,
-                initialZoom: 12,
+                initialZoom: initialZoom,
                 onTap: (tapPosition, point) => changeLocation(point),
               ),
               children: [
