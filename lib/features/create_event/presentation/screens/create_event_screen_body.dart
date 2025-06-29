@@ -1,10 +1,13 @@
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/widgets/progress_steps/flow_step_data.dart';
 import 'package:eventy/core/widgets/progress_steps/custom_stepper_flow.dart';
+import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:eventy/features/create_event/presentation/widgets/create_event_categories_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/create_event_details_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/create_event_location_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/upload_create_event_images_section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateEventScreenBody extends StatelessWidget {
   const CreateEventScreenBody({super.key});
@@ -17,7 +20,7 @@ class CreateEventScreenBody extends StatelessWidget {
         vertical: AppSizes.defaultPadding / 2,
       ),
       finishButtonText: 'Create Event',
-      onSubmit: () {},
+      onSubmit: context.read<CreateEventCubit>().createEvent,
       steps: const [
         FlowStepData(
           stepTitle: 'Step 1',
@@ -32,10 +35,7 @@ class CreateEventScreenBody extends StatelessWidget {
         FlowStepData(
           stepTitle: 'Step 3',
           contentTitle: 'Location',
-          builder: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [],
-          ),
+          builder: CreateEventLocationSection(),
         ),
         FlowStepData(
           stepTitle: 'Step 4',

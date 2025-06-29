@@ -41,5 +41,25 @@ class CreateEventEntity {
     required this.id,
   });
 
-  
+   // Empty
+  static CreateEventEntity empty() => CreateEventEntity(
+    name: '',
+    description: '',
+    category: '',
+    location: LocationEntity.empty(),
+    status: '',
+    image: '',
+    coverImage: '',
+    isRecurring: '',
+    date: DateTime.now(),
+    time: '',
+    price: '',
+    type: '',
+    paid: false,
+    host: '',
+    attendees: [],
+    iV: 0,
+    formatedDate: DateTime.now(),
+    id: '',
+  );
 }

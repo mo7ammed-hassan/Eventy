@@ -1,8 +1,8 @@
 import 'dart:math';
-
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/enums/enums.dart';
 import 'package:flutter/material.dart';
+
 
 class HelperFunctions {
   const HelperFunctions._();

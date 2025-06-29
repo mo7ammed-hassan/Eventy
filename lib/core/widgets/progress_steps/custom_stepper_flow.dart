@@ -243,6 +243,7 @@ class _BuildNavigationButton extends StatelessWidget {
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        side: BorderSide.none,
         backgroundColor: backgroundColor ?? AppColors.secondaryColor,
       ),
       child: AnimatedSwitcher(
