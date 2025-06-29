@@ -19,3 +19,8 @@ class CreateEventSuccess extends CreateEventState {
   final String message;
   const CreateEventSuccess(this.message);
 }
+
+class UpdateField<T> extends CreateEventState {
+  final T filed;
+  const UpdateField(this.filed);
+}

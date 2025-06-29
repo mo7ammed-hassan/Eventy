@@ -22,7 +22,7 @@ class LocationCubit extends Cubit<LocationState> {
   final _storage = getIt<AppStorage>();
 
   /// --- Detect user location --- ///
-  Future<void> detectUserLocation() async {
+  Future<void> detectUserLocation({bool saveCurrentLocation = true}) async {
     try {
       emit(state.copyWith(isLoading: true));
 
@@ -51,7 +51,7 @@ class LocationCubit extends Cubit<LocationState> {
       );
 
       /// --- Save location --- ///
-      await saveLocation(userAddress);
+      if (saveCurrentLocation) await saveLocation(userAddress);
 
       emit(
         state.copyWith(

@@ -12,7 +12,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 
 class RequestLocationScreen extends StatelessWidget {
-  const RequestLocationScreen({super.key});
+  const RequestLocationScreen({super.key, this.saveCurrentLocation = true});
+  final bool saveCurrentLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class RequestLocationScreen extends StatelessWidget {
                       fontSize: 26,
                     ),
                   ),
-                  const SizedBox(height: AppSizes.spaceBtwSections-4),
+                  const SizedBox(height: AppSizes.spaceBtwSections - 4),
 
                   Text(
                     'Allow Eventy to access your location to find events near you. This data will not be shared with any third parties.',
@@ -77,9 +78,10 @@ class RequestLocationScreen extends StatelessWidget {
                     child: Builder(
                       builder: (context) {
                         return ElevatedButton(
-                          onPressed: () => context
-                              .read<LocationCubit>()
-                              .detectUserLocation(),
+                          onPressed: () =>
+                              context.read<LocationCubit>().detectUserLocation(
+                                saveCurrentLocation: saveCurrentLocation,
+                              ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(

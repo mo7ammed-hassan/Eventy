@@ -2,8 +2,12 @@ import 'package:eventy/core/constants/app_images.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/widgets/popups/loaders.dart';
+import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
+import 'package:eventy/features/create_event/presentation/cubits/create_event_state.dart';
 import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
+import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -33,13 +37,15 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
   }
 
   void _detectLocation() {
-    final location = getCurrentLocation();
+    final LocationEntity? location = getCurrentLocation();
     if (location != null) {
-      currentLocation = location;
+      currentLocation = LatLng(location.latitude, location.longitude);
       initialZoom = 12;
+      context.read<CreateEventCubit>().setDefaultLocationIfEmpty(location);
     } else {
       currentLocation = LatLng(26.8206, 30.8025);
       initialZoom = 5;
+
       // Delay to run after map builds
       WidgetsBinding.instance.addPostFrameCallback((_) {
         fitCountryToEgypt();
@@ -47,11 +53,11 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
     }
   }
 
-  LatLng? getCurrentLocation() {
+  LocationEntity? getCurrentLocation() {
     final location = LocationCubit().getLocation();
     if (location != null) {
       initialZoom = 12;
-      return LatLng(location.latitude, location.longitude);
+      return location;
     }
 
     return null;
@@ -76,7 +82,7 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
   }
 
   void changeLocation(
-    newLocation, {
+    LatLng newLocation, {
     Duration duration = const Duration(milliseconds: 500),
   }) {
     setState(() {
@@ -89,6 +95,8 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
       duration: duration,
       curve: Curves.easeInOut,
     );
+
+    context.read<CreateEventCubit>().changeUserLocation(newLocation);
   }
 
   void searchLocation(String address) async {
@@ -109,6 +117,7 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CreateEventCubit>();
     //final isDark = HelperFunctions.isDarkMode(context);
     // String changeImageTheme() {
     //   return isDark
@@ -139,44 +148,57 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
           borderRadius: BorderRadius.circular(26),
           child: SizedBox(
             height: DeviceUtils.getScaledHeight(context, 0.26),
-            child: FlutterMap(
-              mapController: animatedMapController.mapController,
-              options: MapOptions(
-                initialCenter: currentLocation,
-                initialZoom: initialZoom,
-                onTap: (tapPosition, point) => changeLocation(point),
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate:
-                      'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=vz1Vs4GzbqImWUSg1fzh',
-                  userAgentPackageName: 'com.example.eventy',
+            child: BlocListener<CreateEventCubit, CreateEventState>(
+              listenWhen: (previous, current) =>
+                  current is UpdateField<LocationEntity>,
+              listener: (context, state) {
+                if (state is UpdateField<LocationEntity>) {
+                  final LatLng location = LatLng(
+                    cubit.location?.latitude ?? currentLocation.latitude,
+                    cubit.location?.longitude ?? currentLocation.longitude,
+                  );
+                  changeLocation(location);
+                }
+              },
+              child: FlutterMap(
+                mapController: animatedMapController.mapController,
+                options: MapOptions(
+                  initialCenter: currentLocation,
+                  initialZoom: initialZoom,
+                  onTap: (tapPosition, point) => changeLocation(point),
                 ),
-                RichAttributionWidget(
-                  attributions: [
-                    TextSourceAttribution(
-                      'OpenStreetMap contributors',
-                      onTap: () {},
-                    ),
-                  ],
-                  showFlutterMapAttribution: true,
-                ),
-                AnimatedMarkerLayer(
-                  markers: [
-                    AnimatedMarker(
-                      builder: (context, animation) => SizedBox(
-                        width: 28 * animation.value,
-                        height: 28 * animation.value,
-                        child: SvgPicture.asset(
-                          AppImages.locationPin,
-                          fit: BoxFit.scaleDown,
-                        ),
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=vz1Vs4GzbqImWUSg1fzh',
+                    userAgentPackageName: 'com.example.eventy',
+                  ),
+                  RichAttributionWidget(
+                    attributions: [
+                      TextSourceAttribution(
+                        'OpenStreetMap contributors',
+                        onTap: () {},
                       ),
-                      point: currentLocation,
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                    showFlutterMapAttribution: true,
+                  ),
+                  AnimatedMarkerLayer(
+                    markers: [
+                      AnimatedMarker(
+                        builder: (context, animation) => SizedBox(
+                          width: 28 * animation.value,
+                          height: 28 * animation.value,
+                          child: SvgPicture.asset(
+                            AppImages.locationPin,
+                            fit: BoxFit.scaleDown,
+                          ),
+                        ),
+                        point: currentLocation,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
