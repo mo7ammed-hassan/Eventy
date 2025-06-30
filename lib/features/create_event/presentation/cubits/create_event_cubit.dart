@@ -12,7 +12,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
   final CreateEventUsecase _createEventUsecase;
 
-  LocationEntity? location = LocationEntity.empty();
+  LocationEntity? location;
 
   // Controllers
   TextEditingController eventNameController = TextEditingController();
@@ -41,6 +41,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   void setDefaultLocationIfEmpty(LocationEntity location) {
     if (this.location == null) {
       this.location = location;
+      //emit(UpdateField<LocationEntity>(location));
     }
   }
 
@@ -67,6 +68,8 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       latitude: latLng.latitude,
       longitude: latLng.longitude,
     );
+
+    emit(UpdateField<LocationEntity>(location ?? LocationEntity.empty()));
   }
 
   @override

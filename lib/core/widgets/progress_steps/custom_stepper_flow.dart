@@ -57,11 +57,14 @@ class _CustomStepperFlowState extends State<CustomStepperFlow> {
   late int _currentStep;
   late final List<Widget> stepIndicators;
   late final StepperController _internalController;
+  late final Map<int, Widget?> _stepWidgets;
 
   @override
   void initState() {
     super.initState();
     _currentStep = 0;
+    _stepWidgets = {};
+    _stepWidgets[0] = widget.steps[0].builder;
     _internalController = StepperController(_handleStepChange);
     widget.controller?.attach(_internalController);
   }
@@ -76,6 +79,10 @@ class _CustomStepperFlowState extends State<CustomStepperFlow> {
     if (newStep >= 0 && newStep < widget.steps.length) {
       setState(() {
         _currentStep = newStep;
+        _stepWidgets.putIfAbsent(
+          _currentStep,
+          () => widget.steps[_currentStep].builder ?? const SizedBox(),
+        );
       });
     }
   }
@@ -165,6 +172,7 @@ class _CustomStepperFlowState extends State<CustomStepperFlow> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 14),
 
@@ -190,36 +198,40 @@ class _CustomStepperFlowState extends State<CustomStepperFlow> {
             ),
           ),
         ),
-        const SizedBox(height: 16.0),
+        if ((currentStepData.contentTitle ?? '').isNotEmpty)
+          const SizedBox(height: 16.0),
 
         // Step Content
         Expanded(
-          child: Padding(
-            padding: widget.padding ?? const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                // Step Content
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: IndexedStack(
-                      index: _currentStep,
-                      children: widget.steps
-                          .map(
-                            (step) => step.builder ?? const SizedBox.shrink(),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: widget.padding ?? const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ..._stepWidgets.entries.map((entry) {
+                    final index = entry.key;
+                    final widget = entry.value;
+                    final isVisible = index == _currentStep;
 
-                // Navigation Buttons
-                _buildNavigationButtons(context),
-              ],
+                    return Offstage(
+                      offstage: !isVisible,
+                      child: TickerMode(
+                        enabled: isVisible,
+                        child: widget ?? const SizedBox(),
+                      ),
+                    );
+                  }),
+                  const SizedBox(height: kToolbarHeight),
+
+                  // Navigation Buttons
+                  _buildNavigationButtons(context),
+                  const SizedBox(height: kToolbarHeight / 2),
+                ],
+              ),
             ),
           ),
         ),
-        const SizedBox(height: kToolbarHeight / 2),
       ],
     );
   }

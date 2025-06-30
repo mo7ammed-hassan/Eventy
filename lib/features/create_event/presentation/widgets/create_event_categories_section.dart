@@ -1,13 +1,16 @@
 import 'package:eventy/core/constants/app_sizes.dart';
+import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:eventy/features/create_event/presentation/widgets/categories_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateEventCategoriesSection extends StatelessWidget {
   const CreateEventCategoriesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CreateEventCubit>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,6 +26,7 @@ class CreateEventCategoriesSection extends StatelessWidget {
         const SizedBox(height: AppSizes.md),
 
         TextFormField(
+          controller: cubit.categoryController,
           inputFormatters: [
             FilteringTextInputFormatter.deny(RegExp(r'^[0-9]')),
           ],

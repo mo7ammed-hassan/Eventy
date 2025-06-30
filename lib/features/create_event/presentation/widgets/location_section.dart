@@ -1,14 +1,19 @@
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
+import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
+import 'package:eventy/features/create_event/presentation/cubits/create_event_state.dart';
 import 'package:eventy/features/create_event/presentation/widgets/map_section.dart';
+import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LocationSection extends StatelessWidget {
   const LocationSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CreateEventCubit>();
     final isDar = HelperFunctions.isDarkMode(context);
     return Container(
       padding: const EdgeInsets.all(20),
@@ -40,15 +45,29 @@ class LocationSection extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Text(
-                    '14th Street, New York City',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  BlocSelector<
+                    CreateEventCubit,
+                    CreateEventState,
+                    LocationEntity
+                  >(
+                    selector: (CreateEventState state) {
+                      return state is UpdateField<LocationEntity>
+                          ? state.filed
+                          : cubit.location ?? LocationEntity.empty();
+                    },
+                    builder: (context, state) {
+                      final location = cubit.location;
+                      return Text(
+                        '14th Street, ${location?.address ?? 'Egypt'}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
