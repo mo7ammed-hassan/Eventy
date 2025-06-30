@@ -117,7 +117,6 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<CreateEventCubit>();
     //final isDark = HelperFunctions.isDarkMode(context);
     // String changeImageTheme() {
     //   return isDark
@@ -154,9 +153,10 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
               listener: (context, state) {
                 if (state is UpdateField<LocationEntity>) {
                   final LatLng location = LatLng(
-                    cubit.location?.latitude ?? currentLocation.latitude,
-                    cubit.location?.longitude ?? currentLocation.longitude,
+                    state.filed.latitude,
+                    state.filed.longitude,
                   );
+
                   changeLocation(location);
                 }
               },

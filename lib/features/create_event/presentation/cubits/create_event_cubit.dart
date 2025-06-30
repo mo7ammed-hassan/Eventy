@@ -18,9 +18,8 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   TextEditingController eventNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
-  TextEditingController statusController = TextEditingController();
-  TextEditingController imageController = TextEditingController();
+
+  String image = '', coverImage = '';
 
   Future<void> createEvent() async {
     emit(CreateEventLoading());
@@ -34,6 +33,18 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     });
   }
 
+  // Update field
+  void updateField<T>(T value) => emit(UpdateField<T>(value));
+
+  /// ---- Location ---- ///
+  /// -- Set default location if empty
+  void setDefaultLocationIfEmpty(LocationEntity location) {
+    if (this.location == null) {
+      this.location = location;
+    }
+  }
+
+  /// -- Update user location When user change location from Botton
   void updateUserLocation(LocationEntity location) {
     if (this.location?.latitude == location.latitude &&
         this.location?.longitude == location.longitude) {
@@ -43,12 +54,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     emit(UpdateField<LocationEntity>(location));
   }
 
-  void setDefaultLocationIfEmpty(LocationEntity location) {
-    if (this.location == null) {
-      this.location = location;
-    }
-  }
-
+  /// -- Change user location When user change location from Map
   Future<void> changeUserLocation(LatLng latLng) async {
     final List<Placemark> placemarks = await placemarkFromCoordinates(
       latLng.latitude,
@@ -61,5 +67,13 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       latitude: latLng.latitude,
       longitude: latLng.longitude,
     );
+  }
+
+  @override
+  Future<void> close() {
+    eventNameController.dispose();
+    descriptionController.dispose();
+    categoryController.dispose();
+    return super.close();
   }
 }
