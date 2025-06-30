@@ -19,13 +19,13 @@ class UploadCreateEventImagesSection extends StatelessWidget {
       children: [
         UploadImageCard(
           title: 'Upload Thumbnail',
-          onTap: cubit.pickThumbnail,
+          onTap: () => cubit.pickImage(isThumbnail: true),
           imagePathSelector: (cubit) => cubit.uploadImages.thumbnail,
         ),
         const SizedBox(height: AppSizes.spaceBtwSections),
         UploadImageCard(
           title: 'Upload Cover',
-          onTap: cubit.pickCover,
+          onTap: () => cubit.pickImage(isThumbnail: false),
           imagePathSelector: (cubit) => cubit.uploadImages.coverImage,
         ),
       ],

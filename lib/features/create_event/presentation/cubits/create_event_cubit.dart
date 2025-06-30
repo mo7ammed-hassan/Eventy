@@ -71,27 +71,15 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   }
 
   /// --- Image Handling ---
-  Future<void> pickThumbnail() async {
+  Future<void> pickImage({required bool isThumbnail}) async {
     LoadingDialogs.showLoadingDialog(AppContext.context);
     final image = await ImagePickerHelper.pickImageFromGallery();
     if (image != null) {
-      uploadImages = uploadImages.copyWith(thumbnail: image);
-      emit(
-        UploadImages(
-          thumbnail: uploadImages.thumbnail,
-          coverImage: uploadImages.coverImage,
-        ),
-      );
-    }
-    if (!AppContext.context.mounted) return;
-    LoadingDialogs.hideLoadingDialog(AppContext.context);
-  }
-
-  Future<void> pickCover() async {
-    LoadingDialogs.showLoadingDialog(AppContext.context);
-    final image = await ImagePickerHelper.pickImageFromGallery();
-    if (image != null) {
-      uploadImages = uploadImages.copyWith(coverImage: image);
+      if (isThumbnail) {
+        uploadImages = uploadImages.copyWith(thumbnail: image);
+      } else {
+        uploadImages = uploadImages.copyWith(coverImage: image);
+      }
       emit(
         UploadImages(
           thumbnail: uploadImages.thumbnail,
