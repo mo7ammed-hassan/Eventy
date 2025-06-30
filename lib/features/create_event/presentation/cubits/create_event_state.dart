@@ -32,3 +32,20 @@ class UpdateField<T> extends CreateEventState {
   @override
   List<Object?> get props => [field];
 }
+
+class UploadImages extends CreateEventState {
+  final String? thumbnail;
+  final String? coverImage;
+
+  const UploadImages({this.thumbnail, this.coverImage});
+
+  UploadImages copyWith({String? thumbnail, String? coverImage}) {
+    return UploadImages(
+      thumbnail: thumbnail ?? this.thumbnail,
+      coverImage: coverImage ?? this.coverImage,
+    );
+  }
+
+  @override
+  List<Object?> get props => [thumbnail, coverImage];
+}

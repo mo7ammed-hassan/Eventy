@@ -1,3 +1,6 @@
+import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
+import 'package:eventy/core/utils/helpers/app_context.dart';
+import 'package:eventy/core/utils/helpers/image_picker_helper.dart';
 import 'package:eventy/features/create_event/domain/entities/create_event_entity.dart';
 import 'package:eventy/features/create_event/domain/usecases/create_event_usecase.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_state.dart';
@@ -12,14 +15,14 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
   final CreateEventUsecase _createEventUsecase;
 
+  // Location
   LocationEntity? location;
+  UploadImages uploadImages = const UploadImages();
 
   // Controllers
   TextEditingController eventNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
-
-  String image = '', coverImage = '';
 
   Future<void> createEvent() async {
     emit(CreateEventLoading());
@@ -65,6 +68,53 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  /// --- Image Handling ---
+  Future<void> pickThumbnail() async {
+    LoadingDialogs.showLoadingDialog(AppContext.context);
+    final image = await ImagePickerHelper.pickImageFromGallery();
+    if (image != null) {
+      uploadImages = uploadImages.copyWith(thumbnail: image);
+      emit(
+        UploadImages(
+          thumbnail: uploadImages.thumbnail,
+          coverImage: uploadImages.coverImage,
+        ),
+      );
+    }
+    if (!AppContext.context.mounted) return;
+    LoadingDialogs.hideLoadingDialog(AppContext.context);
+  }
+
+  Future<void> pickCover() async {
+    LoadingDialogs.showLoadingDialog(AppContext.context);
+    final image = await ImagePickerHelper.pickImageFromGallery();
+    if (image != null) {
+      uploadImages = uploadImages.copyWith(coverImage: image);
+      emit(
+        UploadImages(
+          thumbnail: uploadImages.thumbnail,
+          coverImage: uploadImages.coverImage,
+        ),
+      );
+    }
+    if (!AppContext.context.mounted) return;
+    LoadingDialogs.hideLoadingDialog(AppContext.context);
+  }
+
+  void removeImage({required bool isThumbnail}) {
+    uploadImages = UploadImages(
+      thumbnail: isThumbnail ? null : uploadImages.thumbnail,
+      coverImage: isThumbnail ? uploadImages.coverImage : null,
+    );
+
+    emit(
+      UploadImages(
+        thumbnail: uploadImages.thumbnail,
+        coverImage: uploadImages.coverImage,
+      ),
+    );
   }
 
   @override

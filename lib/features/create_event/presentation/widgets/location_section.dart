@@ -13,12 +13,12 @@ class LocationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDar = HelperFunctions.isDarkMode(context);
+    final isDark = HelperFunctions.isDarkMode(context);
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         border: Border.all(
-          color: isDar ? AppColors.darkerGrey : AppColors.confirmLocationColor,
+          color: isDark ? AppColors.darkerGrey : AppColors.confirmLocationColor,
           width: 0.9,
         ),
         borderRadius: BorderRadius.circular(30),
