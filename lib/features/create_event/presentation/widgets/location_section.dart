@@ -13,7 +13,6 @@ class LocationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<CreateEventCubit>();
     final isDar = HelperFunctions.isDarkMode(context);
     return Container(
       padding: const EdgeInsets.all(20),
@@ -52,13 +51,13 @@ class LocationSection extends StatelessWidget {
                   >(
                     selector: (CreateEventState state) {
                       return state is UpdateField<LocationEntity>
-                          ? state.filed
-                          : cubit.location ?? LocationEntity.empty();
+                          ? state.field
+                          : context.read<CreateEventCubit>().location ??
+                                LocationEntity.empty();
                     },
-                    builder: (context, state) {
-                      final location = cubit.location;
+                    builder: (context, location) {
                       return Text(
-                        '14th Street, ${location?.address ?? 'Egypt'}',
+                        '14th Street, ${location.address}',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(

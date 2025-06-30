@@ -33,43 +33,38 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     });
   }
 
-  // Update field
-  void updateField<T>(T value) => emit(UpdateField<T>(value));
+  /// -- Update field --
+  void _updateField<T>(T value) => emit(UpdateField<T>(value));
 
   /// ---- Location ---- ///
-  /// -- Set default location if empty
-  void setDefaultLocationIfEmpty(LocationEntity location) {
-    if (this.location == null) {
-      this.location = location;
-      //emit(UpdateField<LocationEntity>(location));
-    }
-  }
 
-  /// -- Update user location When user change location from Botton
-  void updateUserLocation(LocationEntity location) {
-    if (this.location?.latitude == location.latitude &&
-        this.location?.longitude == location.longitude) {
-      return;
-    }
+  /// -- Update user location
+  void updateLocation(LocationEntity location) {
+    if (this.location == location) return;
+
     this.location = location;
-    emit(UpdateField<LocationEntity>(location));
+    _updateField<LocationEntity>(location);
   }
 
   /// -- Change user location When user change location from Map
-  Future<void> changeUserLocation(LatLng latLng) async {
-    final List<Placemark> placemarks = await placemarkFromCoordinates(
-      latLng.latitude,
-      latLng.longitude,
-    );
+  Future<void> changeLocationFromMap(LatLng latLng) async {
+    try {
+      final List<Placemark> placemarks = await placemarkFromCoordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
 
-    final address = placemarks.first;
-    location = LocationEntity(
-      address: address.country ?? '',
-      latitude: latLng.latitude,
-      longitude: latLng.longitude,
-    );
+      final address = placemarks.first;
+      final newLocation = LocationEntity(
+        address: address.country ?? '',
+        latitude: latLng.latitude,
+        longitude: latLng.longitude,
+      );
 
-    emit(UpdateField<LocationEntity>(location ?? LocationEntity.empty()));
+      updateLocation(newLocation);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override

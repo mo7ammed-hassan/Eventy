@@ -41,7 +41,7 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
     if (location != null) {
       currentLocation = LatLng(location.latitude, location.longitude);
       initialZoom = 12;
-      context.read<CreateEventCubit>().setDefaultLocationIfEmpty(location);
+      context.read<CreateEventCubit>().updateLocation(location);
     } else {
       currentLocation = LatLng(26.8206, 30.8025);
       initialZoom = 5;
@@ -96,7 +96,7 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
 
-    context.read<CreateEventCubit>().changeUserLocation(newLocation);
+    context.read<CreateEventCubit>().changeLocationFromMap(newLocation);
   }
 
   void searchLocation(String address) async {
@@ -153,8 +153,8 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
               listener: (context, state) {
                 if (state is UpdateField<LocationEntity>) {
                   final LatLng location = LatLng(
-                    state.filed.latitude,
-                    state.filed.longitude,
+                    state.field.latitude,
+                    state.field.longitude,
                   );
 
                   changeLocation(location);

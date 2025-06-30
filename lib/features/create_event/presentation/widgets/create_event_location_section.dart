@@ -38,9 +38,7 @@ class CreateEventLocationSection extends StatelessWidget {
                     ),
                   );
 
-              newLocation != null
-                  ? cubit.updateUserLocation(newLocation)
-                  : null;
+              newLocation != null ? cubit.updateLocation(newLocation) : null;
             },
             icon: Flexible(child: Icon(Icons.location_on_outlined, size: 18)),
             label: FittedBox(
