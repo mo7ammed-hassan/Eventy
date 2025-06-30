@@ -141,7 +141,7 @@ class _CustomStepperFlowState extends State<CustomStepperFlow> {
               ignoring: _currentStep == 0,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _currentStep > 0 ? 46 : 0,
+                height: _currentStep > 0 ? 48 : 0,
                 child: _BuildNavigationButton(
                   key: const ValueKey('previous'),
                   title: 'Previous',
@@ -250,27 +250,30 @@ class _BuildNavigationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      key: key,
-      onPressed: onTap,
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        side: BorderSide.none,
-        backgroundColor: backgroundColor ?? AppColors.secondaryColor,
-      ),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        transitionBuilder: (child, animation) {
-          return FadeTransition(
-            opacity: animation,
-            child: SizeTransition(
-              sizeFactor: animation,
-              axis: Axis.horizontal,
-              child: child,
-            ),
-          );
-        },
-        child: FittedBox(key: ValueKey(title), child: Text(title)),
+    return SizedBox(
+      height: 48,
+      child: ElevatedButton(
+        key: key,
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          side: BorderSide.none,
+          backgroundColor: backgroundColor ?? AppColors.secondaryColor,
+        ),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          transitionBuilder: (child, animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: SizeTransition(
+                sizeFactor: animation,
+                axis: Axis.horizontal,
+                child: child,
+              ),
+            );
+          },
+          child: FittedBox(key: ValueKey(title), child: Text(title)),
+        ),
       ),
     );
   }
