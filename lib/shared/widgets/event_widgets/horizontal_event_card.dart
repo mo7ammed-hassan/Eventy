@@ -197,7 +197,7 @@ class _EventDetailsSection extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      event.location.address,
+                      event.location.address ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(

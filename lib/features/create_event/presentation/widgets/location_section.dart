@@ -32,43 +32,46 @@ class LocationSection extends StatelessWidget {
               Icon(Icons.location_on_outlined, size: 20),
               const SizedBox(width: AppSizes.md),
 
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Location',
-                    maxLines: 1,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
+              Flexible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Location',
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  BlocSelector<
-                    CreateEventCubit,
-                    CreateEventState,
-                    LocationEntity
-                  >(
-                    selector: (CreateEventState state) {
-                      return state is UpdateField<LocationEntity>
-                          ? state.field
-                          : context.read<CreateEventCubit>().location ??
-                                LocationEntity.empty();
-                    },
-                    builder: (context, location) {
-                      return Text(
-                        '14th Street, ${location.address}',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                    BlocSelector<
+                      CreateEventCubit,
+                      CreateEventState,
+                      LocationEntity
+                    >(
+                      selector: (CreateEventState state) {
+                        return state is UpdateField<LocationEntity>
+                            ? state.field
+                            : context.read<CreateEventCubit>().location ??
+                                  LocationEntity.empty();
+                      },
+                      builder: (context, location) {
+                        return Text(
+                          location.fullAddress,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Colors.grey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

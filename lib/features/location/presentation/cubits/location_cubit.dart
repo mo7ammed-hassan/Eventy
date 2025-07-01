@@ -42,21 +42,13 @@ class LocationCubit extends Cubit<LocationState> {
         position.longitude,
       );
 
-      final address = placemarks.first;
-
-      final userAddress = LocationEntity(
-        address: address.country ?? '',
-        latitude: position.latitude,
-        longitude: position.longitude,
-      );
-
       /// --- Save location --- ///
-      if (saveCurrentLocation) await saveLocation(userAddress);
+      if (saveCurrentLocation) await saveLocation(placemarks, position);
 
       emit(
         state.copyWith(
           isLoading: false,
-          location: userAddress,
+          location: getLocation(),
           errorMessage: null,
           permission: null,
           message: 'Location detected successfully',
@@ -110,20 +102,12 @@ class LocationCubit extends Cubit<LocationState> {
         position.longitude,
       );
 
-      final address = placemarks.first;
-
-      final userAddress = LocationEntity(
-        address: address.country ?? '',
-        latitude: position.latitude,
-        longitude: position.longitude,
-      );
-
       /// --- Save location --- ///
-      await saveLocation(userAddress);
+      await saveLocation(placemarks, position);
 
       emit(
         state.copyWith(
-          location: userAddress,
+          location: getLocation(),
           errorMessage: null,
           message: 'Location updated successfully',
         ),
@@ -260,8 +244,21 @@ class LocationCubit extends Cubit<LocationState> {
   }
 
   /// --- Save Location --- ///
-  Future<void> saveLocation(LocationEntity location) async {
-    await _storage.setJson('location', location.toModel().toJson());
+  Future<void> saveLocation(
+    List<Placemark> placemarks,
+    Position position,
+  ) async {
+    final address = placemarks.first;
+
+    final userAddress = LocationEntity(
+      city: address.subAdministrativeArea ?? '',
+      street: address.street ?? '',
+      country: address.country ?? '',
+      latitude: position.latitude,
+      longitude: position.longitude,
+    );
+
+    await _storage.setJson('location', userAddress.toModel().toJson());
   }
 
   /// --- Get Location --- ///

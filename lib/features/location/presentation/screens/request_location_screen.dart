@@ -89,9 +89,11 @@ class RequestLocationScreen extends StatelessWidget {
                             ),
                             side: BorderSide(color: Colors.white),
                           ),
-                          child: const Text(
-                            'Allow Location',
-                            style: TextStyle(color: AppColors.blueTextColor),
+                          child: FittedBox(
+                            child: const Text(
+                              'Allow Location',
+                              style: TextStyle(color: AppColors.blueTextColor),
+                            ),
                           ),
                         );
                       },

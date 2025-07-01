@@ -1,8 +1,7 @@
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/features/home/presentation/cubits/home_state.dart';
-import 'package:eventy/features/location/data/location_model.dart';
-import 'package:eventy/features/user_events/data/mapper/location_mapper.dart';
+import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,11 +10,13 @@ class HomeCubit extends Cubit<HomeState> {
 
   final _storage = getIt<AppStorage>();
 
-  void init() async {
-    // _storage.remove('location');
-    // _storage.remove('location_permission_denied');
+  final LocationCubit locationCubit = getIt<LocationCubit>();
 
-    final location = getLocation();
+  void init() async {
+    _storage.remove('location');
+    _storage.remove('location_permission_denied');
+
+    final location = locationCubit.getLocation();
     final denied = _storage.getBool('location_permission_denied');
 
     if (!isClosed) emit(state.copyWith(isLoading: true));
@@ -65,11 +66,5 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       );
     }
-  }
-
-  LocationEntity? getLocation() {
-    final Map<String, dynamic>? json = _storage.getJson('location');
-    if (json == null) return null;
-    return (LocationModel.fromJson(json)).toEntity();
   }
 }

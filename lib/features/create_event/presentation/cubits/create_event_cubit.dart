@@ -58,8 +58,11 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       );
 
       final address = placemarks.first;
+
       final newLocation = LocationEntity(
-        address: address.country ?? '',
+        city: address.subAdministrativeArea ?? '',
+        street: address.street ?? '',
+        country: address.country ?? '',
         latitude: latLng.latitude,
         longitude: latLng.longitude,
       );
