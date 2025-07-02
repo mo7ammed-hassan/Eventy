@@ -42,7 +42,7 @@ class CreateEventScreen extends StatelessWidget {
             }
 
             if (state is ValidationFieldFailure) {
-              Loaders.customToast(message: state.message);
+              Loaders.customToast(message: state.message, duration: 800);
             }
           },
           child: CreateEventScreenBody(),
