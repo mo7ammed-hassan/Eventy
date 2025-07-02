@@ -14,9 +14,15 @@ class LocationCubit extends Cubit<LocationState> {
     _init();
   }
 
+  LocationEntity location = LocationEntity.empty();
+
   void _init() {
     final location = getLocation();
-    if (location != null) emit(state.copyWith(location: location));
+    if (location != null) {
+      if (!isClosed) {
+        emit(state.copyWith(location: location));
+      }
+    }
   }
 
   final _storage = getIt<AppStorage>();
@@ -24,10 +30,13 @@ class LocationCubit extends Cubit<LocationState> {
   /// --- Detect user location --- ///
   Future<void> detectUserLocation({bool saveCurrentLocation = true}) async {
     try {
-      emit(state.copyWith(isLoading: true));
+      if (!isClosed) emit(state.copyWith(isLoading: true));
 
       final hasPermission = await _checkLocationPermission();
-      if (!hasPermission) return;
+      if (!hasPermission) {
+        if (!isClosed) emit(state.copyWith(isLoading: false));
+        return;
+      }
 
       final LocationSettings locationSettings = _requestLocationSettings();
 
@@ -42,27 +51,41 @@ class LocationCubit extends Cubit<LocationState> {
         position.longitude,
       );
 
-      /// --- Save location --- ///
-      if (saveCurrentLocation) await saveLocation(placemarks, position);
+      final address = placemarks.first;
 
-      emit(
-        state.copyWith(
-          isLoading: false,
-          location: getLocation(),
-          errorMessage: null,
-          permission: null,
-          message: 'Location detected successfully',
-        ),
+      final userAddress = LocationEntity(
+        city: address.subAdministrativeArea ?? '',
+        street: address.street ?? '',
+        country: address.country ?? '',
+        latitude: position.latitude,
+        longitude: position.longitude,
       );
+
+      /// --- Save location --- ///
+      if (saveCurrentLocation) await saveLocation(userAddress);
+
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            location: userAddress,
+            errorMessage: null,
+            permission: null,
+            message: 'Location detected successfully',
+          ),
+        );
+      }
     } catch (e) {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          message: null,
-          permission: null,
-          errorMessage: 'Failed to detect location: ${e.toString()}',
-        ),
-      );
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            message: null,
+            permission: null,
+            errorMessage: 'Failed to detect location: ${e.toString()}',
+          ),
+        );
+      }
     }
   }
 
@@ -84,11 +107,13 @@ class LocationCubit extends Cubit<LocationState> {
             latitude: position.latitude,
             longitude: position.longitude,
           );
-          emit(state.copyWith(location: userAddress));
+          if (!isClosed) emit(state.copyWith(location: userAddress));
         }
       }
     } catch (e) {
-      emit(state.copyWith(errorMessage: 'Failed to get last known location'));
+      if (!isClosed) {
+        emit(state.copyWith(errorMessage: 'Failed to get last known location'));
+      }
     }
   }
 
@@ -102,16 +127,27 @@ class LocationCubit extends Cubit<LocationState> {
         position.longitude,
       );
 
-      /// --- Save location --- ///
-      await saveLocation(placemarks, position);
-
-      emit(
-        state.copyWith(
-          location: getLocation(),
-          errorMessage: null,
-          message: 'Location updated successfully',
-        ),
+      final address = placemarks.first;
+      final userAddress = LocationEntity(
+        city: address.subAdministrativeArea ?? '',
+        street: address.street ?? '',
+        country: address.country ?? '',
+        latitude: position.latitude,
+        longitude: position.longitude,
       );
+
+      /// --- Save location --- ///
+      await saveLocation(userAddress);
+
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            location: userAddress,
+            errorMessage: null,
+            message: 'Location updated successfully',
+          ),
+        );
+      }
 
       // return LocationEntity(
       //   address: address.country ?? '',
@@ -163,14 +199,16 @@ class LocationCubit extends Cubit<LocationState> {
       final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
       if (!serviceEnabled) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            message: null,
-            permission: null,
-            errorMessage: 'Location service is disabled. Please enable it.',
-          ),
-        );
+        if (!isClosed) {
+          emit(
+            state.copyWith(
+              isLoading: false,
+              message: null,
+              permission: null,
+              errorMessage: 'Location service is disabled. Please enable it.',
+            ),
+          );
+        }
         return false;
       }
 
@@ -179,41 +217,47 @@ class LocationCubit extends Cubit<LocationState> {
         permission = await Geolocator.requestPermission();
 
         if (permission == LocationPermission.denied) {
-          emit(
-            state.copyWith(
-              isLoading: false,
-              message: null,
-              errorMessage: 'Location permissions are denied.',
-              permission: permission,
-            ),
-          );
+          if (!isClosed) {
+            emit(
+              state.copyWith(
+                isLoading: false,
+                message: null,
+                errorMessage: 'Location permissions are denied.',
+                permission: permission,
+              ),
+            );
+          }
           return false;
         }
 
         if (permission == LocationPermission.deniedForever) {
-          emit(
-            state.copyWith(
-              isLoading: false,
-              message: null,
-              permission: permission,
-              errorMessage:
-                  'Location permissions are permanently denied, we cannot request permissions.',
-            ),
-          );
+          if (!isClosed) {
+            emit(
+              state.copyWith(
+                isLoading: false,
+                message: null,
+                permission: permission,
+                errorMessage:
+                    'Location permissions are permanently denied, we cannot request permissions.',
+              ),
+            );
+          }
           return false;
         }
       }
 
       return true;
     } catch (e) {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          message: null,
-          permission: null,
-          errorMessage: 'Permission check failed: ${e.toString()}',
-        ),
-      );
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            message: null,
+            permission: null,
+            errorMessage: 'Permission check failed: ${e.toString()}',
+          ),
+        );
+      }
       return false;
     }
   }
@@ -233,7 +277,7 @@ class LocationCubit extends Cubit<LocationState> {
       return false;
     } else {
       final newPermission = permission;
-      emit(state.copyWith(permission: newPermission));
+      if (!isClosed) emit(state.copyWith(permission: newPermission));
       return true;
     }
   }
@@ -244,27 +288,15 @@ class LocationCubit extends Cubit<LocationState> {
   }
 
   /// --- Save Location --- ///
-  Future<void> saveLocation(
-    List<Placemark> placemarks,
-    Position position,
-  ) async {
-    final address = placemarks.first;
-
-    final userAddress = LocationEntity(
-      city: address.subAdministrativeArea ?? '',
-      street: address.street ?? '',
-      country: address.country ?? '',
-      latitude: position.latitude,
-      longitude: position.longitude,
-    );
-
-    await _storage.setJson('location', userAddress.toModel().toJson());
+  Future<void> saveLocation(LocationEntity location) async {
+    await _storage.setJson('location', location.toModel().toJson());
   }
 
   /// --- Get Location --- ///
   LocationEntity? getLocation() {
     final json = _storage.getJson('location');
     if (json == null) return null;
-    return (LocationModel.fromJson(json)).toEntity();
+    location = (LocationModel.fromJson(json)).toEntity();
+    return location;
   }
 }

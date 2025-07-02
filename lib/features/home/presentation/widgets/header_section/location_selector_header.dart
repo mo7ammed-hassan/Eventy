@@ -1,8 +1,14 @@
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/constants/text_strings.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
+import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
+import 'package:eventy/features/location/presentation/cubits/location_state.dart';
+import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
+import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:eventy/shared/widgets/event_widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LocationSelectorHeader extends StatelessWidget {
   const LocationSelectorHeader({super.key});
@@ -12,9 +18,15 @@ class LocationSelectorHeader extends StatelessWidget {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: AppSizes.defaultPadding),
       sliver: SliverToBoxAdapter(
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_LocationSelector(), ProfileAvatar()],
+          children: [
+            BlocProvider(
+              create: (context) => getIt.get<LocationCubit>(),
+              child: const _LocationSelector(),
+            ),
+            const ProfileAvatar(),
+          ],
         ),
       ),
     );
@@ -26,6 +38,7 @@ class _LocationSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locationCubit = context.read<LocationCubit>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,21 +59,35 @@ class _LocationSelector extends StatelessWidget {
         Row(
           children: [
             // -- User Current Location
-            FittedBox(
-              child: Text(
-                'Indonesia',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
-              ),
+            BlocSelector<LocationCubit, LocationState, LocationEntity>(
+              selector: (state) => state.location ?? locationCubit.location,
+
+              builder: (context, state) {
+                return FittedBox(
+                  child: Text(
+                    state.country ?? 'Egypt',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                );
+              },
             ),
             const SizedBox(width: 6),
 
             // -- Dropdown Icon
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        RequestLocationScreen(locationCubit: locationCubit),
+                  ),
+                );
+              },
               borderRadius: BorderRadius.circular(12),
               child: const Icon(
                 Icons.keyboard_arrow_down_rounded,
