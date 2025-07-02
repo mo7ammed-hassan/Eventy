@@ -15,18 +15,18 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
   final CreateEventUsecase _createEventUsecase;
 
-  // Location
-  LocationEntity? location;
-  UploadImages uploadImages = const UploadImages();
-  DateTime dateRange = DateTime.now();
-  String time = '09:00 AM';
-
-  // Controllers
+  // -- Controllers
   TextEditingController eventNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
+  TextEditingController? categoryController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
 
-  String selectedCategory = '';
+  // -- Attributes
+  String? selectedCategory;
+  LocationEntity? location;
+  UploadImages uploadImages = const UploadImages();
+  DateTime? dateRange;
+  String? time;
 
   Future<void> createEvent() async {
     emit(CreateEventLoading());
@@ -34,20 +34,17 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     final createdEvent = CreateEventEntity(
       name: eventNameController.text,
       description: descriptionController.text,
-      date: dateRange,
-      time: time,
-      location: location,
+      category: categoryController?.text.trim() ?? selectedCategory,
+      price: priceController.text.trim(),
       image: uploadImages.thumbnail,
       coverImage: uploadImages.coverImage,
-      category: selectedCategory,
-      status: '',
-      isRecurring: '',
-      price: '',
-      type: '',
-      paid: null,
-      host: '',
+      location: location,
+      date: dateRange,
+      time: time,
+      type: 'public',
+      isRecurring: 'Not Annual',
+      host: 'H.',
       attendees: [],
-      formatedDate: dateRange,
     );
 
     final result = await _createEventUsecase.call(event: createdEvent);
@@ -81,6 +78,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       final address = placemarks.first;
 
       final newLocation = LocationEntity(
+        address: address.country ?? '',
         city: address.subAdministrativeArea ?? '',
         street: address.street ?? '',
         country: address.country ?? '',
@@ -98,7 +96,9 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     dateRange = start;
   }
 
-  void setTime(String time) => this.time = time;
+  void setTime(String time) {
+    this.time = time;
+  }
 
   /// --- Image Handling ---
   Future<void> pickImage({required bool isThumbnail}) async {
@@ -139,7 +139,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   Future<void> close() {
     eventNameController.dispose();
     descriptionController.dispose();
-    categoryController.dispose();
+    categoryController?.dispose();
     return super.close();
   }
 }

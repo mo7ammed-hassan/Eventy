@@ -200,16 +200,14 @@ class _EventDetailsSection extends StatelessWidget {
                     ),
                   ),
                   Flexible(
-                    child: FittedBox(
-                      child: Text(
-                        event.location.address ?? '45, Street, Cairo, Egypt',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                        ),
+                    child: Text(
+                      event.location.address ?? '45, Street, Cairo, Egypt',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
                       ),
                     ),
                   ),

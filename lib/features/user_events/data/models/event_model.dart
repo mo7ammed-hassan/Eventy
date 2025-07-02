@@ -3,6 +3,8 @@ import '../../../location/data/location_model.dart';
 class EventModel {
   String? id;
   String? name;
+  String? image;
+  String? coverImage;
   String? description;
   String? category;
   LocationModel? location;
@@ -21,6 +23,8 @@ class EventModel {
   EventModel({
     this.id,
     this.name,
+    this.image,
+    this.coverImage,
     this.description,
     this.category,
     this.location,
@@ -40,6 +44,8 @@ class EventModel {
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
     id: json['_id'] as String?,
     name: json['name'] as String?,
+    image: json['image'] as String?,
+    coverImage: json['coverImage'] as String?,
     description: json['description'] as String?,
     category: json['category'] as String?,
     location: json['location'] == null
@@ -57,28 +63,8 @@ class EventModel {
     attendees: (json['attendees'] is List)
         ? List<dynamic>.from(json['attendees'])
         : [],
-
     v: json['__v'] as int?,
   );
-
-  Map<String, dynamic> toJson() => {
-    '_id': id,
-    'name': name,
-    'description': description,
-    'category': category,
-    'location': location?.toJson(),
-    'status': status,
-    'hostCompany': hostCompany,
-    'isRecurring': isRecurring,
-    'date': date,
-    'time': time,
-    'price': price,
-    'type': type,
-    'paid': paid,
-    'host': host,
-    'attendees': attendees,
-    '__v': v,
-  };
 
   static DateTime? parseDate(dynamic value) {
     if (value == null) {

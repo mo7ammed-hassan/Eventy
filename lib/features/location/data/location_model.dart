@@ -28,6 +28,22 @@ class LocationModel {
         : null,
   );
 
+  factory LocationModel.fromMap(Map<String, dynamic> map) => LocationModel(
+    address: map['address'] as String?,
+    latitude: map['latitude'] is num
+        ? (map['latitude'] as num).toDouble()
+        : null,
+    longitude: map['longitude'] is num
+        ? (map['longitude'] as num).toDouble()
+        : null,
+  );
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    'address': address,
+    'latitude': latitude,
+    'longitude': longitude,
+  };
+
   Map<String, dynamic> toJson() => {
     'address': address,
     'latitude': latitude,

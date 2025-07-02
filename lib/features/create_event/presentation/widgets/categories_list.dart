@@ -34,6 +34,12 @@ class _CategoriesListState extends State<CategoriesList> {
                 category: e,
                 isSelected: selectedEvent == e,
                 onTap: () {
+                  if (selectedEvent == e) {
+                    setState(() {
+                      selectedEvent = null;
+                    });
+                    return;
+                  }
                   setState(() {
                     selectedEvent = e;
                     cubit.selectedCategory = e;

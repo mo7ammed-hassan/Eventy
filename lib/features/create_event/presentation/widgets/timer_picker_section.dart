@@ -24,9 +24,10 @@ class _TimePickerSectionState extends State<TimePickerSection> {
     );
 
     if (picked != null) {
-      setState(() => _selectedTime = picked);
-      if (!mounted) return;
-      context.read<CreateEventCubit>().setTime(_formatTime(_selectedTime));
+      setState(() {
+        _selectedTime = picked;
+        context.read<CreateEventCubit>().setTime(_formatTime(_selectedTime));
+      });
     }
   }
 

@@ -6,12 +6,10 @@ import 'package:eventy/features/user_events/domain/entities/location_entity.dart
 extension CreateEventMapper on CreateEventModel {
   CreateEventEntity toEntity() {
     return CreateEventEntity(
-      id: id,
       name: name ?? '',
       description: description ?? '',
       category: category ?? '',
       location: location?.toEntity() ?? LocationEntity.empty(),
-      status: status ?? 'draft',
       image: image ?? '',
       coverImage: coverImage ?? '',
       isRecurring: isRecurring ?? 'Not Annual',
@@ -19,11 +17,8 @@ extension CreateEventMapper on CreateEventModel {
       time: time ?? '',
       price: price ?? '0',
       type: type ?? 'public',
-      paid: paid ?? false,
       host: host ?? '',
       attendees: attendees ?? [],
-      formatedDate: _parseDate(formatedDate),
-      iV: iV,
     );
   }
 
@@ -36,12 +31,10 @@ extension CreateEventMapper on CreateEventModel {
 extension CreateEventEntityMapper on CreateEventEntity {
   CreateEventModel toModel() {
     return CreateEventModel(
-      id: id,
       name: name,
       description: description,
       category: category,
       location: location?.toModel(),
-      status: status,
       image: image,
       coverImage: coverImage,
       isRecurring: isRecurring,
@@ -49,11 +42,8 @@ extension CreateEventEntityMapper on CreateEventEntity {
       time: time,
       price: price,
       type: type,
-      paid: paid,
       host: host,
       attendees: attendees,
-      formatedDate: formatedDate?.toIso8601String(),
-      iV: iV,
     );
   }
 }
