@@ -41,7 +41,7 @@ class CalenderSectionState extends State<CalenderSection> {
               weekendDays: const [DateTime.friday, DateTime.saturday],
               headerStyle: HeaderStyle(
                 titleTextStyle: AppTextStyle.textStyle18ExtraBold(context),
-                headerPadding: const EdgeInsets.only(bottom: 18.0, top: 12.0),
+                //headerPadding: const EdgeInsets.only(bottom: 18.0, top: 12.0),
               ),
               calendarStyle: CalendarStyle(
                 cellMargin: const EdgeInsets.only(

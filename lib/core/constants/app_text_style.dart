@@ -23,7 +23,7 @@ class AppTextStyle {
 
   static TextStyle textStyle18ExtraBold(BuildContext context) => Theme.of(
     context,
-  ).textTheme.titleLarge!.copyWith(fontSize: 18.0.responsiveText(context));
+  ).textTheme.titleLarge!.copyWith(fontSize: 18.0, fontWeight: FontWeight.w500);
 
   static TextStyle textStyle20Medium(BuildContext context) =>
       Theme.of(context).textTheme.titleMedium!;
