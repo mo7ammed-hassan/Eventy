@@ -1,5 +1,6 @@
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
+import 'package:eventy/core/widgets/shimmer/trending_event_card_shimmer.dart';
 import 'package:eventy/features/home/presentation/cubits/home_cubit.dart';
 import 'package:eventy/features/home/presentation/cubits/home_state.dart';
 import 'package:eventy/features/home/presentation/widgets/trending_section/trending_event_card.dart';
@@ -32,9 +33,8 @@ class TrendingEventsList extends StatelessWidget {
               child: BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   if (state.isLoading) {
-                    return const Center(
-                      key: ValueKey('loading'),
-                      child: CircularProgressIndicator.adaptive(),
+                    return TrendingEventListShimmer(
+                      key: ValueKey('Trending Loading'),
                     );
                   }
                   return ListView.separated(
@@ -54,6 +54,25 @@ class TrendingEventsList extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TrendingEventListShimmer extends StatelessWidget {
+  const TrendingEventListShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      clipBehavior: Clip.none,
+      scrollDirection: Axis.horizontal,
+      itemCount: 4,
+      itemBuilder: (context, index) => AspectRatio(
+        aspectRatio: 240 / 171,
+        child: const TrendingEventCardShimmer(),
+      ),
+      separatorBuilder: (context, index) =>
+          const SizedBox(width: AppSizes.spaceBtwEventCards),
     );
   }
 }
