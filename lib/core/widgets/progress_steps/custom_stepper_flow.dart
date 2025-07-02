@@ -66,17 +66,31 @@ class _CustomStepperFlowState extends State<CustomStepperFlow> {
     _stepWidgets = {};
     _stepWidgets[0] = widget.steps[0].builder;
     _internalController = StepperController(_handleStepChange);
-    widget.controller?.attach(_internalController);
+    widget.controller?.attach(
+      currentStep: _currentStep,
+      handler: _handleStepChange,
+    );
   }
 
   @override
   void dispose() {
     widget.controller?.detach();
+    _internalController.detach();
     super.dispose();
   }
 
   void _handleStepChange(int newStep) {
-    if (newStep >= 0 && newStep < widget.steps.length) {
+    final isGoingForward = newStep > _currentStep;
+
+    // Validate current step before moving forward
+    if (isGoingForward) {
+      final currentValidator = widget.steps[_currentStep].formValidator;
+      final isValid = currentValidator?.call(true) ?? true;
+      if (!isValid) return;
+    }
+    if (newStep >= 0 &&
+        newStep < widget.steps.length &&
+        newStep != _currentStep) {
       setState(() {
         _currentStep = newStep;
         _stepWidgets.putIfAbsent(
@@ -88,6 +102,7 @@ class _CustomStepperFlowState extends State<CustomStepperFlow> {
   }
 
   void _nextStepTap() => _handleStepChange(_currentStep + 1);
+
   void _previousStepTap() => _handleStepChange(_currentStep - 1);
 
   bool get _isLastStep => _currentStep == widget.steps.length - 1;
@@ -281,17 +296,22 @@ class _BuildNavigationButton extends StatelessWidget {
 
 /// Controller to programmatically control [CustomStepperIndicatorWidget]
 class StepperController {
+  StepperController(this._stepHandler);
+
+  int _currentStep = 0;
   void Function(int)? _stepHandler;
 
-  void attach(StepperController controller) {
-    _stepHandler = controller._stepHandler;
+  void attach({required int currentStep, required void Function(int) handler}) {
+    _currentStep = currentStep;
+    _stepHandler = (int newStep) {
+      _currentStep = newStep;
+      handler(newStep);
+    };
   }
 
   void detach() {
     _stepHandler = null;
   }
-
-  StepperController(this._stepHandler);
 
   /// Go to the next step
   void nextStep() => _stepHandler?.call(_currentStep + 1);
@@ -301,6 +321,4 @@ class StepperController {
 
   /// Go to a specific step index
   void goToStep(int index) => _stepHandler?.call(index);
-
-  final int _currentStep = 0;
 }

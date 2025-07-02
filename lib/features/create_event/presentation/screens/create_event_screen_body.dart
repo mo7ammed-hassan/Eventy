@@ -14,6 +14,7 @@ class CreateEventScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CreateEventCubit>();
     return CustomStepperFlow(
       padding: EdgeInsets.symmetric(
         horizontal: AppSizes.spaceBtwSections,
@@ -21,26 +22,30 @@ class CreateEventScreenBody extends StatelessWidget {
       ),
       finishButtonText: 'Create Event',
       onSubmit: context.read<CreateEventCubit>().createEvent,
-      steps: const [
+      steps: [
         FlowStepData(
           stepTitle: 'Step 1',
           contentTitle: 'Details',
           builder: CreateEventDetailsSection(),
+          formValidator: (isValid) => cubit.detailsValidator(),
         ),
         FlowStepData(
           stepTitle: 'Step 2',
           contentTitle: 'Category',
           builder: CreateEventCategoriesSection(),
+          formValidator: (isValid) => cubit.categoriesValidator(),
         ),
         FlowStepData(
           stepTitle: 'Step 3',
           contentTitle: 'Location',
           builder: CreateEventLocationSection(),
+          formValidator: (isValid) => cubit.locationValidator(),
         ),
         FlowStepData(
           stepTitle: 'Step 4',
           contentTitle: 'Images',
           builder: UploadCreateEventImagesSection(),
+          formValidator: (isValid) => cubit.imagesValidator(),
         ),
       ],
     );

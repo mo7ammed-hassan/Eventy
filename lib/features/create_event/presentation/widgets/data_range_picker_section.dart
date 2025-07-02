@@ -142,6 +142,23 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
   DateTime? _endDate;
   DateTime _focusedDay = DateTime.now();
 
+  void _selecteRangeDate(DateTime selectedDay, DateTime focusedDay) {
+    return setState(() {
+      if (_startDate == null || (_startDate != null && _endDate != null)) {
+        _startDate = selectedDay;
+        _endDate = null;
+      } else {
+        if (selectedDay.isBefore(_startDate!)) {
+          _startDate = selectedDay;
+        } else {
+          _endDate = selectedDay;
+        }
+      }
+
+      _focusedDay = focusedDay;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = HelperFunctions.isDarkMode(context);
@@ -166,21 +183,7 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
               lastDay: DateTime(DateTime.now().year + 3),
               focusedDay: _focusedDay,
               onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  if (_startDate == null ||
-                      (_startDate != null && _endDate != null)) {
-                    _startDate = selectedDay;
-                    _endDate = null;
-                  } else {
-                    if (selectedDay.isBefore(_startDate!)) {
-                      _startDate = selectedDay;
-                    } else {
-                      _endDate = selectedDay;
-                    }
-                  }
-
-                  _focusedDay = focusedDay;
-                });
+                _selecteRangeDate(selectedDay, focusedDay);
               },
               calendarStyle: _buildCalendarStyle(),
               headerStyle: _buildHeaderStyle(isDark),

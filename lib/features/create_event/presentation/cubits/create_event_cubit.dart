@@ -28,7 +28,10 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   DateTime? dateRange;
   String? time;
 
+
   Future<void> createEvent() async {
+    if (!validateAllFields()) return;
+
     emit(CreateEventLoading());
 
     final createdEvent = CreateEventEntity(
@@ -133,6 +136,112 @@ class CreateEventCubit extends Cubit<CreateEventState> {
         coverImage: uploadImages.coverImage,
       ),
     );
+  }
+
+  /// -- Validators -- ///
+  bool detailsValidator() {
+    final name = eventNameController.text.trim();
+    final description = descriptionController.text.trim();
+    final isDateSelected = dateRange != null;
+    final isTimeSelected = time != null;
+
+    if (name.isEmpty && description.isEmpty) {
+      emit(
+        ValidationFieldFailure('Please fill all required fields in the form.'),
+      );
+      return false;
+    }
+
+    if (name.isEmpty || name.length < 5) {
+      emit(
+        ValidationFieldFailure(
+          'Please enter an event name with at least 5 characters.',
+        ),
+      );
+      return false;
+    }
+
+    if (description.isEmpty) {
+      emit(ValidationFieldFailure('Please enter an event description.'));
+      return false;
+    }
+
+    if (!isDateSelected && !isTimeSelected) {
+      emit(ValidationFieldFailure('Please select both date and time.'));
+      return false;
+    }
+
+    if (!isDateSelected) {
+      emit(ValidationFieldFailure('Please select a date.'));
+      return false;
+    }
+
+    if (!isTimeSelected) {
+      emit(ValidationFieldFailure('Please select a time.'));
+      return false;
+    }
+
+    return true;
+  }
+
+  bool categoriesValidator() {
+    final isValid =
+        selectedCategory != null ||
+        (categoryController?.text.trim().isNotEmpty ?? false);
+
+    if (!isValid) {
+      emit(ValidationFieldFailure('Please select or enter a category.'));
+    }
+
+    return isValid;
+  }
+
+  bool locationValidator() {
+    final isValid = location != null;
+
+    if (!isValid) {
+      emit(ValidationFieldFailure('Please select a location on the map.'));
+    }
+
+    return isValid;
+  }
+
+  bool imagesValidator() {
+    final isThumbnailValid = uploadImages.thumbnail != null;
+    final isCoverValid = uploadImages.coverImage != null;
+
+    if (!isThumbnailValid && !isCoverValid) {
+      emit(
+        ValidationFieldFailure(
+          'Please upload both a thumbnail and a cover image.',
+        ),
+      );
+      return false;
+    }
+
+    if (!isThumbnailValid) {
+      emit(ValidationFieldFailure('Please upload a thumbnail image.'));
+      return false;
+    }
+
+    if (!isCoverValid) {
+      emit(ValidationFieldFailure('Please upload a cover image.'));
+      return false;
+    }
+
+    return true;
+  }
+
+  bool validateAllFields() {
+    final isDetailsValid = detailsValidator();
+    final isCategoryValid = categoriesValidator();
+    final isLocationValid = locationValidator();
+    final isImagesValid = imagesValidator();
+
+    return isDetailsValid &&
+        isCategoryValid &&
+        isLocationValid &&
+        isImagesValid;
   }
 
   @override

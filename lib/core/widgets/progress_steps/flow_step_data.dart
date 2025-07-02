@@ -7,12 +7,14 @@ class FlowStepData {
   final String? contentTitle;
   final StepStatus? status;
   final Widget? builder;
+  final Function(bool)? formValidator;
 
   const FlowStepData({
     required this.builder,
     required this.stepTitle,
     required this.contentTitle,
     this.status = StepStatus.pending,
+    this.formValidator,
   });
 
   FlowStepData copyWith({
@@ -20,12 +22,14 @@ class FlowStepData {
     String? contentTitle,
     StepStatus? status,
     Widget? builder,
+    Function(bool)? formValidator,
   }) {
     return FlowStepData(
       stepTitle: stepTitle ?? this.stepTitle,
       contentTitle: contentTitle ?? this.contentTitle,
       status: status ?? this.status,
       builder: builder ?? this.builder,
+      formValidator: formValidator ?? this.formValidator,
     );
   }
 }

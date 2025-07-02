@@ -23,6 +23,9 @@ class CreateEventSuccess extends CreateEventState {
 class CreateEventFailure extends CreateEventState {
   final String message;
   const CreateEventFailure(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }
 
 class UpdateField<T> extends CreateEventState {
@@ -48,4 +51,14 @@ class UploadImages extends CreateEventState {
 
   @override
   List<Object?> get props => [thumbnail, coverImage];
+}
+
+class ValidationFieldFailure extends CreateEventState {
+  final String message;
+  final DateTime timestamp;
+
+  ValidationFieldFailure(this.message) : timestamp = DateTime.now();
+
+  @override
+  List<Object?> get props => [message, timestamp];
 }

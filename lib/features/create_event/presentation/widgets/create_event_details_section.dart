@@ -1,7 +1,6 @@
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
-import 'package:eventy/core/utils/validators/validation.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:eventy/features/create_event/presentation/widgets/data_range_picker_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/timer_picker_section.dart';
@@ -27,8 +26,6 @@ class CreateEventDetailsSection extends StatelessWidget {
         const SizedBox(height: 8),
         TextFormField(
           controller: cubit.eventNameController,
-          validator: (value) =>
-              TValidator.validateEmptyText('Event Name', value),
           decoration: HelperFunctions.buildFieldDecoration(
             isDark,
             hint: 'Name',
@@ -52,8 +49,6 @@ class CreateEventDetailsSection extends StatelessWidget {
             textAlign: TextAlign.start,
             keyboardType: TextInputType.multiline,
             textAlignVertical: TextAlignVertical.top,
-            validator: (value) =>
-                TValidator.validateEmptyText('Attribute Value', value),
             decoration: HelperFunctions.buildFieldDecoration(
               isDark,
               hint: 'Description',

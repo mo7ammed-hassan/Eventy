@@ -37,6 +37,7 @@ class _CategoriesListState extends State<CategoriesList> {
                   if (selectedEvent == e) {
                     setState(() {
                       selectedEvent = null;
+                      cubit.selectedCategory = null;
                     });
                     return;
                   }
