@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
 import 'package:flutter/material.dart';
@@ -56,15 +57,18 @@ class AttendeeAvatars extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: AppSizes.sm),
 
         // -- User count
-        Text(
-          "+${attendees.length} Going",
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Colors.grey,
-            fontWeight: FontWeight.w600,
+        Flexible(
+          child: Text(
+            "+${attendees.length} Going",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Colors.grey,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],

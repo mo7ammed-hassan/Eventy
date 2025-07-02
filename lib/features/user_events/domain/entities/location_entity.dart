@@ -34,7 +34,7 @@ class LocationEntity extends Equatable {
     this.street,
   });
 
-  static empty() => LocationEntity(address: '', latitude: 0.0, longitude: 0.0);
+  static empty() => LocationEntity(address: 'Unknown', latitude: 0.0, longitude: 0.0);
 
   @override
   List<Object?> get props => [

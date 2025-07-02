@@ -86,7 +86,7 @@ class TrendingEventCard extends StatelessWidget {
                         flex: 4,
                         child: FittedBox(
                           child: AttendeeAvatars(
-                            width: constraints.maxWidth * 0.25,
+                            //width: constraints.maxWidth * 0.25,
                             attendees: [
                               'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5j8nUEqIX1fJuWCjZxWDh1rL-QL_cq2A-85035phw9d-hiWbpU7r6H2WKRJ2spHwcJGE&usqp=CAU',
