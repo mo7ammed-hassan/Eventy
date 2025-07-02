@@ -2,7 +2,7 @@ import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/widgets/progress_steps/flow_step_data.dart';
 import 'package:eventy/core/widgets/progress_steps/custom_stepper_flow.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
-import 'package:eventy/features/create_event/presentation/widgets/create_event_categories_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/category_and_type_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/create_event_details_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/create_event_location_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/image_section/upload_create_event_images_section.dart';
@@ -32,7 +32,7 @@ class CreateEventScreenBody extends StatelessWidget {
         FlowStepData(
           stepTitle: 'Step 2',
           contentTitle: 'Category',
-          builder: CreateEventCategoriesSection(),
+          builder: CategoryAndTypeSection(),
           formValidator: (isValid) => cubit.categoriesValidator(),
         ),
         FlowStepData(

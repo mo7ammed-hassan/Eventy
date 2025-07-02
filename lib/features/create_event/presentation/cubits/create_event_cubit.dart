@@ -1,3 +1,4 @@
+import 'package:eventy/core/enums/enums.dart';
 import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
 import 'package:eventy/core/utils/helpers/app_context.dart';
 import 'package:eventy/core/utils/helpers/image_picker_helper.dart';
@@ -28,6 +29,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   DateTime? dateRange;
   String? time;
 
+  EventType eventType = EventType.public;
 
   Future<void> createEvent() async {
     if (!validateAllFields()) return;
@@ -44,7 +46,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       location: location,
       date: dateRange,
       time: time,
-      type: 'public',
+      type: eventType.name,
       isRecurring: 'Not Annual',
       host: 'H.',
       attendees: [],
@@ -101,6 +103,11 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
   void setTime(String time) {
     this.time = time;
+  }
+
+  void changeEventType(EventType eventType) {
+    this.eventType = eventType;
+    _updateField<EventType>(eventType);
   }
 
   /// --- Image Handling ---

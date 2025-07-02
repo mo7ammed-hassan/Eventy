@@ -1,6 +1,6 @@
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:eventy/features/create_event/presentation/widgets/image_section/category_item.dart';
+import 'package:eventy/features/create_event/presentation/widgets/category_section/category_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoriesList extends StatefulWidget {

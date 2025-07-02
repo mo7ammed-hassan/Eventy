@@ -25,7 +25,7 @@ class CategoryItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 13.0),
           decoration: BoxDecoration(
             color: isSelected
-                ? AppColors.secondaryColor
+                ? AppColors.eventyPrimaryColor.withValues(alpha: 0.9)
                 : isDark
                 ? AppColors.dark
                 : Colors.white,

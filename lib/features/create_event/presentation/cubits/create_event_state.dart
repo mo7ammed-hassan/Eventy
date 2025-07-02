@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:eventy/core/enums/enums.dart';
 
 sealed class CreateEventState extends Equatable {
   const CreateEventState();
@@ -61,4 +62,12 @@ class ValidationFieldFailure extends CreateEventState {
 
   @override
   List<Object?> get props => [message, timestamp];
+}
+
+class ToggleEventType extends CreateEventState {
+  final EventType eventType;
+  const ToggleEventType(this.eventType);
+
+  @override
+  List<Object?> get props => [eventType];
 }

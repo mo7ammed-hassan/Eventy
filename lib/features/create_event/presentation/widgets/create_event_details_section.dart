@@ -21,7 +21,7 @@ class CreateEventDetailsSection extends StatelessWidget {
           'Event Name',
           style: Theme.of(
             context,
-          ).textTheme.headlineMedium?.copyWith(fontSize: 12),
+          ).textTheme.headlineMedium?.copyWith(fontSize: 14),
         ),
         const SizedBox(height: 8),
         TextFormField(
@@ -37,7 +37,7 @@ class CreateEventDetailsSection extends StatelessWidget {
           'Event Description',
           style: Theme.of(
             context,
-          ).textTheme.headlineMedium?.copyWith(fontSize: 12),
+          ).textTheme.headlineMedium?.copyWith(fontSize: 14),
         ),
         const SizedBox(height: 8),
         SizedBox(

@@ -29,7 +29,7 @@ class CreateEventScreen extends StatelessWidget {
             if (state is CreateEventLoading) {
               TFullScreenLoader.openLoadingDialog(
                 'Creating event...',
-                AppImages.docerAnimation,
+                AppImages.pencilAnimation,
               );
             }
             if (state is CreateEventSuccess) {
