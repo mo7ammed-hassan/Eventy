@@ -35,7 +35,8 @@ class FlowStepIndicator extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
                 height: 3,
                 color: isFirst
                     ? Colors.transparent
@@ -72,7 +73,8 @@ class FlowStepIndicator extends StatelessWidget {
 
             Expanded(
               flex: 1,
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
                 color: !isLast ? color : Colors.transparent,
                 //margin: const EdgeInsets.symmetric(horizontal: 5),
                 height: 3,
@@ -104,17 +106,21 @@ class FlowStepIndicator extends StatelessWidget {
         const SizedBox(height: 4),
 
         // Status Text
-        Container(
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
           decoration: BoxDecoration(
             color: color.withValues(alpha: isDark ? 0.4 : 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Text(
-            status.name,
+          child: AnimatedDefaultTextStyle(
+            duration: const Duration(milliseconds: 300),
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(fontSize: 10),
+            ).textTheme.bodySmall!.copyWith(fontSize: 10),
+            child: Text(
+              status.name,
+            ),
           ),
         ),
       ],
