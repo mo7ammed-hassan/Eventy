@@ -8,6 +8,12 @@ extension EventMapper on EventModel {
     id: id ?? 'unknown',
     name: name ?? 'unknown',
     description: description ?? 'unknown',
+    image:
+        image ??
+        'https://media.istockphoto.com/id/499517325/photo/a-man-speaking-at-a-business-conference.jpg?s=612x612&w=0&k=20&c=gWTTDs_Hl6AEGOunoQ2LsjrcTJkknf9G8BGqsywyEtE=',
+    coverImage:
+        coverImage ??
+        'https://media.istockphoto.com/id/499517325/photo/a-man-speaking-at-a-business-conference.jpg?s=612x612&w=0&k=20&c=gWTTDs_Hl6AEGOunoQ2LsjrcTJkknf9G8BGqsywyEtE=',
     category: category ?? 'unknown',
     location: location?.toEntity() ?? LocationEntity.empty(),
     status: status ?? 'unknown',

@@ -44,7 +44,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       name: eventNameController.text,
       description: descriptionController.text,
       category: categoryController?.text.trim() ?? selectedCategory,
-      price: priceController.text.trim(),
+      price: '500',
       image: uploadImages.thumbnail,
       coverImage: uploadImages.coverImage,
       location: location,

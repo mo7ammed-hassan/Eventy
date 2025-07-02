@@ -77,7 +77,7 @@ class _UserContactText extends StatelessWidget {
       builder: (context, contact) {
         final (email, phone) = contact;
         return Text(
-          '$email\n$phone',
+          '$email\n',
           maxLines: 2,
           textAlign: TextAlign.center,
           style: Theme.of(

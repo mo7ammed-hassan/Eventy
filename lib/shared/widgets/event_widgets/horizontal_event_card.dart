@@ -40,11 +40,11 @@ class HorizontalEventCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // User Info
-                      const _UserInfoSection(),
+                      _UserInfoSection(event),
                       const SizedBox(height: AppSizes.lg),
 
                       // -- Event Title & Location
-                      _EventDetailsSection(event ?? EventEntity.empty()),
+                      _EventDetailsSection(event),
                       const SizedBox(height: AppSizes.lg),
 
                       // -- Attendees Avatars
@@ -67,7 +67,10 @@ class HorizontalEventCard extends StatelessWidget {
                 const SizedBox(width: AppSizes.lg),
 
                 // -- Event Image
-                Flexible(flex: 2, child: _EventImageSection()),
+                Flexible(
+                  flex: 2,
+                  child: _EventImageSection(event?.image ?? ''),
+                ),
               ],
             ),
           ),
@@ -96,7 +99,8 @@ class HorizontalEventCard extends StatelessWidget {
 }
 
 class _UserInfoSection extends StatelessWidget {
-  const _UserInfoSection();
+  const _UserInfoSection(this.event);
+  final EventEntity? event;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +125,7 @@ class _UserInfoSection extends StatelessWidget {
                   SizedBox(
                     width: DeviceUtils.screenWidth(context) * 0.5,
                     child: Text(
-                      'Mohamed H.',
+                      event?.hostCompany ?? 'Unknown',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -155,7 +159,7 @@ class _UserInfoSection extends StatelessWidget {
 
 class _EventDetailsSection extends StatelessWidget {
   const _EventDetailsSection(this.event);
-  final EventEntity event;
+  final EventEntity? event;
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +175,7 @@ class _EventDetailsSection extends StatelessWidget {
               flex: 3,
               child: FittedBox(
                 child: Text(
-                  event.name,
+                  event?.name ?? 'Unknown',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall!.copyWith(
@@ -201,7 +205,7 @@ class _EventDetailsSection extends StatelessWidget {
                   ),
                   Flexible(
                     child: Text(
-                      event.location.address ?? '45, Street, Cairo, Egypt',
+                      event?.location.address ?? '45, Street, Cairo, Egypt',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -222,7 +226,8 @@ class _EventDetailsSection extends StatelessWidget {
 }
 
 class _EventImageSection extends StatelessWidget {
-  const _EventImageSection();
+  const _EventImageSection(this.image);
+  final String image;
 
   @override
   Widget build(BuildContext context) {
@@ -235,8 +240,7 @@ class _EventImageSection extends StatelessWidget {
           return ClipRRect(
             borderRadius: BorderRadius.circular(AppSizes.eventCardRadius),
             child: CachedNetworkImage(
-              imageUrl:
-                  'https://media.istockphoto.com/id/499517325/photo/a-man-speaking-at-a-business-conference.jpg?s=612x612&w=0&k=20&c=gWTTDs_Hl6AEGOunoQ2LsjrcTJkknf9G8BGqsywyEtE=',
+              imageUrl: image,
               fit: BoxFit.cover,
               width: imageWidth,
               height: imageHight,

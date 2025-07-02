@@ -41,7 +41,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
-        
+
         Positioned(
           left: 20,
           right: 20,
@@ -69,16 +69,16 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           left: AppSizes.defaultPadding,
           right: AppSizes.defaultPadding,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Iconsax.arrow_left,
-                  size: 24,
-                  color: Colors.white,
-                ),
-              ),
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: const Icon(
+              //     Iconsax.arrow_left,
+              //     size: 24,
+              //     color: Colors.white,
+              //   ),
+              // ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Iconsax.edit, size: 24, color: Colors.white),
