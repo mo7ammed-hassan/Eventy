@@ -2,7 +2,7 @@ import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
-import 'package:eventy/features/create_event/presentation/widgets/location_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/location_section/location_and_map_section.dart';
 import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class CreateEventLocationSection extends StatelessWidget {
     return Column(
       children: [
         // Location Map Section
-        const LocationSection(),
+        const LocationAndMapSection(),
         const SizedBox(height: AppSizes.spaceBtwSections),
 
         // Trigger Location

@@ -2,8 +2,8 @@ import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
-import 'package:eventy/features/create_event/presentation/widgets/data_range_picker_section.dart';
-import 'package:eventy/features/create_event/presentation/widgets/timer_picker_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/date_and_time_section/data_range_picker_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/date_and_time_section/timer_picker_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

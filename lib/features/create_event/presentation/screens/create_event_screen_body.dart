@@ -5,7 +5,7 @@ import 'package:eventy/features/create_event/presentation/cubits/create_event_cu
 import 'package:eventy/features/create_event/presentation/widgets/create_event_categories_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/create_event_details_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/create_event_location_section.dart';
-import 'package:eventy/features/create_event/presentation/widgets/upload_create_event_images_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/image_section/upload_create_event_images_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

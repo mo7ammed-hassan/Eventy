@@ -3,13 +3,13 @@ import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_state.dart';
-import 'package:eventy/features/create_event/presentation/widgets/map_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/location_section/map_section.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LocationSection extends StatelessWidget {
-  const LocationSection({super.key});
+class LocationAndMapSection extends StatelessWidget {
+  const LocationAndMapSection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
-import 'package:eventy/features/create_event/presentation/widgets/categories_list.dart';
+import 'package:eventy/features/create_event/presentation/widgets/image_section/categories_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
