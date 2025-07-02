@@ -1,6 +1,5 @@
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/features/create_event/presentation/widgets/category_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,19 +26,20 @@ class _CategoriesListState extends State<CategoriesList> {
   Widget build(BuildContext context) {
     final cubit = context.read<CreateEventCubit>();
     return Wrap(
-      spacing: AppSizes.sm,
-      runSpacing: AppSizes.sm,
+      clipBehavior: Clip.none,
       children: events
           .map(
-            (e) => CategoryItem(
-              category: e,
-              isSelected: selectedEvent == e,
-              onTap: () {
-                setState(() {
-                  selectedEvent = e;
-                  cubit.categoryController.text = e;
-                });
-              },
+            (e) => FittedBox(
+              child: CategoryItem(
+                category: e,
+                isSelected: selectedEvent == e,
+                onTap: () {
+                  setState(() {
+                    selectedEvent = e;
+                    cubit.selectedCategory = e;
+                  });
+                },
+              ),
             ),
           )
           .toList(),

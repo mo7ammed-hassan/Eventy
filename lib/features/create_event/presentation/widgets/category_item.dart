@@ -22,11 +22,7 @@ class CategoryItem extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          //padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 13.0),
-          padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.sizeOf(context).width * 0.04,
-            vertical: 13.0,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 13.0),
           decoration: BoxDecoration(
             color: isSelected
                 ? AppColors.secondaryColor
@@ -50,17 +46,20 @@ class CategoryItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Radio button
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade300),
+              Flexible(
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
                 ),
               ),
               const SizedBox(width: AppSizes.slg),
               Flexible(
+                fit: FlexFit.loose,
                 child: FittedBox(
                   child: Text(
                     category,

@@ -27,6 +27,7 @@ class CreateEventCategoriesSection extends StatelessWidget {
 
         TextFormField(
           controller: cubit.categoryController,
+          keyboardType: TextInputType.text,
           inputFormatters: [
             FilteringTextInputFormatter.deny(RegExp(r'^[0-9]')),
           ],

@@ -24,6 +24,8 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
 
+  String selectedCategory = '';
+
   Future<void> createEvent() async {
     emit(CreateEventLoading());
 
