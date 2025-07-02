@@ -1,6 +1,5 @@
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
-import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:eventy/features/create_event/presentation/widgets/location_section/location_and_map_section.dart';
 import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
@@ -22,10 +21,10 @@ class CreateEventLocationSection extends StatelessWidget {
 
         // Trigger Location
         SizedBox(
-          width: DeviceUtils.getScaledWidth(context, 0.7),
+          width: double.infinity,
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.locationScreenColor,
+              backgroundColor: AppColors.primaryColor,
               side: BorderSide.none,
             ),
             onPressed: () async {

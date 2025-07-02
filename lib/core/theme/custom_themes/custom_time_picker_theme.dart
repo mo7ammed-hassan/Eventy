@@ -36,22 +36,26 @@ class CustomTimePickerTheme {
     ),
 
     hourMinuteColor: WidgetStateColor.resolveWith(
-      (states) =>
-          states.contains(WidgetState.selected) ? Colors.teal : Colors.white,
+      (states) => states.contains(WidgetState.selected)
+          ? AppColors.primaryColor
+          : Colors.white,
     ),
     hourMinuteTextColor: WidgetStateColor.resolveWith(
-      (states) =>
-          states.contains(WidgetState.selected) ? Colors.white : Colors.teal,
+      (states) => states.contains(WidgetState.selected)
+          ? Colors.white
+          : AppColors.primaryColor,
     ),
     dayPeriodTextColor: WidgetStateColor.resolveWith(
-      (states) =>
-          states.contains(WidgetState.selected) ? Colors.white : Colors.teal,
+      (states) => states.contains(WidgetState.selected)
+          ? Colors.white
+          : AppColors.primaryColor,
     ),
     dayPeriodColor: WidgetStateColor.resolveWith(
-      (states) =>
-          states.contains(WidgetState.selected) ? Colors.teal : Colors.white,
+      (states) => states.contains(WidgetState.selected)
+          ? AppColors.primaryColor
+          : Colors.white,
     ),
-    dialHandColor: Colors.teal,
+    dialHandColor: AppColors.primaryColor,
   );
 
   static final TimePickerThemeData darkTimePickerTheme = TimePickerThemeData(
@@ -88,20 +92,24 @@ class CustomTimePickerTheme {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
     hourMinuteColor: WidgetStateColor.resolveWith(
-      (states) =>
-          states.contains(WidgetState.selected) ? Colors.teal : AppColors.dark,
+      (states) => states.contains(WidgetState.selected)
+          ? AppColors.primaryColor
+          : AppColors.dark,
     ),
     hourMinuteTextColor: WidgetStateColor.resolveWith(
-      (states) =>
-          states.contains(WidgetState.selected) ? Colors.white : Colors.teal,
+      (states) => states.contains(WidgetState.selected)
+          ? Colors.white
+          : AppColors.primaryColor,
     ),
     dayPeriodTextColor: WidgetStateColor.resolveWith(
-      (states) =>
-          states.contains(WidgetState.selected) ? Colors.white : Colors.teal,
+      (states) => states.contains(WidgetState.selected)
+          ? Colors.white
+          : AppColors.primaryColor,
     ),
     dayPeriodColor: WidgetStateColor.resolveWith(
-      (states) =>
-          states.contains(WidgetState.selected) ? Colors.teal : AppColors.dark,
+      (states) => states.contains(WidgetState.selected)
+          ? AppColors.primaryColor
+          : AppColors.dark,
     ),
     dialBackgroundColor: AppColors.darkerGrey.withValues(alpha: 0.5),
     hourMinuteShape: RoundedRectangleBorder(
@@ -110,6 +118,6 @@ class CustomTimePickerTheme {
     dayPeriodShape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
-    dialHandColor: Colors.teal,
+    dialHandColor: AppColors.primaryColor,
   );
 }

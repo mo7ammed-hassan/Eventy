@@ -55,7 +55,7 @@ class AppColors {
 
   static LinearGradient plushIconGradient = LinearGradient(
     colors: [
-      Color.fromARGB(255, 220, 244, 255), 
+      Color.fromARGB(255, 220, 244, 255),
       Color.fromARGB(255, 183, 171, 248),
       Color.fromARGB(255, 140, 137, 230),
     ],
@@ -94,4 +94,6 @@ class AppColors {
   static const Color locationScreenColor = Color(0xFF6564db);
 
   static const Color dateFieldColor = Color(0xFFf5f6fa);
+
+  static Color dateFillColor = Color(0xffC386A4);
 }

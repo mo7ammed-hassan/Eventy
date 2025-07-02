@@ -1,3 +1,4 @@
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/enums/enums.dart';
 import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
 import 'package:eventy/core/utils/helpers/app_context.dart';
@@ -5,6 +6,7 @@ import 'package:eventy/core/utils/helpers/image_picker_helper.dart';
 import 'package:eventy/features/create_event/domain/entities/create_event_entity.dart';
 import 'package:eventy/features/create_event/domain/usecases/create_event_usecase.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_state.dart';
+import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +17,8 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   CreateEventCubit(this._createEventUsecase) : super(CreateEventInitial());
 
   final CreateEventUsecase _createEventUsecase;
+
+  final user = getIt.get<UserCubit>().user;
 
   // -- Controllers
   TextEditingController eventNameController = TextEditingController();
@@ -48,7 +52,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       time: time,
       type: eventType.name,
       isRecurring: 'Not Annual',
-      host: 'H.',
+      host: user.name,
       attendees: [],
     );
 

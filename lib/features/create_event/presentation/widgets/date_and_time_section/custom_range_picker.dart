@@ -3,6 +3,7 @@ import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 class CustomDateRangePicker extends StatefulWidget {
   const CustomDateRangePicker({
     super.key,
@@ -105,7 +106,7 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
 
                     style: ElevatedButton.styleFrom(
                       side: BorderSide.none,
-                      backgroundColor: Colors.teal,
+                      backgroundColor: AppColors.primaryColor,
                       foregroundColor: Colors.white,
                     ),
                     child: const Text('Done'),
@@ -122,7 +123,7 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
   HeaderStyle _buildHeaderStyle(isDark) {
     return HeaderStyle(
       titleTextStyle: TextStyle(
-        color: isDark ? Colors.white70 : Colors.blueGrey,
+        color: isDark ? Colors.white70 : AppColors.primaryColor,
         fontSize: 18,
         fontWeight: FontWeight.w700,
       ),
@@ -134,7 +135,7 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
         padding: const EdgeInsets.all(8.0),
         decoration: ShapeDecoration(
           shape: const CircleBorder(),
-          color: Colors.teal,
+          color: AppColors.primaryColor,
         ),
         child: Center(
           child: Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 16),
@@ -145,7 +146,7 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
         padding: const EdgeInsets.all(8.0),
         decoration: ShapeDecoration(
           shape: const CircleBorder(),
-          color: Colors.teal,
+          color: AppColors.primaryColor,
         ),
         child: Center(
           child: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
@@ -157,32 +158,34 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
   CalendarStyle _buildCalendarStyle() {
     return CalendarStyle(
       withinRangeDecoration: ShapeDecoration(
-        color: Colors.teal.withValues(alpha: 0.3),
+        color: AppColors.dateFillColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       ),
       selectedTextStyle: const TextStyle(color: Colors.white),
       todayDecoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
-          side: BorderSide(color: Colors.teal.withValues(alpha: 0.5)),
+          side: BorderSide(
+            color: AppColors.primaryColor.withValues(alpha: 0.5),
+          ),
         ),
       ),
       selectedDecoration: ShapeDecoration(
-        color: Colors.teal,
+        color: AppColors.dateFillColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       ),
       rangeEndDecoration: ShapeDecoration(
-        color: Colors.teal,
+        color: AppColors.dateFillColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       ),
       rangeStartDecoration: ShapeDecoration(
-        color: Colors.teal,
+        color: AppColors.dateFillColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       ),
-      rangeHighlightColor: Colors.teal,
+      rangeHighlightColor: AppColors.dateFillColor,
       withinRangeTextStyle: TextStyle(color: Colors.white),
-      todayTextStyle: const TextStyle(
-        color: Colors.teal,
+      todayTextStyle: TextStyle(
+        color: AppColors.eventyPrimaryColor,
         fontWeight: FontWeight.w600,
       ),
     );

@@ -33,7 +33,7 @@ class DateField extends StatelessWidget {
             ),
             const SizedBox(width: 4),
 
-            Icon(Iconsax.calendar, color: Colors.teal, size: 26),
+            Icon(Iconsax.calendar, color: AppColors.primaryColor, size: 26),
           ],
         ),
       ),

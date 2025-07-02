@@ -66,7 +66,11 @@ class _TimePickerSectionState extends State<TimePickerSection> {
                   ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(Iconsax.clock, color: Colors.teal, size: 26),
+                const Icon(
+                  Iconsax.clock,
+                  color: AppColors.primaryColor,
+                  size: 26,
+                ),
               ],
             ),
           ),
