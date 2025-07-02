@@ -36,12 +36,12 @@ class CreateEventEntity {
     required this.paid,
     required this.host,
     required this.attendees,
-    required this.iV,
+    this.iV,
     required this.formatedDate,
-    required this.id,
+    this.id,
   });
 
-   // Empty
+  // Empty
   static CreateEventEntity empty() => CreateEventEntity(
     name: '',
     description: '',
@@ -58,8 +58,6 @@ class CreateEventEntity {
     paid: false,
     host: '',
     attendees: [],
-    iV: 0,
     formatedDate: DateTime.now(),
-    id: '',
   );
 }

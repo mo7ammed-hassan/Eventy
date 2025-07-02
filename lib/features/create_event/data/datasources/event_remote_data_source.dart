@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/core/network/api_response.dart';
 import 'package:eventy/features/create_event/data/models/create_event_model.dart';
@@ -18,9 +19,40 @@ class EventRemoteDataSourceImpl extends EventRemoteDataSource {
 
   @override
   Future<CreateEventModel> createEvent(Map<String, dynamic> data) async {
+
+    final imagePath = data['image'] as String?;
+    final imageFile = imagePath != null
+        ? await MultipartFile.fromFile(
+            imagePath,
+            filename: imagePath.split('/').last,
+          )
+        : null;
+
+    final coverImagePath = data['coverImage'] as String?;
+    final coverImageFile = coverImagePath != null
+        ? await MultipartFile.fromFile(
+            coverImagePath,
+            filename: coverImagePath.split('/').last,
+          )
+        : null;
+
+    final formMap = Map<String, dynamic>.from(data)
+      ..remove('image')
+      ..remove('coverImage');
+
+    if (imageFile != null) {
+      formMap['image'] = imageFile;
+    }
+    if (coverImageFile != null) {
+      formMap['coverImage'] = coverImageFile;
+    }
+
+    final formData = FormData.fromMap(formMap);
+
     final res = await _apiClient.request(
       path: 'ce6e.up.railway.app/api/events/addevents',
-      data: data,
+      method: 'POST',
+      data: formData,
     );
 
     final resData = ApiResponse<CreateEventModel>.fromJson(
@@ -36,6 +68,7 @@ class EventRemoteDataSourceImpl extends EventRemoteDataSource {
   Future<CreateEventModel> deleteEvent({required String eventId}) async {
     final res = await _apiClient.request(
       path: 'ce6e.up.railway.app/api/events/delete/$eventId',
+      method: 'DELETE',
     );
 
     final resData = ApiResponse<CreateEventModel>.fromJson(
@@ -54,6 +87,7 @@ class EventRemoteDataSourceImpl extends EventRemoteDataSource {
   }) async {
     final res = await _apiClient.request(
       path: 'ce6e.up.railway.app/api/events/update/$eventId',
+      method: 'PUT',
       data: data,
     );
 

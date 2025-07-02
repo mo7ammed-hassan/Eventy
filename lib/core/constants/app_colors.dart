@@ -92,4 +92,6 @@ class AppColors {
   static const Color primary = Color(0xFF4b68ff);
 
   static const Color locationScreenColor = Color(0xFF6564db);
+
+  static const Color dateFieldColor = Color(0xFFf5f6fa);
 }

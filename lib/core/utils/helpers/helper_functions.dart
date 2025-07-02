@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/enums/enums.dart';
 import 'package:flutter/material.dart';
-
 
 class HelperFunctions {
   const HelperFunctions._();
@@ -53,5 +53,33 @@ class HelperFunctions {
       case StepStatus.pending:
         return Icons.lock_outline;
     }
+  }
+
+  static InputDecoration buildFieldDecoration(isDark, {String? hint}) {
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(fontSize: 12),
+      filled: true,
+      fillColor: isDark ? AppColors.dark : AppColors.dateFieldColor,
+      contentPadding: EdgeInsets.all(16.0),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: isDark ? AppColors.darkerGrey : AppColors.confirmLocationColor,
+        ),
+        borderRadius: BorderRadius.circular(AppSizes.dateFieldRadius),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: isDark ? AppColors.darkerGrey : AppColors.confirmLocationColor,
+        ),
+        borderRadius: BorderRadius.circular(AppSizes.dateFieldRadius),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: isDark ? AppColors.darkerGrey : AppColors.confirmLocationColor,
+        ),
+        borderRadius: BorderRadius.circular(AppSizes.dateFieldRadius),
+      ),
+    );
   }
 }

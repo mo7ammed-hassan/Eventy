@@ -1,7 +1,10 @@
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
+import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/utils/validators/validation.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
+import 'package:eventy/features/create_event/presentation/widgets/data_range_picker_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/timer_picker_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,6 +14,7 @@ class CreateEventDetailsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<CreateEventCubit>();
+    final isDark = HelperFunctions.isDarkMode(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,10 +29,9 @@ class CreateEventDetailsSection extends StatelessWidget {
           controller: cubit.eventNameController,
           validator: (value) =>
               TValidator.validateEmptyText('Event Name', value),
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSizes.textFieldRadius),
-            ),
+          decoration: HelperFunctions.buildFieldDecoration(
+            isDark,
+            hint: 'Name',
           ),
         ),
 
@@ -41,7 +44,7 @@ class CreateEventDetailsSection extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         SizedBox(
-          height: DeviceUtils.getScaledHeight(context, 0.2),
+          height: DeviceUtils.getScaledHeight(context, 0.17),
           child: TextFormField(
             controller: cubit.descriptionController,
             maxLines: null,
@@ -51,13 +54,18 @@ class CreateEventDetailsSection extends StatelessWidget {
             textAlignVertical: TextAlignVertical.top,
             validator: (value) =>
                 TValidator.validateEmptyText('Attribute Value', value),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSizes.textFieldRadius),
-              ),
+            decoration: HelperFunctions.buildFieldDecoration(
+              isDark,
+              hint: 'Description',
             ),
           ),
         ),
+        const SizedBox(height: AppSizes.spaceBtwItems),
+
+        const DateRangePickerSection(),
+        const SizedBox(height: AppSizes.spaceBtwSections),
+
+        const TimePickerSection(),
       ],
     );
   }

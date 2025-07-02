@@ -56,4 +56,8 @@ class AppSizes {
   static const double spaceBtwEventCards = 18.0;
 
   static const double tabBarViewPadding = 10.0;
+
+  static const double dateFieldPadding = 14.0;
+
+  static const double dateFieldRadius = 12.0;
 }

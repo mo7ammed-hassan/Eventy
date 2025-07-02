@@ -1,3 +1,4 @@
+import 'package:eventy/core/theme/custom_themes/custom_time_picker_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/theme/custom_themes/custom_text_theme.dart';
@@ -21,6 +22,7 @@ class AppTheme {
     appBarTheme: CustomAppbarTheme.lightAppBarTheme,
     outlinedButtonTheme: CustomOutlinedButtonTheme.lightOutlinedButtonTheme,
     inputDecorationTheme: CustomInputDecorationTheme.lightInputDecorationTheme,
+    timePickerTheme: CustomTimePickerTheme.lightTimePickerTheme,
     navigationBarTheme: NavigationBarThemeData(
       iconTheme: const WidgetStatePropertyAll(
         IconThemeData(color: Color.fromARGB(255, 110, 126, 155)),
@@ -46,10 +48,9 @@ class AppTheme {
     outlinedButtonTheme: CustomOutlinedButtonTheme.darkOutlinedButtonTheme,
     inputDecorationTheme: CustomInputDecorationTheme.darkInputDecorationTheme,
     primaryColorDark: Colors.black,
-
+    timePickerTheme: CustomTimePickerTheme.darkTimePickerTheme,
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: AppColors.black,
-
       indicatorColor: AppColors.activeIconColor.withValues(alpha: 0.6),
       iconTheme: const WidgetStatePropertyAll(
         IconThemeData(color: Colors.white),

@@ -86,10 +86,7 @@ class CreateEventModel {
     'paid': paid,
     'host': host,
     'attendees': attendees,
-    '_id': sId,
-    '__v': iV,
     'formattedDate': formatedDate,
-    'id': id,
   };
 
   static empty() => const CreateEventModel();

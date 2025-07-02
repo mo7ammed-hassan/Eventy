@@ -18,6 +18,8 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   // Location
   LocationEntity? location;
   UploadImages uploadImages = const UploadImages();
+  DateTime dateRange = DateTime.now();
+  String time = '09:00 AM';
 
   // Controllers
   TextEditingController eventNameController = TextEditingController();
@@ -29,9 +31,26 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   Future<void> createEvent() async {
     emit(CreateEventLoading());
 
-    final CreateEventEntity event = CreateEventEntity.empty();
+    final createdEvent = CreateEventEntity(
+      name: eventNameController.text,
+      description: descriptionController.text,
+      date: dateRange,
+      time: time,
+      location: location,
+      image: uploadImages.thumbnail,
+      coverImage: uploadImages.coverImage,
+      category: selectedCategory,
+      status: '',
+      isRecurring: '',
+      price: '',
+      type: '',
+      paid: null,
+      host: '',
+      attendees: [],
+      formatedDate: dateRange,
+    );
 
-    final result = await _createEventUsecase.call(event: event);
+    final result = await _createEventUsecase.call(event: createdEvent);
 
     result.fold((failure) => emit(CreateEventFailure(failure.message)), (_) {
       emit(CreateEventSuccess('Event created successfully'));
@@ -74,6 +93,12 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       throw Exception(e);
     }
   }
+
+  void setDateRange({required DateTime start, required DateTime end}) {
+    dateRange = start;
+  }
+
+  void setTime(String time) => this.time = time;
 
   /// --- Image Handling ---
   Future<void> pickImage({required bool isThumbnail}) async {
