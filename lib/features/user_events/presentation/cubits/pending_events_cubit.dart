@@ -27,4 +27,15 @@ class PendingEventsCubit extends PaginatedEventsCubit {
         )
         .toList();
   }
+
+  // Future<void> deleteEvent({required String eventId}) async {
+  //   try {
+  //     await getIt<ManageUserEventsRepository>().deleteEvent(eventId: eventId);
+  //     eventsList.removeWhere((e) => e.id == eventId);
+  //     emit(BaseEventLoaded(List.of(eventsList), false, hasMore));
+  //     Loaders.customToast(message: 'Event deleted successfully');
+  //   } catch (e) {
+  //     Loaders.customToast(message: 'Failed to delete event');
+  //   }
+  // }
 }

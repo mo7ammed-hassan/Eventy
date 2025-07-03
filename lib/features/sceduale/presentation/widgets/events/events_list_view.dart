@@ -1,6 +1,7 @@
 import 'package:eventy/core/widgets/shimmer/horizontal_event_card_shimmer.dart';
 import 'package:eventy/features/sceduale/presentation/cubits/schedule_cubit.dart';
 import 'package:eventy/features/sceduale/presentation/cubits/schedule_state.dart';
+import 'package:eventy/shared/widgets/empty_event_list.dart';
 import 'package:eventy/shared/widgets/event_widgets/horizontal_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
@@ -8,8 +9,9 @@ import 'package:eventy/features/user_events/data/models/event_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EventsListView extends StatelessWidget {
-  const EventsListView({super.key, this.events});
+  const EventsListView({super.key, this.events, this.isCalender = false});
   final List<EventModel>? events;
+  final bool isCalender;
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +19,22 @@ class EventsListView extends StatelessWidget {
     return BlocBuilder<ScheduleCubit, ScheduleState>(
       builder: (context, state) {
         if (state.isLoading) return EventsListViewShimmer();
-        if (state.errorMessage != null) {
+
+        if (state.errorMessage != null && state.isLoading == false) {
           return SliverToBoxAdapter(
             child: Center(
               child: Text(state.errorMessage ?? 'There was an error'),
             ),
           );
         }
+
         if (state.currentEvents.isEmpty && state.isLoading == false) {
-          return const SliverToBoxAdapter(
-            child: Center(child: Text('No joined events found')),
+          return SliverToBoxAdapter(
+            child: EmptyEventList(
+              height: isCalender
+                  ? MediaQuery.of(context).size.height * 0.2
+                  : null,
+            ),
           );
         }
 
@@ -52,9 +60,7 @@ class EventsListView extends StatelessWidget {
           );
         }
 
-        return const SliverToBoxAdapter(
-          child: Center(child: Text('No joined events found')),
-        );
+        return const SliverToBoxAdapter();
       },
     );
   }

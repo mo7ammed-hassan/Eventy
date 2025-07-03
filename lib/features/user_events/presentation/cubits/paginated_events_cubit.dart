@@ -45,8 +45,9 @@ abstract class PaginatedEventsCubit extends Cubit<PaginatedEventsState>
         safeEmit(BaseEventError(error.message));
       },
       (events) {
-        if (events.isEmpty) {
+        if (events.isEmpty || events.length < limit) {
           hasMore = false;
+          isLoadMore = false;
         }
 
         eventsList.addAll(events);
