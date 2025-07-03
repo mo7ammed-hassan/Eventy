@@ -1,16 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/constants/app_styles.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
+import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
+import 'package:eventy/features/user_events/presentation/cubits/favorite_events_cubit.dart';
 import 'package:eventy/shared/widgets/event_widgets/attendee_avatars.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class TrendingEventCard extends StatelessWidget {
-  const TrendingEventCard({super.key});
+  const TrendingEventCard({super.key, this.event});
+  final EventEntity? event;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,9 @@ class TrendingEventCard extends StatelessWidget {
                     // -- Event Image
                     const _EventImageSection(),
                     // -- Top ribbon
-                    const Positioned.fill(child: _TopRibbon()),
+                    Positioned.fill(
+                      child: _TopRibbon(event ?? EventEntity.empty()),
+                    ),
                   ],
                 ),
               ),
@@ -138,7 +144,8 @@ class _EventImageSection extends StatelessWidget {
 }
 
 class _TopRibbon extends StatelessWidget {
-  const _TopRibbon();
+  const _TopRibbon(this.event);
+  final EventEntity event;
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +178,8 @@ class _TopRibbon extends StatelessWidget {
         IconButton(
           padding: const EdgeInsets.only(top: 20.0),
           icon: const Icon(Iconsax.archive_1, color: Colors.white),
-          onPressed: () {},
+          onPressed: () =>
+              getIt<FavoriteEventsCubit>().toggleFavorite(event: event),
         ),
       ],
     );

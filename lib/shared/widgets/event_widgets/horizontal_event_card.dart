@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_styles.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
+import 'package:eventy/features/user_events/presentation/cubits/favorite_events_cubit.dart';
 import 'package:eventy/shared/widgets/event_widgets/attendee_avatars.dart';
 import 'package:eventy/shared/widgets/event_widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
@@ -77,10 +79,13 @@ class HorizontalEventCard extends StatelessWidget {
 
           // -- Robot icon
           Positioned(
-            top: -6,
-            right: 2,
-            child: Icon(
-              Iconsax.crop,
+            top: -14,
+            right: -14,
+            child: IconButton(
+              onPressed: () => getIt.get<FavoriteEventsCubit>().toggleFavorite(
+                event: event ?? EventEntity.empty(),
+              ),
+              icon: const Icon(Iconsax.crop),
               color: isDark ? Colors.grey : AppColors.primaryColor,
             ),
           ),
@@ -173,15 +178,13 @@ class _EventDetailsSection extends StatelessWidget {
           children: [
             Expanded(
               flex: 3,
-              child: FittedBox(
-                child: Text(
-                  event?.name ?? 'Unknown',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
+              child: Text(
+                event?.name ?? 'Unknown',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
                 ),
               ),
             ),

@@ -15,4 +15,8 @@ abstract class UserEventsRepository {
     int page = 1,
     int limit = 15,
   });
+  Future<Either<Failure, List<EventEntity>>> getUserJoinedEvents({
+    int page = 1,
+    int limit = 15,
+  });
 }

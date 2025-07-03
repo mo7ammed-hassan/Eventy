@@ -1,20 +1,20 @@
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/widgets/shimmer/horizontal_event_card_shimmer.dart';
-import 'package:eventy/features/user_events/presentation/cubits/base_events_cubit.dart';
-import 'package:eventy/features/user_events/presentation/cubits/base_events_state.dart';
+import 'package:eventy/features/user_events/presentation/cubits/paginated_events_cubit.dart';
+import 'package:eventy/features/user_events/presentation/cubits/paginated_events_state.dart';
 import 'package:eventy/features/user_events/presentation/widgets/shimmer_event_list.dart';
 import 'package:eventy/shared/widgets/event_widgets/horizontal_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BuildBaseEventList<T extends Cubit<BaseEventsState>>
+class BuildBaseEventList<T extends Cubit<PaginatedEventsState>>
     extends StatelessWidget {
   const BuildBaseEventList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<T, BaseEventsState>(
+      child: BlocBuilder<T, PaginatedEventsState>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           if (state is BaseEventLoading) {
@@ -33,7 +33,7 @@ class BuildBaseEventList<T extends Cubit<BaseEventsState>>
               onNotification: (scrollInfo) {
                 if (scrollInfo.metrics.pixels >=
                     scrollInfo.metrics.maxScrollExtent - 200) {
-                  final cubit = context.read<T>() as BaseEventsCubit;
+                  final cubit = context.read<T>() as PaginatedEventsCubit;
                   cubit.onLoadMore();
                 }
                 return true;

@@ -5,6 +5,11 @@ abstract class UserEventsRemoteDataSource {
   Future<List<EventModel>> getFavoriteEvents({int page = 1, int limit = 15});
   Future<List<EventModel>> getCreatedEvents({int page = 1, int limit = 15});
   Future<List<EventModel>> getPendingEvents({int page = 1, int limit = 15});
+  Future<List<EventModel>> getUserJoinedEvents({
+    int page = 1,
+    int limit = 15,
+    required String? userId,
+  });
 }
 
 class UserEventsRemoteDataSourceImpl implements UserEventsRemoteDataSource {
@@ -54,6 +59,22 @@ class UserEventsRemoteDataSourceImpl implements UserEventsRemoteDataSource {
     );
 
     final events = res.data['results'];
+    return _parseEvents(events);
+  }
+
+  @override
+  Future<List<EventModel>> getUserJoinedEvents({
+    int page = 1,
+    int limit = 15,
+    required String? userId,
+  }) async {
+    final res = await _apiClient.request(
+      method: 'GET',
+      path: 'ce6e.up.railway.app/api/auth/viewprofilewithevent/$userId',
+      queryParameters: {'limit': limit, 'page': page},
+    );
+
+    final events = res.data['registeredEvents'];
     return _parseEvents(events);
   }
 

@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 
-sealed class BaseEventsState extends Equatable {}
+sealed class PaginatedEventsState extends Equatable {}
 
-class BaseEventInitial extends BaseEventsState {
+class BaseEventInitial extends PaginatedEventsState {
   @override
   List<Object?> get props => [];
 }
 
-class BaseEventError extends BaseEventsState {
+class BaseEventError extends PaginatedEventsState {
   final String message;
 
   BaseEventError(this.message);
@@ -17,12 +17,12 @@ class BaseEventError extends BaseEventsState {
   List<Object?> get props => [message];
 }
 
-class BaseEventLoading extends BaseEventsState {
+class BaseEventLoading extends PaginatedEventsState {
   @override
   List<Object?> get props => [];
 }
 
-class BaseEventLoaded extends BaseEventsState {
+class BaseEventLoaded extends PaginatedEventsState {
   final List<EventEntity> events;
   final bool isLoadingMore;
   final bool hasMore;
