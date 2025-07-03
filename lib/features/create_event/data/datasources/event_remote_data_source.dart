@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/core/network/api_response.dart';
 import 'package:eventy/features/create_event/data/models/create_event_model.dart';
+import 'package:eventy/features/user_events/data/models/event_model.dart';
 
 abstract class EventRemoteDataSource {
   Future<CreateEventModel> createEvent(Map<String, dynamic> data);
@@ -10,6 +11,8 @@ abstract class EventRemoteDataSource {
     required Map<String, dynamic> data,
   });
   Future<CreateEventModel> deleteEvent({required String eventId});
+
+    Future<List<EventModel>> getAllEvents();
 }
 
 class EventRemoteDataSourceImpl extends EventRemoteDataSource {
@@ -19,7 +22,6 @@ class EventRemoteDataSourceImpl extends EventRemoteDataSource {
 
   @override
   Future<CreateEventModel> createEvent(Map<String, dynamic> data) async {
-
     final imagePath = data['image'] as String?;
     final imageFile = imagePath != null
         ? await MultipartFile.fromFile(
@@ -98,5 +100,18 @@ class EventRemoteDataSourceImpl extends EventRemoteDataSource {
     );
 
     return resData.data!;
+  }
+
+  @override
+  Future<List<EventModel>> getAllEvents() async {
+    final res = await _apiClient.request(
+      path: 'ce6e.up.railway.app/api/events/getevents',
+      method: 'GET',
+      queryParameters: {'limit': 50, 'page': 1},
+    );
+
+    final resData = res.data['results'] as List;
+
+    return resData.map((e) => EventModel.fromJson(e)).toList();
   }
 }

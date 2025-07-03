@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class EmptyEventList extends StatelessWidget {
-  const EmptyEventList({super.key, this.height});
+  const EmptyEventList({super.key, this.height, this.title});
   final double? height;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class EmptyEventList extends StatelessWidget {
         const SizedBox(height: AppSizes.lg),
 
         Text(
-          'There are no events to show',
+          title ?? 'There are no events to show',
           style: height == null
               ? Theme.of(context).textTheme.bodyMedium
               : Theme.of(context).textTheme.bodySmall,

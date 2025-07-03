@@ -53,9 +53,6 @@ class _AnimatedFadeGridItemState extends State<AnimatedFadeGridItem>
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _animationController,
-      child: widget.child,
-    );
+    return FadeTransition(opacity: _animationController, child: widget.child);
   }
 }

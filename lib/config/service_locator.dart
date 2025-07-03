@@ -2,6 +2,7 @@ import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/features/create_event/event_injection.dart';
 import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
 import 'package:eventy/features/personalization/personalization_injection.dart';
+import 'package:eventy/features/search/presentation/cubits/search_cubit.dart';
 import 'package:eventy/features/user_events/user_events_injection.dart';
 import 'package:get_it/get_it.dart';
 import 'package:eventy/core/network/api_client.dart';
@@ -34,4 +35,6 @@ Future<void> initializeDependencies() async {
 
   /// --- Event ---
   registerEventDependencies(getIt);
+
+  getIt.registerLazySingleton<SearchCubit>(() => SearchCubit(getIt()));
 }

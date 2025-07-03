@@ -5,6 +5,8 @@ import 'package:eventy/features/create_event/data/datasources/event_remote_data_
 import 'package:eventy/features/create_event/data/mapper/create_event_mapper.dart';
 import 'package:eventy/features/create_event/domain/entities/create_event_entity.dart';
 import 'package:eventy/features/create_event/domain/repositories/event_repository.dart';
+import 'package:eventy/features/user_events/data/mapper/event_mapper.dart';
+import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 
 class EventRepositoryImpl extends EventRepository {
   final EventRemoteDataSource _remoteDataSource;
@@ -48,6 +50,17 @@ class EventRepositoryImpl extends EventRepository {
         data: event.toModel().toJson(),
       );
       return Right(result.toEntity());
+    } catch (e) {
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, List<EventEntity>>> getAllEvents()async {
+    try {
+      final result = await _remoteDataSource.getAllEvents();
+      return Right(result.map((e) => e.toEntity()).toList());
     } catch (e) {
       final error = ErrorHandler.handle(e);
       return Left(mapErrorToFailure(error));
