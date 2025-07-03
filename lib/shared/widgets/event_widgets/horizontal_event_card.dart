@@ -248,7 +248,15 @@ class _EventImageSection extends StatelessWidget {
               width: imageWidth,
               height: imageHight,
               placeholder: (context, url) => const ShimmerWidget(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
+              errorWidget: (context, url, error) => ClipRRect(
+                borderRadius: BorderRadius.circular(AppSizes.eventCardRadius),
+                child: Image.network(
+                  'https://media.istockphoto.com/id/499517325/photo/a-man-speaking-at-a-business-conference.jpg?s=612x612&w=0&k=20&c=gWTTDs_Hl6AEGOunoQ2LsjrcTJkknf9G8BGqsywyEtE=',
+                  fit: BoxFit.cover,
+                  width: imageWidth,
+                  height: imageHight,
+                ),
+              ),
             ),
           );
         },
