@@ -3,6 +3,6 @@ import 'package:eventy/core/errors/failure.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 
 abstract class EventRepository {
-  Future<Either<Failure, List<EventEntity>>> getAllEvents();
+  Future<Either<Failure, List<EventEntity>>> getAllEvents({int limit = 15, int page = 1});
 
 }

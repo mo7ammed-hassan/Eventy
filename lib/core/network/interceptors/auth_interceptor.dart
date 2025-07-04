@@ -64,7 +64,7 @@ class AuthInterceptor extends Interceptor {
       String? refreshToken = await _storage.read(key: 'refresh_token');
 
       final response = await ApiClient().dio.post(
-        'ce6e.up.railway.app/api/auth/refresh',
+        'https://eventplanner-productionce6e.up.railway.app/api/auth/refresh',
         data: {'refreshToken': refreshToken},
       );
 

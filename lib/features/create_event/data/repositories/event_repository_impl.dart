@@ -12,9 +12,15 @@ class EventRepositoryImpl extends EventRepository {
   EventRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<Either<Failure, List<EventEntity>>> getAllEvents() async {
+  Future<Either<Failure, List<EventEntity>>> getAllEvents({
+    int limit = 15,
+    int page = 1,
+  }) async {
     try {
-      final result = await _remoteDataSource.getAllEvents();
+      final result = await _remoteDataSource.getAllEvents(
+        limit: limit,
+        page: page,
+      );
       return Right(result.map((e) => e.toEntity()).toList());
     } catch (e) {
       final error = ErrorHandler.handle(e);

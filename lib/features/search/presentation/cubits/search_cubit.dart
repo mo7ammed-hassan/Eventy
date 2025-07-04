@@ -1,12 +1,12 @@
 import 'package:eventy/core/utils/helpers/mixins/safe_emit_mixin.dart';
-import 'package:eventy/features/create_event/domain/repositories/event_repository.dart';
+import 'package:eventy/features/create_event/domain/usecases/get_all_events_usecase.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchCubit extends Cubit<List<EventEntity>> with SafeEmitMixin {
-  SearchCubit(this._eventRepository) : super([]);
+  SearchCubit(this._allEventsUsecase) : super([]);
 
-  final EventRepository _eventRepository;
+  final GetAllEventsUsecase _allEventsUsecase;
 
   final List<EventEntity> _events = [];
   bool _hasFetched = false;
@@ -14,7 +14,7 @@ class SearchCubit extends Cubit<List<EventEntity>> with SafeEmitMixin {
   Future<void> getAllEvents() async {
     if (_hasFetched) return;
 
-    final result = await _eventRepository.getAllEvents();
+    final result = await _allEventsUsecase.call(limit: 50);
 
     result.fold((failure) => safeEmit([]), (events) {
       _events.addAll(events);

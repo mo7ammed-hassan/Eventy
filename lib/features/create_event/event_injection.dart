@@ -2,10 +2,8 @@ import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/features/create_event/data/datasources/event_remote_data_source.dart';
 import 'package:eventy/features/create_event/data/repositories/event_repository_impl.dart';
 import 'package:eventy/features/create_event/domain/repositories/event_repository.dart';
-import 'package:eventy/features/user_events/domain/usecases/create_event_usecase.dart';
-import 'package:eventy/features/user_events/domain/usecases/delete_event_usecase.dart';
-import 'package:eventy/features/user_events/domain/usecases/update_event_usecase.dart';
-import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
+import 'package:eventy/features/create_event/domain/usecases/get_all_events_usecase.dart';
+
 import 'package:get_it/get_it.dart';
 
 void registerEventDependencies(GetIt getIt) {
@@ -19,19 +17,7 @@ void registerEventDependencies(GetIt getIt) {
     () => EventRepositoryImpl(getIt<EventRemoteDataSource>()),
   );
 
-  /// --- Use Cases
-  getIt.registerLazySingleton<CreateEventUsecase>(
-    () => CreateEventUsecase(getIt()),
-  );
-  getIt.registerLazySingleton<UpdateEventUseCase>(
-    () => UpdateEventUseCase(getIt()),
-  );
-  getIt.registerLazySingleton<DeleteEventUseCase>(
-    () => DeleteEventUseCase(getIt()),
-  );
-
-  /// --- Cubits
-  getIt.registerFactory<CreateEventCubit>(
-    () => CreateEventCubit(getIt<CreateEventUsecase>()),
+  getIt.registerLazySingleton<GetAllEventsUsecase>(
+    () => GetAllEventsUsecase(getIt<EventRepository>()),
   );
 }

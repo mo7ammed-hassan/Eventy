@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                           message: state.errorMessage ?? '',
                         );
                       }
-                      if (!state.isLoggingOut) {
+                      if (!state.isLoggingOut && state.errorMessage == null) {
                         LoadingDialogs.hideLoadingDialog(context);
                         context.pushNamedAndRemoveUntilPage(Routes.loginScreen);
                       }

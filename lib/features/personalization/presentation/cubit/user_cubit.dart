@@ -68,18 +68,21 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(isLoggingOut: true));
 
     final result = await _authRepo.logout();
-    result.fold((error) => emit(state.copyWith(errorMessage: error.message)), (
-      _,
-    ) {
-      unRegisterUserEventsCubits(getIt);
-      emit(
-        state.copyWith(
-          isLoggingOut: false,
-          successMessage: 'Logged out successfully',
-        ),
-      );
-      user = UserEntity.empty();
-    });
+    result.fold(
+      (error) => emit(
+        state.copyWith(errorMessage: error.message, isLoggingOut: false),
+      ),
+      (_) {
+        unRegisterUserEventsCubits(getIt);
+        emit(
+          state.copyWith(
+            isLoggingOut: false,
+            successMessage: 'Logged out successfully',
+          ),
+        );
+        user = UserEntity.empty();
+      },
+    );
   }
 
   Future<void> updateProfile(Map<String, dynamic> data) async {
