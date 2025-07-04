@@ -4,7 +4,7 @@ import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
 import 'package:eventy/core/utils/helpers/app_context.dart';
 import 'package:eventy/core/utils/helpers/image_picker_helper.dart';
 import 'package:eventy/features/create_event/domain/entities/create_event_entity.dart';
-import 'package:eventy/features/create_event/domain/usecases/create_event_usecase.dart';
+import 'package:eventy/features/user_events/domain/usecases/create_event_usecase.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_state.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
