@@ -8,6 +8,8 @@ class HomeState {
   final List<EventEntity>? nearbyEvents;
   final List<EventEntity>? trendingEvents;
   final List<EventEntity>? upcomingEvents;
+  final List<EventEntity>? filteredEvents;
+  final List<EventEntity>? filteredUpcomingEvents;
 
   const HomeState({
     this.isLoading = false,
@@ -17,6 +19,8 @@ class HomeState {
     this.nearbyEvents,
     this.trendingEvents,
     this.upcomingEvents,
+    this.filteredEvents,
+    this.filteredUpcomingEvents,
   });
 
   HomeState copyWith({
@@ -27,6 +31,8 @@ class HomeState {
     List<EventEntity>? nearbyEvents,
     List<EventEntity>? trendingEvents,
     List<EventEntity>? upcomingEvents,
+    List<EventEntity>? filteredEvents,
+    List<EventEntity>? filteredUpcomingEvents,
   }) => HomeState(
     isLoading: isLoading ?? this.isLoading,
     errorMessage: errorMessage ?? this.errorMessage,
@@ -35,5 +41,8 @@ class HomeState {
     nearbyEvents: nearbyEvents ?? this.nearbyEvents,
     trendingEvents: trendingEvents ?? this.trendingEvents,
     upcomingEvents: upcomingEvents ?? this.upcomingEvents,
+    filteredEvents: filteredEvents ?? this.filteredEvents,
+    filteredUpcomingEvents:
+        filteredUpcomingEvents ?? this.filteredUpcomingEvents,
   );
 }

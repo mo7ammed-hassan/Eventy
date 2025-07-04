@@ -14,7 +14,7 @@ class EventCategoryTab extends StatelessWidget {
   });
   final String title;
   final bool showIcon;
-  final VoidCallback? onTap;
+  final Function? onTap;
   final int index;
 
   @override
@@ -22,7 +22,7 @@ class EventCategoryTab extends StatelessWidget {
     final isDark = HelperFunctions.isDarkMode(context);
     return GestureDetector(
       key: ValueKey(title),
-      onTap: () => EventCategoryTabController.selectTab(index),
+      onTap: () => EventCategoryTabController.selectTab(index, onTap),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

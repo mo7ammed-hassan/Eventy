@@ -1,6 +1,8 @@
 import 'package:eventy/core/constants/app_sizes.dart';
+import 'package:eventy/features/home/presentation/cubits/home_cubit.dart';
 import 'package:eventy/features/home/presentation/widgets/categories_section/event_category_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EventCategoryTabs extends StatelessWidget {
   const EventCategoryTabs({super.key});
@@ -18,6 +20,7 @@ class EventCategoryTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<HomeCubit>();
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: AppSizes.defaultPadding),
       sliver: SliverToBoxAdapter(
@@ -32,6 +35,7 @@ class EventCategoryTabs extends StatelessWidget {
               title: categories[index],
               showIcon: index == 0,
               index: index,
+              onTap: () => cubit.filterEventsByCategory(categories[index]),
             ),
             separatorBuilder: (context, index) => const SizedBox(width: 16.0),
           ),

@@ -9,7 +9,7 @@ import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeCubit extends Cubit<HomeState> with SafeEmitMixin , PaginationMixin {
+class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
   HomeCubit(this.getNearbyEventsUseCase) : super(HomeState());
   final GetNearbyEventsUseCase getNearbyEventsUseCase;
 
@@ -73,6 +73,7 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin , PaginationMixin {
             nearbyEvents: events,
             trendingEvents: trendingEvents,
             upcomingEvents: upcomingEvents,
+            filteredUpcomingEvents: upcomingEvents,
             isLoading: false,
           ),
         );
@@ -95,5 +96,13 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin , PaginationMixin {
         shouldRequestLocation: false,
       ),
     );
+  }
+
+  void filterEventsByCategory(String category) {
+    final filteredUpcomingEvents = state.upcomingEvents
+        ?.where((event) => event.category == category)
+        .toList();
+
+    safeEmit(state.copyWith(filteredUpcomingEvents: filteredUpcomingEvents));
   }
 }

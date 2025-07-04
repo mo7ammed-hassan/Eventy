@@ -19,7 +19,7 @@ class UpcomingEventsGrid extends StatelessWidget {
           if (state.isLoading) {
             return UpComingEventsGridShimmer(key: ValueKey('Upcoming Loading'));
           }
-          if (state.upcomingEvents?.isEmpty ?? true) {
+          if (state.filteredUpcomingEvents?.isEmpty ?? true) {
             return const SliverToBoxAdapter(child: SizedBox.shrink());
           }
           return SliverGrid.builder(
@@ -29,10 +29,11 @@ class UpcomingEventsGrid extends StatelessWidget {
               crossAxisSpacing: 18,
             ),
             itemBuilder: (context, index) => UpcomingEventCard(
-              key: ValueKey(state.upcomingEvents?[index].id ?? ''),
-              event: state.upcomingEvents?[index] ?? EventEntity.empty(),
+              key: ValueKey(state.filteredUpcomingEvents?[index].id ?? ''),
+              event:
+                  state.filteredUpcomingEvents?[index] ?? EventEntity.empty(),
             ),
-            itemCount: state.upcomingEvents?.length ?? 0,
+            itemCount: state.filteredUpcomingEvents?.length ?? 0,
           );
         },
       ),
