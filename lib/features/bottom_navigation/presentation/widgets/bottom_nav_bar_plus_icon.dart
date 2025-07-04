@@ -29,6 +29,16 @@ class BottomNavBarPlusIcon extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: AppColors.plushIconGradient,
+              boxShadow: [
+                BoxShadow(
+                  color: isDark
+                      ? AppColors.mainblackColor
+                      : Colors.grey.shade200,
+                  offset: const Offset(0, -3),
+                  blurRadius: 8.0,
+                  blurStyle: BlurStyle.outer,
+                ),
+              ],
             ),
             child: Center(
               child: SvgPicture.asset(
