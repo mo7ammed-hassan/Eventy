@@ -39,10 +39,6 @@ class AuthRepoImpl extends AuthRepo {
   Future<Either<Failure, Unit>> logout() async {
     try {
       await authRemoteDataSource.logout();
-
-      await _storage.deleteAllTokens();
-      await _storage.deleteUserId();
-
       return const Right(unit);
     } catch (e) {
       final error = ErrorHandler.handle(e);

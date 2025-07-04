@@ -72,15 +72,19 @@ class UserCubit extends Cubit<UserState> {
       (error) => emit(
         state.copyWith(errorMessage: error.message, isLoggingOut: false),
       ),
-      (_) {
+      (_) async {
+        await _storage.deleteAllTokens();
+        await _storage.deleteUserId();
+        unRegisterUserEventsCubits(getIt);
+        
         emit(
           state.copyWith(
             isLoggingOut: false,
             successMessage: 'Logged out successfully',
           ),
         );
+
         user = UserEntity.empty();
-        unRegisterUserEventsCubits(getIt);
       },
     );
   }

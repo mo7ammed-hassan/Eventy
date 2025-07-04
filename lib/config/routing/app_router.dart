@@ -2,6 +2,7 @@ import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_constants.dart';
 import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
+import 'package:eventy/features/details/presentation/screens/event_details_screen.dart';
 import 'package:eventy/features/home/presentation/screens/event_home_screen.dart';
 import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
 import 'package:eventy/features/onboarding/screens/onboarding_screen.dart';
@@ -63,6 +64,7 @@ class AppRouter {
     /// --- Other Screen ---
     Routes.chatBotScreen: (_) => const ChatBotScreen(),
     Routes.requestLocationScreen: (_) => const RequestLocationScreen(),
+    Routes.eventDetailsScreen: (_) => const EventDetailsScreen(),
 
     /// --- Personalization Screen ---
     Routes.profileScreen: (_) => const ProfileScreen(),

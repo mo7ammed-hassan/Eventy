@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eventy/config/routing/routes.dart';
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/core/constants/app_images.dart';
 import 'package:eventy/core/constants/app_styles.dart';
+import 'package:eventy/core/utils/helpers/extensions/navigation_extension.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
@@ -22,7 +25,8 @@ class HorizontalEventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = HelperFunctions.isDarkMode(context);
     return GestureDetector(
-      onTap: () {},
+      onTap: () =>
+          context.pushNamedPage(Routes.eventDetailsScreen, arguments: event),
       child: AspectRatio(
         aspectRatio: 2 / 0.8,
         child: Stack(
@@ -251,7 +255,7 @@ class _EventImageSection extends StatelessWidget {
               errorWidget: (context, url, error) => ClipRRect(
                 borderRadius: BorderRadius.circular(AppSizes.eventCardRadius),
                 child: Image.network(
-                  'https://media.istockphoto.com/id/499517325/photo/a-man-speaking-at-a-business-conference.jpg?s=612x612&w=0&k=20&c=gWTTDs_Hl6AEGOunoQ2LsjrcTJkknf9G8BGqsywyEtE=',
+                  AppImages.defaultEventImageUrl,
                   fit: BoxFit.cover,
                   width: imageWidth,
                   height: imageHight,
