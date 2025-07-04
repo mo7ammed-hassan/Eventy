@@ -7,32 +7,19 @@ import 'package:eventy/shared/widgets/search/search_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FavoriteEventsScreen extends StatefulWidget {
+class FavoriteEventsScreen extends StatelessWidget {
   const FavoriteEventsScreen({super.key});
   static final ValueNotifier<bool> _showSearchBar = ValueNotifier<bool>(false);
 
   @override
-  State<FavoriteEventsScreen> createState() => _FavoriteEventsScreenState();
-}
-
-class _FavoriteEventsScreenState extends State<FavoriteEventsScreen> {
-  late final FavoriteEventsCubit _favoriteEventsCubit;
-
-  @override
-  void initState() {
-    _favoriteEventsCubit = getIt<FavoriteEventsCubit>();
-    _favoriteEventsCubit.getEventsList();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cubit = getIt.get<FavoriteEventsCubit>();
     return BlocProvider.value(
-      value: _favoriteEventsCubit,
+      value: cubit,
       child: Scaffold(
         appBar: CustomEventAppBar(
           title: 'Favorite',
-          showSearchBar: FavoriteEventsScreen._showSearchBar,
+          showSearchBar: _showSearchBar,
         ),
         body: SafeArea(
           child: Padding(
@@ -42,9 +29,8 @@ class _FavoriteEventsScreenState extends State<FavoriteEventsScreen> {
             child: Column(
               children: [
                 SearchBarWidget(
-                  showSearchBar: FavoriteEventsScreen._showSearchBar,
-                  onChanged: (query) =>
-                      _favoriteEventsCubit.searchEventsByTitle(query: query),
+                  showSearchBar: _showSearchBar,
+                  onChanged: (query) => cubit.searchEventsByTitle(query: query),
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems),
 

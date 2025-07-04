@@ -7,10 +7,12 @@ import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/features/user_events/presentation/cubits/favorite_events_cubit.dart';
+import 'package:eventy/features/user_events/presentation/cubits/paginated_events_state.dart';
 import 'package:eventy/shared/widgets/event_widgets/attendee_avatars.dart';
 import 'package:eventy/shared/widgets/event_widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 class HorizontalEventCard extends StatelessWidget {
@@ -79,14 +81,36 @@ class HorizontalEventCard extends StatelessWidget {
 
           // -- Robot icon
           Positioned(
-            top: -14,
-            right: -14,
-            child: IconButton(
-              onPressed: () => getIt.get<FavoriteEventsCubit>().toggleFavorite(
-                event: event ?? EventEntity.empty(),
-              ),
-              icon: const Icon(Iconsax.crop),
-              color: isDark ? Colors.grey : AppColors.primaryColor,
+            top: -12,
+            right: -10,
+            child: BlocBuilder<FavoriteEventsCubit, PaginatedEventsState>(
+              bloc: getIt.get<FavoriteEventsCubit>(),
+              builder: (context, state) {
+                bool isAlreadyFavorite = false;
+                if (state is BaseEventLoaded) {
+                  isAlreadyFavorite = state.events.any(
+                    (e) => e.id == event?.id,
+                  );
+                }
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) {
+                    return ScaleTransition(scale: animation, child: child);
+                  },
+                  child: IconButton(
+                    key: ValueKey<bool>(isAlreadyFavorite),
+                    onPressed: () => getIt
+                        .get<FavoriteEventsCubit>()
+                        .toggleFavorite(event: event ?? EventEntity.empty()),
+                    icon: Icon(
+                      isAlreadyFavorite ? Iconsax.star5 : Iconsax.star,
+                    ),
+                    color: isAlreadyFavorite
+                        ? AppColors.secondaryColor
+                        : Colors.grey,
+                  ),
+                );
+              },
             ),
           ),
         ],

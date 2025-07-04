@@ -28,7 +28,7 @@ class UserEventsRemoteDataSourceImpl implements UserEventsRemoteDataSource {
       queryParameters: {'limit': limit, 'page': page},
     );
 
-    final events = res.data['data'];
+    final events = res.data['results'];
     return _parseEvents(events);
   }
 
@@ -43,7 +43,7 @@ class UserEventsRemoteDataSourceImpl implements UserEventsRemoteDataSource {
       queryParameters: {'limit': limit, 'page': page},
     );
 
-    final events = res.data['data'];
+    final events = res.data['results'];
     return _parseEvents(events);
   }
 
