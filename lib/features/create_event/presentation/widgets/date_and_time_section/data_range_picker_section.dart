@@ -72,6 +72,7 @@ class _DateRangePickerSectionState extends State<DateRangePickerSection> {
             selectedEndDate = _formatDate(end);
 
             cubit.setDateRange(start: start, end: end);
+            FocusNode().unfocus();
           });
         },
       ),

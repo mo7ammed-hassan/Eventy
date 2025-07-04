@@ -12,17 +12,20 @@ class AttendeeAvatars extends StatelessWidget {
     this.avatarSize = 12,
     this.height,
     this.width,
+    this.fntSize,
   });
 
   final List<String> attendees;
   final double avatarSize;
   final double? height, width;
+  final double? fntSize;
 
   @override
   Widget build(BuildContext context) {
     final isDark = HelperFunctions.isDarkMode(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Flexible(
           fit: FlexFit.loose,
@@ -33,7 +36,7 @@ class AttendeeAvatars extends StatelessWidget {
               children: List.generate(
                 attendees.length > 3 ? 3 : attendees.length,
                 (index) => Positioned(
-                  left: index * 20,
+                  left: index * (avatarSize * 2 - 4),
                   child: CircleAvatar(
                     radius: avatarSize + 2,
                     backgroundColor: isDark ? AppColors.dark : Colors.white,
@@ -60,7 +63,7 @@ class AttendeeAvatars extends StatelessWidget {
         const SizedBox(width: AppSizes.sm),
 
         // -- User count
-        Flexible(
+        Expanded(
           child: Text(
             "+${attendees.length} Going",
             maxLines: 1,
@@ -68,6 +71,7 @@ class AttendeeAvatars extends StatelessWidget {
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Colors.grey,
               fontWeight: FontWeight.w600,
+              fontSize: fntSize,
             ),
           ),
         ),

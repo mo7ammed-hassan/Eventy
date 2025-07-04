@@ -17,7 +17,7 @@ class DateField extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(
           vertical: AppSizes.dateFieldPadding,
-          horizontal: AppSizes.dateFieldPadding + 4,
+          horizontal: AppSizes.dateFieldPadding,
         ),
         decoration: BoxDecoration(
           color: isDark ? AppColors.dark : AppColors.dateFieldColor,
@@ -25,15 +25,19 @@ class DateField extends StatelessWidget {
         ),
 
         child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            FittedBox(
+              fit: BoxFit.scaleDown,
               child: Text(date, style: Theme.of(context).textTheme.bodyMedium),
             ),
             const SizedBox(width: 4),
 
-            Icon(Iconsax.calendar, color: AppColors.primaryColor, size: 26),
+            Icon(
+              Iconsax.calendar,
+              color: isDark ? Colors.blueGrey : AppColors.primaryColor,
+              size: 26,
+            ),
           ],
         ),
       ),

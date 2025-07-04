@@ -99,16 +99,16 @@ class CustomTimePickerTheme {
     hourMinuteTextColor: WidgetStateColor.resolveWith(
       (states) => states.contains(WidgetState.selected)
           ? Colors.white
-          : AppColors.primaryColor,
+          : AppColors.softGrey,
     ),
     dayPeriodTextColor: WidgetStateColor.resolveWith(
       (states) => states.contains(WidgetState.selected)
           ? Colors.white
-          : AppColors.primaryColor,
+          : AppColors.softGrey,
     ),
     dayPeriodColor: WidgetStateColor.resolveWith(
       (states) => states.contains(WidgetState.selected)
-          ? AppColors.primaryColor
+          ? AppColors.textFieldBorderColor
           : AppColors.dark,
     ),
     dialBackgroundColor: AppColors.darkerGrey.withValues(alpha: 0.5),
@@ -119,5 +119,6 @@ class CustomTimePickerTheme {
       borderRadius: BorderRadius.circular(10),
     ),
     dialHandColor: AppColors.primaryColor,
+    dialTextColor: Colors.white,
   );
 }

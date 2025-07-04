@@ -9,6 +9,7 @@ class CategoryItem extends StatelessWidget {
     required this.isSelected,
     this.onTap,
   });
+
   final String category;
   final bool isSelected;
   final Function()? onTap;
@@ -16,13 +17,16 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Padding(
-      padding: const EdgeInsets.only(right: AppSizes.lg, bottom: AppSizes.md),
-      child: GestureDetector(
-        onTap: onTap,
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedScale(
+        scale: isSelected ? 1.05 : 1.0,
+        duration: const Duration(milliseconds: 200),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 13.0),
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeInOut,
+          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12),
           decoration: BoxDecoration(
             color: isSelected
                 ? AppColors.eventyPrimaryColor.withValues(alpha: 0.9)
@@ -42,39 +46,44 @@ class CategoryItem extends StatelessWidget {
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Radio button
-              Flexible(
-                child: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade300),
+              Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(
+                    color: isSelected ? Colors.white : Colors.grey.shade300,
                   ),
                 ),
+                child: isSelected
+                    ? Center(
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color:  AppColors.eventyPrimaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      )
+                    : null,
               ),
               const SizedBox(width: AppSizes.slg),
-              Flexible(
-                fit: FlexFit.loose,
-                child: FittedBox(
-                  child: Text(
-                    category,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: isSelected
-                          ? Colors.white
-                          : isDark
-                          ? Colors.white
-                          : Colors.black,
-                      fontSize: 14.0,
-                    ),
-                  ),
+              Text(
+                category,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.0,
+                  color: isSelected
+                      ? Colors.white
+                      : isDark
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             ],

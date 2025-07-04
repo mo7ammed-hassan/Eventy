@@ -17,7 +17,7 @@ class CreateEventScreenBody extends StatelessWidget {
     final cubit = context.read<CreateEventCubit>();
     return CustomStepperFlow(
       padding: EdgeInsets.symmetric(
-        horizontal: AppSizes.spaceBtwSections,
+        horizontal: AppSizes.spaceBtwItems + 4,
         vertical: AppSizes.defaultPadding / 2,
       ),
       finishButtonText: 'Create Event',

@@ -23,10 +23,11 @@ class UpcomingEventsGrid extends StatelessWidget {
             return const SliverToBoxAdapter(child: SizedBox.shrink());
           }
           return SliverGrid.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 250,
               mainAxisSpacing: 18,
               crossAxisSpacing: 18,
+              childAspectRatio: 2 / 2.4,
             ),
             itemBuilder: (context, index) => UpcomingEventCard(
               key: ValueKey(state.filteredUpcomingEvents?[index].id ?? ''),
@@ -47,10 +48,11 @@ class UpComingEventsGridShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverGrid.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 250,
         mainAxisSpacing: 18,
         crossAxisSpacing: 18,
+        childAspectRatio: 2 / 2.4,
       ),
       itemBuilder: (context, index) => const UpcomingEventCardShimmer(),
       itemCount: 4,

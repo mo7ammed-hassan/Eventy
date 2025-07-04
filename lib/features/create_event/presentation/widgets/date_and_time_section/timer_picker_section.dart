@@ -27,6 +27,7 @@ class _TimePickerSectionState extends State<TimePickerSection> {
       setState(() {
         _selectedTime = picked;
         context.read<CreateEventCubit>().setTime(_formatTime(_selectedTime));
+        FocusNode().unfocus();
       });
     }
   }
@@ -66,9 +67,9 @@ class _TimePickerSectionState extends State<TimePickerSection> {
                   ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(
+                Icon(
                   Iconsax.clock,
-                  color: AppColors.primaryColor,
+                  color: isDark ? Colors.blueGrey : AppColors.primaryColor,
                   size: 26,
                 ),
               ],

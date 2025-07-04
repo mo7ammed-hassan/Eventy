@@ -73,7 +73,6 @@ class UserCubit extends Cubit<UserState> {
         state.copyWith(errorMessage: error.message, isLoggingOut: false),
       ),
       (_) {
-        unRegisterUserEventsCubits(getIt);
         emit(
           state.copyWith(
             isLoggingOut: false,
@@ -81,6 +80,7 @@ class UserCubit extends Cubit<UserState> {
           ),
         );
         user = UserEntity.empty();
+        unRegisterUserEventsCubits(getIt);
       },
     );
   }

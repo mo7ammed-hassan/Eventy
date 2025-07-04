@@ -25,11 +25,14 @@ class _CategoriesListState extends State<CategoriesList> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<CreateEventCubit>();
+
     return Wrap(
       clipBehavior: Clip.none,
+      spacing: 8,
+      runSpacing: 8,
       children: events
           .map(
-            (e) => FittedBox(
+            (e) => IntrinsicWidth(
               child: CategoryItem(
                 category: e,
                 isSelected: selectedEvent == e,

@@ -68,29 +68,25 @@ class UpcomingEventCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // -- Event title
-                      FittedBox(
-                        child: Text(
-                          event.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleSmall!
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
+                      Text(
+                        event.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleSmall!
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
 
                       // -- Event Price
-                      FittedBox(
-                        child: Text(
-                          event.description,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                fontSize: 12.0,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
+                      Text(
+                        event.description,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(
+                              fontSize: 12.0,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ],
                   ),

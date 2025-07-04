@@ -110,6 +110,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   }
 
   void changeEventType(EventType eventType) {
+    if (this.eventType == eventType) return;
     this.eventType = eventType;
     _updateField<EventType>(eventType);
   }
