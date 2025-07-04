@@ -1,8 +1,7 @@
-import 'package:eventy/core/constants/app_images.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
-import 'package:eventy/core/constants/text_strings.dart';
 import 'package:eventy/features/onboarding/cubits/onboarding_cubit.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
+import 'package:eventy/features/onboarding/models/onboarding_page_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,28 +11,18 @@ class OnboardingPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<OnboardingCubit>();
+
     return BlocBuilder<OnboardingCubit, int>(
+      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
-        return PageView(
+        return PageView.builder(
           controller: cubit.pageController,
-          onPageChanged: cubit.updatePageIndicator,
-          children: [
-            // -- Page 1
-            _OnboardingPage(
-              imagePath: AppImages.onboarding1,
-              title: AppStrings.onBoardingSubTitle1,
-            ),
-            // -- Page 2
-            _OnboardingPage(
-              imagePath: AppImages.onboarding2,
-              title: AppStrings.onBoardingSubTitle2,
-            ),
-            // -- Page 3
-            _OnboardingPage(
-              imagePath: AppImages.onboarding3,
-              title: AppStrings.onBoardingTitle3,
-            ),
-          ],
+          onPageChanged: cubit.changePage,
+          itemCount: cubit.totalPages,
+          itemBuilder: (context, index) {
+            final pageData = cubit.onboardingPages[index];
+            return _OnboardingPage(onbboardingPageData: pageData);
+          },
         );
       },
     );
@@ -41,36 +30,34 @@ class OnboardingPageView extends StatelessWidget {
 }
 
 class _OnboardingPage extends StatelessWidget {
-  const _OnboardingPage({required this.imagePath, required this.title});
-  final String imagePath;
-  final String title;
+  const _OnboardingPage({required this.onbboardingPageData});
+
+  final OnbboardingPageData onbboardingPageData;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final screenHeight = DeviceUtils.screenHeight(context);
+
     return Padding(
       padding: const EdgeInsets.all(AppSizes.spaceBtwItems),
-      child: SizedBox(
-        width: double.infinity,
-        child: Align(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // -- Page Image
-              Flexible(child: Image(image: AssetImage(imagePath))),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // -- Page Image
+          Flexible(child: Image.asset(onbboardingPageData.imagePath)),
 
-              // -- Page Content
-              SizedBox(height: DeviceUtils.screenHeight(context) * 0.12),
-              Text(
-                title,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w500),
-                textAlign: TextAlign.start,
-              ),
-            ],
+          SizedBox(height: screenHeight * 0.12),
+
+          // -- Title Text
+          Text(
+            onbboardingPageData.title,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
           ),
-        ),
+        ],
       ),
     );
   }

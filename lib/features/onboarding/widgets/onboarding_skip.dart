@@ -10,23 +10,26 @@ class OnBoardingSkip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<OnboardingCubit>();
+
     return Positioned(
       top: DeviceUtils.getAppBarHeight(),
       right: AppSizes.defaultPadding,
-      child: TextButton(
-        onPressed: () {
-          context.read<OnboardingCubit>().skipPage();
-        },
-        child: BlocBuilder<OnboardingCubit, int>(
-          builder: (context, state) {
-            return state < 2
-                ? Text(
+      child: BlocBuilder<OnboardingCubit, int>(
+        buildWhen: (previous, current) => previous != current,
+        builder: (context, state) {
+          final shouldShowSkip = !cubit.isLastPage;
+
+          return shouldShowSkip
+              ? TextButton(
+                  onPressed: cubit.skipPage,
+                  child: Text(
                     AppStrings.skip,
                     style: Theme.of(context).textTheme.bodyLarge,
-                  )
-                : const SizedBox.shrink();
-          },
-        ),
+                  ),
+                )
+              : const SizedBox.shrink();
+        },
       ),
     );
   }

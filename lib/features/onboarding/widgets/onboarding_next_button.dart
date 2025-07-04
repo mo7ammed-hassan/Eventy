@@ -12,26 +12,24 @@ class OnBoardingNextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<OnboardingCubit>();
     final isDark = HelperFunctions.isDarkMode(context);
+
     return Positioned(
       bottom: DeviceUtils.getBottomNavigationBarHeight() / 1.2,
       right: AppSizes.defaultScreenPadding,
-      child: Container(
-        padding: EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.fillColor,
+      child: ElevatedButton(
+        onPressed: cubit.nextPage,
+        style: ElevatedButton.styleFrom(
+          shape: const CircleBorder(),
+          padding: const EdgeInsets.all(14),
+          backgroundColor: isDark
+              ? AppColors.secondaryColor
+              : AppColors.primaryColor,
+          elevation: 4,
+          shadowColor: Colors.black26,
         ),
-        child: ElevatedButton(
-          onPressed: () => context.read<OnboardingCubit>().nextPage(),
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            backgroundColor: isDark
-                ? AppColors.secondaryColor
-                : AppColors.primaryColor,
-          ),
-          child: const Icon(Iconsax.arrow_right_3, color: AppColors.white),
-        ),
+        child: const Icon(Iconsax.arrow_right_3, color: AppColors.white),
       ),
     );
   }
