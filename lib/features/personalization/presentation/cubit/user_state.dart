@@ -4,6 +4,8 @@ import 'package:eventy/features/personalization/domain/entities/user_entity.dart
 /// --- Unified State ---
 class UserState extends Equatable {
   final UserEntity? user;
+  final UserEntity? userById;
+
   final bool isLoading;
   final bool isUpdating;
   final bool isSharingProfile;
@@ -16,6 +18,7 @@ class UserState extends Equatable {
 
   const UserState({
     this.user,
+    this.userById,
     this.isLoading = false,
     this.isUpdating = false,
     this.isUpdatingImage = false,
@@ -29,6 +32,7 @@ class UserState extends Equatable {
 
   UserState copyWith({
     UserEntity? user,
+    UserEntity? userById,
     bool? isLoading,
     bool? isUpdating,
     bool? isUpdatingImage,
@@ -41,6 +45,7 @@ class UserState extends Equatable {
   }) {
     return UserState(
       user: user ?? this.user,
+      userById: userById ?? this.userById,
       isLoading: isLoading ?? this.isLoading,
       isUpdating: isUpdating ?? this.isUpdating,
       isUpdatingImage: isUpdatingImage ?? this.isUpdatingImage,

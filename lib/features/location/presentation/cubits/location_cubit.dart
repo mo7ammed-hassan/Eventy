@@ -52,8 +52,11 @@ class LocationCubit extends Cubit<LocationState> {
       );
 
       final address = placemarks.first;
+      final fullAddress =
+          '${address.subAdministrativeArea}, ${address.country}';
 
       final userAddress = LocationEntity(
+        address: fullAddress,
         city: address.subAdministrativeArea ?? '',
         street: address.street ?? '',
         country: address.country ?? '',
@@ -101,9 +104,14 @@ class LocationCubit extends Cubit<LocationState> {
 
         if (placemarks.isNotEmpty) {
           final address = placemarks.first;
+          final fullAddress =
+              '${address.subAdministrativeArea}, ${address.country}';
 
           final userAddress = LocationEntity(
-            address: address.country ?? '',
+            address: fullAddress,
+            country: address.country,
+            city: address.administrativeArea,
+            street: address.street,
             latitude: position.latitude,
             longitude: position.longitude,
           );
@@ -128,7 +136,9 @@ class LocationCubit extends Cubit<LocationState> {
       );
 
       final address = placemarks.first;
+      final fullAddress = '${address.subAdministrativeArea}, ${address.country}';
       final userAddress = LocationEntity(
+        address: fullAddress,
         city: address.subAdministrativeArea ?? '',
         street: address.street ?? '',
         country: address.country ?? '',

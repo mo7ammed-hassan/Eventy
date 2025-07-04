@@ -12,6 +12,7 @@ abstract class ProfileRemoteDataSource {
     required String? userId,
     required String? token,
   });
+
 }
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
@@ -86,4 +87,6 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
     return events.map((e) => EventModel.fromJson(e)).toList();
   }
+  
+  
 }

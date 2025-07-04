@@ -2,7 +2,9 @@ import 'dart:math';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/enums/enums.dart';
+import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 
 class HelperFunctions {
   const HelperFunctions._();
@@ -81,5 +83,18 @@ class HelperFunctions {
         borderRadius: BorderRadius.circular(AppSizes.dateFieldRadius),
       ),
     );
+  }
+
+  static Future<String> getFullAddress(LocationEntity location) async {
+    final List<Placemark> placemarks = await placemarkFromCoordinates(
+      location.latitude,
+      location.longitude,
+    );
+
+    final address = placemarks.first;
+
+    final fullAddress = '${address.street}, ${address.subAdministrativeArea}, ${address.country}';
+
+    return fullAddress;
   }
 }

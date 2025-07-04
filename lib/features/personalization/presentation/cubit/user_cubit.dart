@@ -39,6 +39,13 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
+  Future<void> getUserProfileById({required String? id}) async {
+    final result = await _profileRepo.getUserProfileById(id: id!);
+    result.fold((error) {}, (fetchedUser) {
+      emit(state.copyWith(userById: fetchedUser));
+    });
+  }
+
   Future<String> shareProfileLink() async {
     emit(state.copyWith(isLoading: true));
 
@@ -76,7 +83,7 @@ class UserCubit extends Cubit<UserState> {
         await _storage.deleteAllTokens();
         await _storage.deleteUserId();
         unRegisterUserEventsCubits(getIt);
-        
+
         emit(
           state.copyWith(
             isLoggingOut: false,

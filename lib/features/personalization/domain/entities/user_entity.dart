@@ -47,7 +47,7 @@ class UserEntity {
 
   UserEntity.empty()
     : id = '',
-      name = '',
+      name = 'Unknown',
       email = '',
       imageUrl = '',
       phone = '',

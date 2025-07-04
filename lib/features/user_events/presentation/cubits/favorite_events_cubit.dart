@@ -84,4 +84,8 @@ class FavoriteEventsCubit extends PaginatedEventsCubit {
         )
         .toList();
   }
+
+  bool isFavorite({required EventEntity event}) {
+    return eventsList.any((e) => e.id == event.id);
+  }
 }

@@ -14,7 +14,7 @@ class CreateEventScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt.get<CreateEventCubit>(),
+      create: (context) => getIt.get<CreateEventCubit>()..init(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(

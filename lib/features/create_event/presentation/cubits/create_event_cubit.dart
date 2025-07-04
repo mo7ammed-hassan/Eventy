@@ -4,6 +4,7 @@ import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
 import 'package:eventy/core/utils/helpers/app_context.dart';
 import 'package:eventy/core/utils/helpers/image_picker_helper.dart';
 import 'package:eventy/features/create_event/domain/entities/create_event_entity.dart';
+import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
 import 'package:eventy/features/user_events/domain/usecases/create_event_usecase.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_state.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
@@ -18,13 +19,26 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
   final CreateEventUsecase _createEventUsecase;
 
-  final user = getIt.get<UserCubit>().user;
+  final UserCubit userCubit = getIt.get<UserCubit>();
+  UserEntity? userEntity;
+
+  late UserEntity user;
+
+  void init() async {
+    userEntity = userCubit.user;
+    if (userEntity != null) {
+      user = userEntity!;
+    } else {
+      await userCubit.getUserProfile();
+      user = userCubit.user;
+    }
+  }
 
   // -- Controllers
   TextEditingController eventNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController? categoryController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
+  TextEditingController? priceController = TextEditingController();
 
   // -- Attributes
   String? selectedCategory;
@@ -43,8 +57,14 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     final createdEvent = CreateEventEntity(
       name: eventNameController.text,
       description: descriptionController.text,
-      category: categoryController?.text.trim() ?? selectedCategory,
-      price: '500',
+      category: categoryController!.text.trim().isEmpty
+          ? selectedCategory
+          : categoryController?.text.trim(),
+      price: isPaid
+          ? (priceController?.text.trim().isEmpty ?? true
+                ? '0.0'
+                : priceController!.text.trim())
+          : '0.0',
       image: uploadImages.thumbnail,
       coverImage: uploadImages.coverImage,
       location: location,
@@ -52,7 +72,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       time: time,
       type: eventType.name,
       isRecurring: 'Not Annual',
-      host: user.name,
+      host: user.id,
       attendees: [],
     );
 
@@ -85,9 +105,11 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       );
 
       final address = placemarks.first;
+      final fullAddress =
+          '${address.subAdministrativeArea}, ${address.country}';
 
       final newLocation = LocationEntity(
-        address: address.country ?? '',
+        address: fullAddress,
         city: address.subAdministrativeArea ?? '',
         street: address.street ?? '',
         country: address.country ?? '',
@@ -113,6 +135,13 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     if (this.eventType == eventType) return;
     this.eventType = eventType;
     _updateField<EventType>(eventType);
+  }
+
+  bool isPaid = false;
+
+  void setPaid(bool value) {
+    isPaid = value;
+    _updateField<bool>(value);
   }
 
   /// --- Image Handling ---
@@ -154,10 +183,11 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   bool detailsValidator() {
     final name = eventNameController.text.trim();
     final description = descriptionController.text.trim();
+    final price = priceController?.text.trim() ?? '0.0';
     final isDateSelected = dateRange != null;
     final isTimeSelected = time != null;
 
-    if (name.isEmpty && description.isEmpty) {
+    if (name.isEmpty && description.isEmpty && price.isEmpty) {
       emit(
         ValidationFieldFailure('Please fill all required fields in the form.'),
       );
@@ -175,6 +205,11 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
     if (description.isEmpty) {
       emit(ValidationFieldFailure('Please enter an event description.'));
+      return false;
+    }
+
+    if ((price.isEmpty || double.tryParse(price) == null) && isPaid) {
+      emit(ValidationFieldFailure('Please enter a valid price.'));
       return false;
     }
 

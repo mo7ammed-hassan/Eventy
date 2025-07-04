@@ -73,4 +73,17 @@ class ProfileRepoImpl extends ProfileRepo {
       return Left(mapErrorToFailure(error));
     }
   }
+
+  @override
+  Future<Either<Failure, UserEntity>> getUserProfileById({
+    required String? id,
+  }) async {
+    try {
+      final user = await profileRemoteDataSource.getUserProfile(userId: id);
+      return Right(user.toEntity());
+    } catch (e) {
+      final error = ErrorHandler.handle(e);
+      return Left(mapErrorToFailure(error));
+    }
+  }
 }

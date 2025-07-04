@@ -4,6 +4,7 @@ import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:eventy/features/create_event/presentation/widgets/date_and_time_section/data_range_picker_section.dart';
 import 'package:eventy/features/create_event/presentation/widgets/date_and_time_section/timer_picker_section.dart';
+import 'package:eventy/features/create_event/presentation/widgets/price_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,6 +57,9 @@ class CreateEventDetailsSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSizes.spaceBtwItems),
+
+        PriceSection(priceController: cubit.priceController, isDark: isDark),
+        const SizedBox(height: AppSizes.spaceBtwSections / 2),
 
         const DateRangePickerSection(),
         const SizedBox(height: AppSizes.spaceBtwSections),
