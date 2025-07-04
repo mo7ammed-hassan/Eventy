@@ -18,7 +18,7 @@ class OnBoardingSkip extends StatelessWidget {
       child: BlocBuilder<OnboardingCubit, int>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
-          final shouldShowSkip = !cubit.isLastPage;
+          final shouldShowSkip = state < cubit.totalPages - 1;
 
           return shouldShowSkip
               ? TextButton(
