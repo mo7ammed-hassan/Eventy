@@ -46,7 +46,7 @@ class EventEntity {
       id: 'unknown',
       name: 'unknown',
       description: 'unknown',
-      image: 'unknown',
+      image: 'https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg',
       coverImage: 'unknown',
       category: 'unknown',
       location: LocationEntity.empty(),

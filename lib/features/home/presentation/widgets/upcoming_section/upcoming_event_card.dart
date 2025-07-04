@@ -4,11 +4,13 @@ import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/constants/app_styles.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
+import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class UpcomingEventCard extends StatelessWidget {
-  const UpcomingEventCard({super.key});
+  const UpcomingEventCard({super.key, required this.event});
+  final EventEntity event;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class UpcomingEventCard extends StatelessWidget {
                       borderRadius: AppStyles.eventCardRadius,
                       child: CachedNetworkImage(
                         imageUrl:
+                            event.image ??
                             'https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg',
                         fit: BoxFit.cover,
                         width: double.infinity,
@@ -67,7 +70,7 @@ class UpcomingEventCard extends StatelessWidget {
                       // -- Event title
                       FittedBox(
                         child: Text(
-                          'Tam Impact Festival 2023',
+                          event.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.titleSmall!
@@ -78,7 +81,7 @@ class UpcomingEventCard extends StatelessWidget {
                       // -- Event Price
                       FittedBox(
                         child: Text(
-                          'Surbuna, Surabaya',
+                          event.description,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodySmall
