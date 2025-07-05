@@ -13,12 +13,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EventOrganizerSection extends StatefulWidget {
   const EventOrganizerSection({
     super.key,
-    required this.imageUrl,
     required this.hostCompany,
     required this.category,
   });
 
-  final String? imageUrl;
   final String hostCompany;
   final String category;
 
@@ -45,17 +43,14 @@ class _EventOrganizerSectionState extends State<EventOrganizerSection> {
       children: [
         const DetailsHeaderSection(title: 'Organizer'),
         const SizedBox(height: AppSizes.spaceBtwTextField),
-        BlocBuilder<UserCubit, UserState>(
-          buildWhen: (prev, curr) => prev.userById?.id != curr.userById?.id,
-          builder: (context, state) {
-            final user = state.userById ?? UserEntity.empty();
-
+        BlocSelector<UserCubit, UserState, UserEntity>(
+          selector: (state) => state.userById ?? UserEntity.empty(),
+          bloc: userCubit,
+          builder: (context, user) {
             return Row(
               children: [
                 CachedNetworkImage(
-                  imageUrl: user.imageUrl.isNotEmpty
-                      ? user.imageUrl
-                      : widget.imageUrl ?? '',
+                  imageUrl: user.imageUrl,
                   imageBuilder: (_, imageProvider) =>
                       CircleAvatar(radius: 20, backgroundImage: imageProvider),
                   placeholder: (_, __) => const ShimmerWidget(

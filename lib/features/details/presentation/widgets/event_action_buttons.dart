@@ -64,11 +64,14 @@ class EventActionButtons extends StatelessWidget {
                   );
                 } else if (state is JoinEventSuccess) {
                   TFullScreenLoader.stopLoading();
+                  event.isJoined = true;
 
                   Loaders.successSnackBar(
                     title: 'Success',
                     message: state.message,
                   );
+
+                  print('Event joined: ${event.isJoined}');
                 } else if (state is JoinEventFailure) {
                   TFullScreenLoader.stopLoading();
                   Loaders.errorSnackBar(
@@ -79,15 +82,28 @@ class EventActionButtons extends StatelessWidget {
               },
               child: Expanded(
                 flex: 2,
-                child: OutlinedButton.icon(
-                  icon: const Icon(Icons.event_available, size: 20),
-                  label: Text(event.price == '0' ? 'Register' : 'Get Tickets'),
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: () => detailsCubit.joinEvent(eventId: event.id),
-                ),
+                child: event.isJoined
+                    ? OutlinedButton.icon(
+                        icon: const Icon(Icons.qr_code, size: 20),
+                        label: Text('Show QR Code'),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () {},
+                      )
+                    : OutlinedButton.icon(
+                        icon: const Icon(Icons.event_available, size: 20),
+                        label: Text(
+                          event.price == '0' ? 'Register' : 'Get Tickets',
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () =>
+                            detailsCubit.joinEvent(eventId: event.id),
+                      ),
               ),
             ),
           ],

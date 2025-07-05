@@ -1,3 +1,5 @@
+import 'package:eventy/core/constants/app_images.dart';
+
 class UserEntity {
   final String id;
   final String name;
@@ -49,7 +51,7 @@ class UserEntity {
     : id = '',
       name = 'Unknown',
       email = '',
-      imageUrl = '',
+      imageUrl = AppImages.defaultUserImageUrl,
       phone = '',
       location = '',
       address = '';

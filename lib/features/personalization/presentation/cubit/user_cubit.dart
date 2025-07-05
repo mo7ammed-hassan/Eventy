@@ -40,10 +40,18 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> getUserProfileById({required String? id}) async {
+    emit(state.copyWith(isLoadingUserById: true));
     final result = await _profileRepo.getUserProfileById(id: id!);
-    result.fold((error) {}, (fetchedUser) {
-      emit(state.copyWith(userById: fetchedUser));
-    });
+    result.fold(
+      (error) {
+        final user = UserEntity.empty();
+        emit(state.copyWith(userById: user, isLoadingUserById: false));
+      },
+      (fetchedUser) {
+        final user = fetchedUser;
+        emit(state.copyWith(userById: user, isLoadingUserById: false));
+      },
+    );
   }
 
   Future<String> shareProfileLink() async {

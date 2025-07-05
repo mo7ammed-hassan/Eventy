@@ -1,3 +1,4 @@
+import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/features/details/presentation/widgets/details_header_section.dart';
@@ -16,6 +17,7 @@ class EventMapSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = HelperFunctions.isDarkMode(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -26,9 +28,11 @@ class EventMapSection extends StatelessWidget {
           future: HelperFunctions.getFullAddress(location),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SizedBox(
+              return SizedBox(
                 height: 20,
-                child: LinearProgressIndicator(),
+                child: LinearProgressIndicator(
+                  color: isDark ? AppColors.darkerGrey : AppColors.grey,
+                ),
               );
             } else if (snapshot.hasError) {
               return Text(

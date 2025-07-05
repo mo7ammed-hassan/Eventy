@@ -44,7 +44,6 @@ class EventDetailsScreen extends StatelessWidget {
                     EventOrganizerSection(
                       hostCompany: event.host,
                       category: event.category,
-                      imageUrl: event.image,
                     ),
                   ],
                 ),

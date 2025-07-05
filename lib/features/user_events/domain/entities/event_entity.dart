@@ -19,13 +19,14 @@ class EventEntity {
   final String host;
   final List<dynamic> attendees;
   final int v;
+  bool isJoined = false;
 
   EventEntity({
     required this.id,
     required this.name,
     required this.description,
     this.image,
-    this.coverImage,  
+    this.coverImage,
     required this.category,
     required this.location,
     required this.status,
@@ -39,14 +40,61 @@ class EventEntity {
     required this.host,
     required this.attendees,
     required this.v,
+    this.isJoined = false,
   });
+
+  // copyWith
+  EventEntity copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? image,
+    String? coverImage,
+    String? category,
+    LocationEntity? location,
+    String? status,
+    String? hostCompany,
+    String? isRecurring,
+    DateTime? date,
+    String? time,
+    String? price,
+    String? type,
+    bool? paid,
+    String? host,
+    List<dynamic>? attendees,
+    int? v,
+    isJoined,
+  }) {
+    return EventEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      image: image ?? this.image,
+      coverImage: coverImage ?? this.coverImage,
+      category: category ?? this.category,
+      location: location ?? this.location,
+      status: status ?? this.status,
+      hostCompany: hostCompany ?? this.hostCompany,
+      isRecurring: isRecurring ?? this.isRecurring,
+      date: date ?? this.date,
+      time: time ?? this.time,
+      price: price ?? this.price,
+      type: type ?? this.type,
+      paid: paid ?? this.paid,
+      host: host ?? this.host,
+      attendees: attendees ?? this.attendees,
+      v: v ?? this.v,
+      isJoined: isJoined ?? this.isJoined,
+    );
+  }
 
   static empty() {
     return EventEntity(
       id: 'unknown',
       name: 'unknown',
       description: 'unknown',
-      image: 'https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg',
+      image:
+          'https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg',
       coverImage: 'unknown',
       category: 'unknown',
       location: LocationEntity.empty(),

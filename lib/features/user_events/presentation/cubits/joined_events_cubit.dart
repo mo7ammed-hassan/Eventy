@@ -4,10 +4,10 @@ import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/features/user_events/domain/usecases/get_created_events_usecase.dart';
 import 'package:eventy/features/user_events/presentation/cubits/paginated_events_cubit.dart';
 
-class CreatedEventsCubit extends PaginatedEventsCubit {
+class JoinedEventsCubit extends PaginatedEventsCubit {
   final GetCreatedEventsUsecase getCreatedEventsUsecase;
 
-  CreatedEventsCubit({required this.getCreatedEventsUsecase}) : super();
+  JoinedEventsCubit({required this.getCreatedEventsUsecase}) : super();
 
   @override
   Future<Either<Failure, List<EventEntity>>> getEvents() async {

@@ -19,7 +19,7 @@ import 'package:eventy/features/user_events/domain/usecases/get_user_joined_even
 import 'package:eventy/features/user_events/domain/usecases/join_event_usecase.dart';
 import 'package:eventy/features/user_events/domain/usecases/remove_event_from_favorite_usecase.dart';
 import 'package:eventy/features/user_events/domain/usecases/update_event_usecase.dart';
-import 'package:eventy/features/user_events/presentation/cubits/created_events_cubit.dart';
+import 'package:eventy/features/user_events/presentation/cubits/joined_events_cubit.dart';
 import 'package:eventy/features/user_events/presentation/cubits/favorite_events_cubit.dart';
 import 'package:eventy/features/user_events/presentation/cubits/pending_events_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -86,8 +86,8 @@ void registerUserEventsDependencies(GetIt getIt) {
   );
 
   /// --- Cubits
-  getIt.registerLazySingleton<CreatedEventsCubit>(
-    () => CreatedEventsCubit(getCreatedEventsUsecase: getIt()),
+  getIt.registerLazySingleton<JoinedEventsCubit>(
+    () => JoinedEventsCubit(getCreatedEventsUsecase: getIt()),
   );
   getIt.registerLazySingleton<FavoriteEventsCubit>(
     () => FavoriteEventsCubit(getIt<FavoriteEventUseCases>()),
@@ -108,9 +108,9 @@ void unRegisterUserEventsCubits(GetIt getIt) {
 }
 
 void registerUserEventsCubits(GetIt getIt) {
-  if (!getIt.isRegistered<CreatedEventsCubit>()) {
-    getIt.registerLazySingleton<CreatedEventsCubit>(
-      () => CreatedEventsCubit(getCreatedEventsUsecase: getIt()),
+  if (!getIt.isRegistered<JoinedEventsCubit>()) {
+    getIt.registerLazySingleton<JoinedEventsCubit>(
+      () => JoinedEventsCubit(getCreatedEventsUsecase: getIt()),
     );
   }
 
@@ -135,7 +135,7 @@ void registerUserEventsCubits(GetIt getIt) {
 
 extension on GetIt {
   void unregisterAll() {
-    unregister<CreatedEventsCubit>();
+    unregister<JoinedEventsCubit>();
     unregister<FavoriteEventsCubit>();
     unregister<PendingEventsCubit>();
     unregister<ScheduleCubit>();
