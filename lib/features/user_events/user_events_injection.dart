@@ -16,6 +16,7 @@ import 'package:eventy/features/user_events/domain/usecases/get_created_events_u
 import 'package:eventy/features/user_events/domain/usecases/get_favorite_events_usecase.dart';
 import 'package:eventy/features/user_events/domain/usecases/get_pending_events_usecase.dart';
 import 'package:eventy/features/user_events/domain/usecases/get_user_joined_events_usecase.dart';
+import 'package:eventy/features/user_events/domain/usecases/join_event_usecase.dart';
 import 'package:eventy/features/user_events/domain/usecases/remove_event_from_favorite_usecase.dart';
 import 'package:eventy/features/user_events/domain/usecases/update_event_usecase.dart';
 import 'package:eventy/features/user_events/presentation/cubits/created_events_cubit.dart';
@@ -80,6 +81,9 @@ void registerUserEventsDependencies(GetIt getIt) {
       remove: getIt<RemoveEventFromFavoriteUsecase>(),
     ),
   );
+  getIt.registerLazySingleton<JoinEventUsecase>(
+    () => JoinEventUsecase(getIt()),
+  );
 
   /// --- Cubits
   getIt.registerLazySingleton<CreatedEventsCubit>(
@@ -91,7 +95,7 @@ void registerUserEventsDependencies(GetIt getIt) {
   getIt.registerLazySingleton<PendingEventsCubit>(
     () => PendingEventsCubit(getPendingEventsUsecase: getIt()),
   );
-  getIt.registerLazySingleton<ScheduleCubit>(
+  getIt.registerFactory<ScheduleCubit>(
     () => ScheduleCubit(getUserJoinedEventsUsecase: getIt()),
   );
   getIt.registerFactory<CreateEventCubit>(

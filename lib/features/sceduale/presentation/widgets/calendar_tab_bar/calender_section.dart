@@ -1,4 +1,3 @@
-import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/utils/helpers/extensions/date_time_formatting_extension.dart';
 import 'package:eventy/features/sceduale/presentation/cubits/schedule_cubit.dart';
 import 'package:eventy/features/sceduale/presentation/cubits/schedule_state.dart';
@@ -17,12 +16,10 @@ class CalenderSection extends StatefulWidget {
 }
 
 class _CalenderSectionState extends State<CalenderSection> {
-  late ScheduleCubit cubit;
   @override
   void initState() {
-    cubit = getIt<ScheduleCubit>();
-    cubit.getEventsPerDay(selectedDate: cubit.sellectedDate);
     super.initState();
+    context.read<ScheduleCubit>().getEventsPerDay(selectedDate: DateTime.now());
   }
 
   @override

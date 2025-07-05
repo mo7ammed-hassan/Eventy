@@ -40,14 +40,13 @@ class ScheduleCubit extends Cubit<ScheduleState>
         if (events.isEmpty) {
           hasMore = false;
         }
-
         joinedEvents.addAll(events);
-        await getEventsPerDay();
         increasePage();
-
+        
+        final newJoinedEvents = List.of(joinedEvents);
         safeEmit(
           state.copyWith(
-            joinedEvents: List.of(joinedEvents),
+            joinedEvents: newJoinedEvents,
             isLoadMore: isLoadMore,
             isLoading: false,
             viewMode: ScheduleViewMode.full,
@@ -62,6 +61,8 @@ class ScheduleCubit extends Cubit<ScheduleState>
 
     if (selectedDate != null) {
       sellectedDate = selectedDate;
+    } else {
+      newSelectedDate = DateTime.now();
     }
 
     final filtered = joinedEvents.where((event) {

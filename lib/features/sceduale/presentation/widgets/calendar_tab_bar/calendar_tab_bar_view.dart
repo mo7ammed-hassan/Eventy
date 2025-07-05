@@ -1,13 +1,16 @@
+import 'package:eventy/features/sceduale/presentation/cubits/schedule_cubit.dart';
 import 'package:eventy/features/sceduale/presentation/widgets/events/events_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/features/sceduale/presentation/widgets/calendar_tab_bar/calender_section.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CalendarTabBarView extends StatelessWidget {
   const CalendarTabBarView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    context.read<ScheduleCubit>().getEventsPerDay();
     return Padding(
       padding: const EdgeInsets.only(
         right: AppSizes.defaultScreenPadding,

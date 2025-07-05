@@ -1,21 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eventy/config/routing/routes.dart';
-import 'package:eventy/config/service_locator.dart';
-import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_images.dart';
 import 'package:eventy/core/constants/app_styles.dart';
 import 'package:eventy/core/utils/helpers/extensions/navigation_extension.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
-import 'package:eventy/features/user_events/presentation/cubits/favorite_events_cubit.dart';
-import 'package:eventy/features/user_events/presentation/cubits/paginated_events_state.dart';
 import 'package:eventy/shared/widgets/event_widgets/attendee_avatars.dart';
 import 'package:eventy/shared/widgets/event_widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconsax/iconsax.dart';
 
 class HorizontalEventCard extends StatelessWidget {
   const HorizontalEventCard({super.key, this.event});
@@ -29,98 +23,55 @@ class HorizontalEventCard extends StatelessWidget {
           context.pushNamedPage(Routes.eventDetailsScreen, arguments: event),
       child: AspectRatio(
         aspectRatio: 2 / 0.8,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(
-                right: AppSizes.spaceBtwItems,
-                left: AppSizes.spaceBtwItems,
-                top: AppSizes.defaultPadding / 2,
-                bottom: AppSizes.defaultPadding / 2,
-                //vertical: AppSizes.defaultPadding,
-              ),
-              decoration: _buildCardDecoration(isDark),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        // User Info
-                        _UserInfoSection(event),
-                        const SizedBox(height: AppSizes.lg),
+        child: Container(
+          padding: const EdgeInsets.only(
+            right: AppSizes.spaceBtwItems,
+            left: AppSizes.spaceBtwItems,
+            top: AppSizes.defaultPadding / 2,
+            bottom: AppSizes.defaultPadding / 2,
+            //vertical: AppSizes.defaultPadding,
+          ),
+          decoration: _buildCardDecoration(isDark),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    // User Info
+                    _UserInfoSection(event),
+                    const SizedBox(height: AppSizes.lg),
 
-                        // -- Event Title & Location
-                        _EventDetailsSection(event),
-                        const SizedBox(height: AppSizes.lg),
+                    // -- Event Title & Location
+                    _EventDetailsSection(event),
+                    const SizedBox(height: AppSizes.lg),
 
-                        // -- Attendees Avatars
-                        Flexible(
-                          fit: FlexFit.loose,
-                          child: AttendeeAvatars(
-                            avatarSize: 10,
-                            width: 50,
-                            fntSize: 12,
-                            attendees: [
-                              'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5j8nUEqIX1fJuWCjZxWDh1rL-QL_cq2A-85035phw9d-hiWbpU7r6H2WKRJ2spHwcJGE&usqp=CAU',
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmx-wxle_unpBUp-PdatrfcHp3ljhBkIHdLeEmYmn6CYmJrpMAzOVfUxCu9CKX19zxsqA&usqp=CAU',
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: AppSizes.lg),
-
-                  // -- Event Image
-                  Flexible(
-                    flex: 2,
-                    child: _EventImageSection(event?.image ?? ''),
-                  ),
-                ],
-              ),
-            ),
-
-            // -- Robot icon
-            Positioned(
-              top: -12,
-              right: -10,
-              child: BlocBuilder<FavoriteEventsCubit, PaginatedEventsState>(
-                bloc: getIt.get<FavoriteEventsCubit>(),
-                builder: (context, state) {
-                  bool isAlreadyFavorite = false;
-                  if (state is BaseEventLoaded) {
-                    isAlreadyFavorite = state.events.any(
-                      (e) => e.id == event?.id,
-                    );
-                  }
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (child, animation) {
-                      return ScaleTransition(scale: animation, child: child);
-                    },
-                    child: IconButton(
-                      key: ValueKey<bool>(isAlreadyFavorite),
-                      onPressed: () => getIt
-                          .get<FavoriteEventsCubit>()
-                          .toggleFavorite(event: event ?? EventEntity.empty()),
-                      icon: Icon(
-                        isAlreadyFavorite ? Iconsax.star5 : Iconsax.star,
+                    // -- Attendees Avatars
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: AttendeeAvatars(
+                        avatarSize: 10,
+                        width: 50,
+                        fntSize: 12,
+                        attendees: [
+                          'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5j8nUEqIX1fJuWCjZxWDh1rL-QL_cq2A-85035phw9d-hiWbpU7r6H2WKRJ2spHwcJGE&usqp=CAU',
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmx-wxle_unpBUp-PdatrfcHp3ljhBkIHdLeEmYmn6CYmJrpMAzOVfUxCu9CKX19zxsqA&usqp=CAU',
+                        ],
                       ),
-                      color: isAlreadyFavorite
-                          ? AppColors.secondaryColor
-                          : Colors.grey,
                     ),
-                  );
-                },
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: AppSizes.lg),
+
+              // -- Event Image
+              Flexible(flex: 2, child: _EventImageSection(event?.image ?? '')),
+            ],
+          ),
         ),
       ),
     );
