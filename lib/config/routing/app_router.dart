@@ -9,7 +9,7 @@ import 'package:eventy/features/onboarding/screens/onboarding_screen.dart';
 import 'package:eventy/features/personalization/presentation/screens/edit_personal_info_screen.dart';
 import 'package:eventy/features/personalization/presentation/screens/profile_screen.dart';
 import 'package:eventy/features/personalization/presentation/screens/settings_screen.dart';
-import 'package:eventy/features/user_events/presentation/screens/created_events_screen.dart';
+import 'package:eventy/features/user_events/presentation/screens/joined_events_screen.dart';
 import 'package:eventy/features/user_events/presentation/screens/favorite_events_screen.dart';
 import 'package:eventy/features/user_events/presentation/screens/pending_events_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,7 +59,7 @@ class AppRouter {
     /// --- User Events Screen ---
     Routes.favoriteScreen: (_) => const FavoriteEventsScreen(),
     Routes.pendingEvenstScreen: (_) => const PendingEventsScreen(),
-    Routes.createdEventScreen: (_) => const CreatedEventsScreen(),
+    Routes.joinedEventScreen: (_) => const JoinedEventsScreen(),
 
     /// --- Other Screen ---
     Routes.chatBotScreen: (_) => const ChatBotScreen(),

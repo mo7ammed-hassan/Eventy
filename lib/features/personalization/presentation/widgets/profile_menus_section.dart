@@ -31,9 +31,9 @@ class ProfileMenusSection extends StatelessWidget {
         ),
         ProfileMenuTile(
           icon: Iconsax.calendar,
-          title: 'Your Created Events',
-          subtitle: 'Manage your created events',
-          onTap: () => context.pushNamedPage(Routes.createdEventScreen),
+          title: 'Your Joined Events',
+          subtitle: 'Manage your joined events',
+          onTap: () => context.pushNamedPage(Routes.joinedEventScreen),
         ),
         ProfileMenuTile(
           icon: Iconsax.ticket,
@@ -41,7 +41,7 @@ class ProfileMenusSection extends StatelessWidget {
           subtitle: 'Events you are going to attend',
           onTap: () => context.pushNamedPage(Routes.pendingEvenstScreen),
         ),
-    
+
         ProfileMenuTile(
           icon: Iconsax.setting,
           title: 'Account Settings',

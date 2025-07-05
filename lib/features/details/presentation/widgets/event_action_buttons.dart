@@ -64,6 +64,7 @@ class EventActionButtons extends StatelessWidget {
                   );
                 } else if (state is JoinEventSuccess) {
                   TFullScreenLoader.stopLoading();
+
                   Loaders.successSnackBar(
                     title: 'Success',
                     message: state.message,
@@ -93,5 +94,18 @@ class EventActionButtons extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+void showQRCode(BuildContext context) {
+  showDialog(context: context, builder: (context) => const QRCodePopup());
+}
+
+class QRCodePopup extends StatelessWidget {
+  const QRCodePopup({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

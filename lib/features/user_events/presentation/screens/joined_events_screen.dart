@@ -7,15 +7,15 @@ import 'package:eventy/shared/widgets/search/search_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CreatedEventsScreen extends StatefulWidget {
-  const CreatedEventsScreen({super.key});
+class JoinedEventsScreen extends StatefulWidget {
+  const JoinedEventsScreen({super.key});
   static final ValueNotifier<bool> _showSearchBar = ValueNotifier<bool>(false);
 
   @override
-  State<CreatedEventsScreen> createState() => _CreatedEventsScreenState();
+  State<JoinedEventsScreen> createState() => _JoinedEventsScreenState();
 }
 
-class _CreatedEventsScreenState extends State<CreatedEventsScreen> {
+class _JoinedEventsScreenState extends State<JoinedEventsScreen> {
   late final CreatedEventsCubit _createdEventsCubit;
 
   @override
@@ -31,8 +31,8 @@ class _CreatedEventsScreenState extends State<CreatedEventsScreen> {
       value: _createdEventsCubit,
       child: Scaffold(
         appBar: CustomEventAppBar(
-          title: 'Created Events',
-          showSearchBar: CreatedEventsScreen._showSearchBar,
+          title: 'Joined Events',
+          showSearchBar: JoinedEventsScreen._showSearchBar,
         ),
         body: SafeArea(
           child: Padding(
@@ -42,13 +42,13 @@ class _CreatedEventsScreenState extends State<CreatedEventsScreen> {
             child: Column(
               children: [
                 SearchBarWidget(
-                  showSearchBar: CreatedEventsScreen._showSearchBar,
+                  showSearchBar: JoinedEventsScreen._showSearchBar,
                   onChanged: (query) =>
                       _createdEventsCubit.searchEventsByTitle(query: query),
                 ),
                 const SizedBox(height: AppSizes.spaceBtwItems),
 
-                // Favourite  Events List
+                // Joined  Events List
                 const BuildBaseEventList<CreatedEventsCubit>(),
               ],
             ),

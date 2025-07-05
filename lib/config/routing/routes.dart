@@ -19,7 +19,7 @@ class Routes {
 
   /// --- User Events --- ///
   static const String favoriteScreen = '/favoriteScreen';
-  static const String createdEventScreen = '/createdEventScreen';
+  static const String joinedEventScreen = '/joinedEventScreen';
   static const String pendingEvenstScreen = '/pendingEvenstScreen';
 
   /// --- personalization --- ///
