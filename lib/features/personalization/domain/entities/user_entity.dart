@@ -50,7 +50,7 @@ class UserEntity {
   UserEntity.empty()
     : id = '',
       name = 'Unknown',
-      email = '',
+      email = 'Not available',
       imageUrl = AppImages.defaultUserImageUrl,
       phone = '',
       location = '',

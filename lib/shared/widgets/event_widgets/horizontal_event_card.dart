@@ -7,7 +7,6 @@ import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/shared/widgets/event_widgets/attendee_avatars.dart';
-import 'package:eventy/shared/widgets/event_widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 
@@ -54,7 +53,7 @@ class HorizontalEventCard extends StatelessWidget {
                       fit: FlexFit.loose,
                       child: AttendeeAvatars(
                         avatarSize: 10,
-                        width: 50,
+                        width: 60,
                         fntSize: 12,
                         attendees: [
                           'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
@@ -98,7 +97,20 @@ class _UserInfoSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // -- User Avatar
-          ProfileAvatar(radius: 16),
+          CachedNetworkImage(
+            imageUrl: event?.user.imageUrl ?? AppImages.defaultUserImageUrl,
+            imageBuilder: (_, imageProvider) =>
+                CircleAvatar(radius: 16, backgroundImage: imageProvider),
+            placeholder: (_, __) => const ShimmerWidget(
+              width: 18,
+              height: 18,
+              shapeBorder: CircleBorder(),
+            ),
+            errorWidget: (_, __, ___) => const CircleAvatar(
+              radius: 16,
+              child: Icon(Icons.error, size: 16),
+            ),
+          ),
           const SizedBox(width: AppSizes.md),
 
           // -- User email & name
@@ -108,21 +120,22 @@ class _UserInfoSection extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  event?.hostCompany ?? 'Unknown',
+                  event?.user.name ?? 'Unknown',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: isDark ? Colors.white : Colors.black,
+                    fontSize: 12,
                   ),
                 ),
                 Text(
-                  '@username',
+                  event?.user.email ?? 'Unknown',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.grey,
-                    fontSize: 12,
+                    fontSize: 11,
                   ),
                 ),
               ],

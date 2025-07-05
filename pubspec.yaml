@@ -64,6 +64,8 @@ dependencies:
   animated_text_kit: ^4.2.3
   geolocator: ^14.0.1
   geocoding: ^4.0.0
+  flutter_map_tile_caching: ^10.1.1
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -75,7 +77,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
-  flutter_launcher_icons: ^0.14.3
 
 
 flutter:

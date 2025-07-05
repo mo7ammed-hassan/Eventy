@@ -11,5 +11,5 @@ class GetCreatedEventsUsecase {
   Future<Either<Failure, List<EventEntity>>> call({
     int page = 1,
     int limit = 15,
-  }) => repository.getCreatedEventEntitys(page: page, limit: limit);
+  }) => repository.getCreatedEvents(page: page, limit: limit);
 }

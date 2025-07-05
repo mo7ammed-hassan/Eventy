@@ -1,3 +1,4 @@
+import 'package:eventy/core/abstract_service/event_enricher_service.dart';
 import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/features/create_event/event_injection.dart';
 import 'package:eventy/features/details/details_injection.dart';
@@ -31,6 +32,11 @@ Future<void> initializeDependencies() async {
 
   // --- Personalization ---
   registerPersonalizationDependencies(getIt);
+
+  /// --- User Enricher ---
+  getIt.registerFactory<EventEnricherService>(
+    () => EventEnricherServiceImpl(getIt()),
+  );
 
   /// --- User Events ---
   registerUserEventsDependencies(getIt);

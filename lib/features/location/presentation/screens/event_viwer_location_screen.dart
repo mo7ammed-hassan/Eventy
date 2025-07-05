@@ -30,6 +30,7 @@ class _EventLocationViewerScreenState extends State<EventLocationViewerScreen>
     final permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Location permission denied')),
       );

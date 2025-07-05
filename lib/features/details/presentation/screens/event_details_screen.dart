@@ -39,10 +39,10 @@ class EventDetailsScreen extends StatelessWidget {
                     const SizedBox(height: AppSizes.spaceBtwSections),
 
                     EventMapSection(location: event.location),
-                    const SizedBox(height: AppSizes.spaceBtwSections),
+                    const SizedBox(height: AppSizes.spaceBtwItems),
 
                     EventOrganizerSection(
-                      hostCompany: event.host,
+                      host: event.user,
                       category: event.category,
                     ),
                   ],

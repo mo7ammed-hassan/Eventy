@@ -1,8 +1,8 @@
+import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/widgets/shimmer/horizontal_event_card_shimmer.dart';
 import 'package:eventy/features/user_events/presentation/cubits/paginated_events_cubit.dart';
 import 'package:eventy/features/user_events/presentation/cubits/paginated_events_state.dart';
 import 'package:eventy/features/user_events/presentation/widgets/shimmer_event_list.dart';
-import 'package:eventy/shared/widgets/animated_widget/animated_list_layout.dart';
 import 'package:eventy/shared/widgets/empty_event_list.dart';
 import 'package:eventy/shared/widgets/event_widgets/horizontal_event_card.dart';
 import 'package:flutter/material.dart';
@@ -39,18 +39,18 @@ class BuildBaseEventList<T extends Cubit<PaginatedEventsState>>
                 }
                 return true;
               },
-              child: AnimatedListLayout(
-                // padding: const EdgeInsets.only(
-                //   bottom: AppSizes.spaceBtwSections,
-                //   top: 6,
-                // ),
+              child: ListView.separated(
+                padding: const EdgeInsets.only(
+                  bottom: AppSizes.spaceBtwSections,
+                  top: 6,
+                ),
                 itemCount: state.events.length + (state.isLoadingMore ? 1 : 0),
                 itemBuilder: (context, index) =>
                     state.isLoadingMore && index == state.events.length
                     ? HorizontalEventCardShimmer()
                     : HorizontalEventCard(event: state.events[index]),
-                // separatorBuilder: (context, index) =>
-                //     const SizedBox(height: AppSizes.spaceBtwItems),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: AppSizes.spaceBtwItems),
               ),
             );
           }

@@ -1,3 +1,4 @@
+import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 
 class EventEntity {
@@ -19,7 +20,8 @@ class EventEntity {
   final String host;
   final List<dynamic> attendees;
   final int v;
-  bool isJoined = false;
+
+  final UserEntity user;
 
   EventEntity({
     required this.id,
@@ -40,7 +42,7 @@ class EventEntity {
     required this.host,
     required this.attendees,
     required this.v,
-    this.isJoined = false,
+    required this.user,
   });
 
   // copyWith
@@ -64,6 +66,7 @@ class EventEntity {
     List<dynamic>? attendees,
     int? v,
     isJoined,
+    UserEntity? user,
   }) {
     return EventEntity(
       id: id ?? this.id,
@@ -84,7 +87,7 @@ class EventEntity {
       host: host ?? this.host,
       attendees: attendees ?? this.attendees,
       v: v ?? this.v,
-      isJoined: isJoined ?? this.isJoined,
+      user: user ?? this.user,
     );
   }
 
@@ -108,6 +111,7 @@ class EventEntity {
       paid: false,
       host: 'unknown',
       attendees: [],
+      user: UserEntity.empty(),
       v: 0,
     );
   }

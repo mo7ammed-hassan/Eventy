@@ -22,7 +22,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   final UserCubit userCubit = getIt.get<UserCubit>();
   UserEntity? userEntity;
 
-  late UserEntity user;
+  late UserEntity? user;
 
   void init() async {
     userEntity = userCubit.user;
@@ -72,7 +72,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       time: time,
       type: eventType.name,
       isRecurring: 'Not Annual',
-      host: user.id,
+      host: user?.id,
       attendees: [],
     );
 

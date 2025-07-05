@@ -86,15 +86,25 @@ class HelperFunctions {
   }
 
   static Future<String> getFullAddress(LocationEntity location) async {
-    final List<Placemark> placemarks = await placemarkFromCoordinates(
-      location.latitude,
-      location.longitude,
-    );
+    try {
+      final placemarks = await placemarkFromCoordinates(
+        location.latitude,
+        location.longitude,
+      ).timeout(const Duration(seconds: 3));
 
-    final address = placemarks.first;
+      if (placemarks.isEmpty) return 'Unknown location';
 
-    final fullAddress = '${address.street}, ${address.subAdministrativeArea}, ${address.country}';
+      final address = placemarks.first;
+      final parts = [
+        address.street,
+        address.subAdministrativeArea,
+        address.country,
+      ].where((part) => part?.isNotEmpty ?? false);
 
-    return fullAddress;
+      return parts.isNotEmpty ? parts.join(', ') : 'Unknown location';
+    } catch (e) {
+      return 'Location: ${location.latitude.toStringAsFixed(4)}, '
+          '${location.longitude.toStringAsFixed(4)}';
+    }
   }
 }

@@ -8,6 +8,7 @@ import 'package:eventy/config/routing/app_router.dart';
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/storage/app_storage.dart';
 
+
 Future<void> main() async {
   // Flutter Binding
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,7 @@ Future<void> main() async {
 
   // Remove Splash Screen after initialization
   FlutterNativeSplash.remove();
+
   // Load saved theme before running the app
   await ThemeService.init();
 

@@ -4,7 +4,6 @@ import 'package:eventy/core/utils/dialogs/custom_dialogs.dart';
 import 'package:eventy/features/auth/domain/repositories/auth_repo.dart';
 import 'package:eventy/features/personalization/data/mappers/user_mappers.dart';
 import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
-import 'package:eventy/features/user_events/user_events_injection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eventy/features/personalization/domain/repositories/profile_repo.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_state.dart';
@@ -16,7 +15,7 @@ class UserCubit extends Cubit<UserState> {
   final AuthRepo _authRepo;
   final SecureStorage _storage = getIt<SecureStorage>();
 
-  UserEntity user = UserEntity.empty();
+  UserEntity? user;
   String profileLink = '';
 
   Future<void> getUserProfile() async {
@@ -35,21 +34,6 @@ class UserCubit extends Cubit<UserState> {
       (fetchedUser) {
         user = fetchedUser;
         emit(state.copyWith(user: user, isLoading: false));
-      },
-    );
-  }
-
-  Future<void> getUserProfileById({required String? id}) async {
-    emit(state.copyWith(isLoadingUserById: true));
-    final result = await _profileRepo.getUserProfileById(id: id!);
-    result.fold(
-      (error) {
-        final user = UserEntity.empty();
-        emit(state.copyWith(userById: user, isLoadingUserById: false));
-      },
-      (fetchedUser) {
-        final user = fetchedUser;
-        emit(state.copyWith(userById: user, isLoadingUserById: false));
       },
     );
   }
@@ -90,8 +74,6 @@ class UserCubit extends Cubit<UserState> {
       (_) async {
         await _storage.deleteAllTokens();
         await _storage.deleteUserId();
-        unRegisterUserEventsCubits(getIt);
-
         emit(
           state.copyWith(
             isLoggingOut: false,
@@ -99,7 +81,7 @@ class UserCubit extends Cubit<UserState> {
           ),
         );
 
-        user = UserEntity.empty();
+        user = null;
       },
     );
   }

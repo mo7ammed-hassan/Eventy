@@ -1,3 +1,5 @@
+import 'package:eventy/features/personalization/data/models/user_model.dart';
+
 import '../../../location/data/location_model.dart';
 
 class EventModel {
@@ -17,6 +19,7 @@ class EventModel {
   String? type;
   bool? paid;
   String? host;
+  UserModel? user;
   List<dynamic>? attendees;
   int? v;
 
@@ -38,6 +41,7 @@ class EventModel {
     this.paid,
     this.host,
     this.attendees,
+    this.user,
     this.v,
   });
 

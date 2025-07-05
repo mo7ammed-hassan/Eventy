@@ -31,6 +31,9 @@ class UserModel {
     );
   }
 
+  // empty
+  static UserModel empty() => UserModel();
+
   Map<String, dynamic> toJson() => {
     '_id': id,
     'name': name,

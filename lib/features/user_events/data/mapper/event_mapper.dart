@@ -1,3 +1,5 @@
+import 'package:eventy/features/personalization/data/mappers/user_mappers.dart';
+import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
 import 'package:eventy/features/user_events/data/mapper/location_mapper.dart';
 import 'package:eventy/features/user_events/data/models/event_model.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
@@ -25,6 +27,7 @@ extension EventMapper on EventModel {
     type: type ?? 'unknown',
     paid: paid ?? false,
     host: host ?? 'unknown',
+    user: user?.toEntity() ?? UserEntity.empty(),
     attendees: attendees ?? [],
     v: v ?? 0,
   );
@@ -52,6 +55,7 @@ extension EventEntityMapper on EventEntity {
     paid: paid,
     host: host,
     attendees: attendees,
+    user: user.toModel(),
     v: v,
   );
 }

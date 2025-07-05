@@ -1,3 +1,4 @@
+import 'package:eventy/core/abstract_service/event_enricher_service.dart';
 import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
@@ -38,6 +39,7 @@ void registerUserEventsDependencies(GetIt getIt) {
     () => UserEventsRepositoryImpl(
       getIt<UserEventsRemoteDataSource>(),
       getIt<SecureStorage>(),
+      getIt<EventEnricherService>(),
     ),
   );
   getIt.registerLazySingleton<ManageUserEventsRepository>(
