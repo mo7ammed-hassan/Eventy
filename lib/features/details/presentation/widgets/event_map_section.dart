@@ -32,6 +32,10 @@ class EventMapSection extends StatelessWidget {
                 height: 20,
                 child: LinearProgressIndicator(
                   color: isDark ? AppColors.darkerGrey : AppColors.grey,
+                  backgroundColor: isDark
+                      ? AppColors.darkerGrey
+                      : AppColors.grey,
+                  borderRadius: BorderRadius.circular(AppSizes.eventCardRadius),
                 ),
               );
             } else if (snapshot.hasError) {
