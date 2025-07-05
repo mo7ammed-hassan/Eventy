@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
               const TFormDivider(dividerText: 'or Sign in with'),
               const SizedBox(height: 32.0),
               // Footer
-              const TSocialButtons(),
+              const TSocialButtons(enableSignin: true),
             ],
           ),
         ),

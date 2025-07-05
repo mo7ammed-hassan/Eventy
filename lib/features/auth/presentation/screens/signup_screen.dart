@@ -1,3 +1,4 @@
+import 'package:eventy/core/utils/helpers/extensions/navigation_extension.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,8 +49,9 @@ class SignupScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                       recognizer: TapGestureRecognizer()
-                        ..onTap = () =>
-                            Navigator.pushNamed(context, Routes.loginScreen),
+                        ..onTap = () => context.pushNamedAndRemoveUntilPage(
+                          Routes.loginScreen,
+                        ),
                     ),
                   ],
                 ),

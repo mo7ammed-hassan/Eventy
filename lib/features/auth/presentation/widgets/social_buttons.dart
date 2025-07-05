@@ -6,7 +6,8 @@ import 'package:eventy/features/auth/presentation/widgets/scocial_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TSocialButtons extends StatelessWidget {
-  const TSocialButtons({super.key});
+  const TSocialButtons({super.key,  this.enableSignin = false});
+  final bool enableSignin;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class TSocialButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TSocialButton(
-          onPressed: () => context.read<SignInCubit>().signinWithGoogle(),
+          onPressed: enableSignin ? () => context.read<SignInCubit>().signinWithGoogle() : null,
           socialIcon: AppImages.google,
         ),
         const SizedBox(width: AppSizes.spaceBtwItems),
