@@ -40,7 +40,9 @@ class EventActionButtons extends StatelessWidget {
                       color: isFavorite ? AppColors.primaryColor : Colors.grey,
                       size: 20,
                     ),
-                    label: const Text('Save'),
+                    label: FittedBox(
+                      child: Text(isFavorite ? 'Saved' : 'Save'),
+                    ),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppColors.fillColor),
                     ),
