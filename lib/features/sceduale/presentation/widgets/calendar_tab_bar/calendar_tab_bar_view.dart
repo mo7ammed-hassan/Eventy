@@ -1,4 +1,5 @@
 import 'package:eventy/features/sceduale/presentation/cubits/schedule_cubit.dart';
+import 'package:eventy/features/sceduale/presentation/cubits/schedule_state.dart';
 import 'package:eventy/features/sceduale/presentation/widgets/events/events_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
@@ -19,11 +20,8 @@ class _CalendarTabBarViewState extends State<CalendarTabBarView>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!hasLoaded) {
-      final cubit = context.read<ScheduleCubit>();
-      cubit.getEventsPerDay(selectedDate: cubit.state.selectedDate);
-      hasLoaded = true;
-    }
+    final cubit = context.read<ScheduleCubit>();
+    cubit.getEventsPerDay(selectedDate: cubit.state.selectedDate);
   }
 
   @override
@@ -47,7 +45,12 @@ class _CalendarTabBarViewState extends State<CalendarTabBarView>
           const SliverToBoxAdapter(
             child: SizedBox(height: AppSizes.defaultPadding),
           ),
-          const EventsListView(isCalender: true),
+        BlocBuilder<ScheduleCubit, ScheduleState>(
+            builder: (context, state) {
+              return EventsListView(events: state.eventsPerDay);
+            },
+          ),
+
           const SliverToBoxAdapter(
             child: SizedBox(height: AppSizes.spaceBtwSections),
           ),

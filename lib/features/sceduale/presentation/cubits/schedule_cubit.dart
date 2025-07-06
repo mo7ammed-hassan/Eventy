@@ -21,9 +21,20 @@ class ScheduleCubit extends Cubit<ScheduleState>
   DateTime selectedDate = DateTime.now();
   DateTime focusedDate = DateTime.now();
 
-  Future<void> getJoinedEvents({bool isLoadMore = false}) async {
-    safeEmit(state.copyWith(viewMode: ScheduleViewMode.full));
-    if (joinedEvents.isNotEmpty && !isLoadMore) return;
+  Future<void> getJoinedEvents({
+    bool isLoadMore = false,
+    ScheduleViewMode? forceViewMode,
+  }) async {
+    if (joinedEvents.isNotEmpty && !isLoadMore) {
+      safeEmit(
+        state.copyWith(
+          joinedEvents: List.of(joinedEvents),
+          isLoadMore: false,
+          viewMode: forceViewMode,
+        ),
+      );
+      return;
+    }
 
     if (!canLoadMore()) return;
     isLoading = true;
@@ -53,7 +64,7 @@ class ScheduleCubit extends Cubit<ScheduleState>
             joinedEvents: newJoinedEvents,
             isLoadMore: isLoadMore,
             isLoading: false,
-            viewMode: ScheduleViewMode.full,
+            viewMode: forceViewMode,
           ),
         );
       },
@@ -62,7 +73,7 @@ class ScheduleCubit extends Cubit<ScheduleState>
 
   Future<void> getEventsPerDay({DateTime? selectedDate}) async {
     safeEmit(state.copyWith(viewMode: ScheduleViewMode.daily));
-    
+
     final newSelectedDate = selectedDate ?? this.selectedDate;
     this.selectedDate = newSelectedDate;
 
@@ -96,7 +107,11 @@ class ScheduleCubit extends Cubit<ScheduleState>
     focusedDate = focusedDay;
     getEventsPerDay(selectedDate: selectedDay);
     safeEmit(
-      state.copyWith(selectedDate: selectedDay, focusedDate: focusedDay),
+      state.copyWith(
+        selectedDate: selectedDay,
+        focusedDate: focusedDay,
+        viewMode: ScheduleViewMode.daily,
+      ),
     );
   }
 }

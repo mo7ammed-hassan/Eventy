@@ -47,6 +47,7 @@ class CalenderSection extends StatelessWidget {
                     ),
                   ),
                   calendarStyle: CalendarStyle(
+                    tablePadding: EdgeInsets.all(5),
                     cellMargin: const EdgeInsets.only(
                       top: 10,
                       bottom: 10,
