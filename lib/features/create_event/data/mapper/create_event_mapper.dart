@@ -18,6 +18,7 @@ extension CreateEventMapper on CreateEventModel {
       price: price ?? '0',
       type: type ?? 'public',
       host: host ?? '',
+      isPaid: false,
       attendees: attendees ?? [],
     );
   }
@@ -42,6 +43,7 @@ extension CreateEventEntityMapper on CreateEventEntity {
       time: time,
       price: price,
       type: type,
+      isPaid: isPaid,
       host: host,
       attendees: attendees,
     );

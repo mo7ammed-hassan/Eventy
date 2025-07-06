@@ -58,16 +58,31 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
   Future<void> fetchDependOnLocation(
     LocationEntity location, {
     bool forceFetch = false,
+    bool hasMore = false,
   }) async {
-    if (_hasFetched && !forceFetch) return;
-    safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
+    if (_hasFetched && !forceFetch && !hasMore) return;
 
-    final result = await getNearbyEventsUseCase(location);
+    if (!canLoadMore()) return;
+    isLoading = true;
+
+    if (hasMore && !_hasFetched) {
+      safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
+    }
+
+    final result = await getNearbyEventsUseCase(
+      location,
+      limit: limit,
+      page: page,
+    );
     result.fold(
       (failure) => safeEmit(
         state.copyWith(errorMessage: failure.message, isLoading: false),
       ),
       (events) {
+        if (events.isEmpty || events.length < limit) {
+          hasMore = false;
+          hasMore = false;
+        }
         _hasFetched = true;
         // -- Extract trending events and upcoming events
         final List<EventEntity> trendingEvents = events;
@@ -80,6 +95,20 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
           return eventDateOnly.isAfter(todayDateOnly);
         }).toList();
 
+        if (hasMore) {
+          upcomingEvents.addAll(state.upcomingEvents!);
+        }
+
+        if (hasMore) {
+          trendingEvents.addAll(state.trendingEvents!);
+        }
+
+        if (hasMore) {
+          events.addAll(state.nearbyEvents!);
+        }
+
+        increasePage();
+
         safeEmit(
           state.copyWith(
             nearbyEvents: events,
@@ -91,10 +120,21 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
         );
       },
     );
+    isLoading = false;
   }
 
-  Future<void> fetchEvents() async {
-    if (_hasFetched) return;
+  Future<void> fetchEvents({
+    bool forceFetch = false,
+    bool hasMore = false,
+  }) async {
+    if (_hasFetched && !forceFetch && !hasMore) return;
+
+    if (!canLoadMore()) return;
+    isLoading = true;
+
+    if (hasMore && !_hasFetched) {
+      safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
+    }
 
     safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
 
@@ -102,6 +142,10 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
     result.fold(
       (failure) => safeEmit(state.copyWith(errorMessage: failure.message)),
       (events) {
+        if (events.isEmpty || events.length < limit) {
+          hasMore = false;
+          hasMore = false;
+        }
         _hasFetched = true;
         // -- Extract trending events and upcoming events
         final List<EventEntity> trendingEvents = events;
@@ -113,6 +157,21 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
           );
           return eventDateOnly.isAfter(todayDateOnly);
         }).toList();
+
+        if (hasMore) {
+          upcomingEvents.addAll(state.upcomingEvents!);
+        }
+
+        if (hasMore) {
+          trendingEvents.addAll(state.trendingEvents!);
+        }
+
+        if (hasMore) {
+          events.addAll(state.nearbyEvents!);
+        }
+
+        increasePage();
+
         safeEmit(
           state.copyWith(
             nearbyEvents: events,
@@ -124,6 +183,7 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
         );
       },
     );
+    isLoading = false;
   }
 
   void filterEventsByCategory(String category) {

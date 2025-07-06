@@ -12,6 +12,7 @@ class CreateEventEntity {
   final String? time;
   final String? price;
   final String? type;
+  final bool isPaid;
   final String? host;
   final List<dynamic>? attendees;
 
@@ -27,6 +28,7 @@ class CreateEventEntity {
     required this.time,
     required this.price,
     required this.type,
+    required this.isPaid,
     required this.host,
     required this.attendees,
   });
@@ -44,6 +46,7 @@ class CreateEventEntity {
     price: '',
     type: '',
     host: '',
+    isPaid: false,
     attendees: [],
   );
 }

@@ -46,6 +46,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   UploadImages uploadImages = const UploadImages();
   DateTime? dateRange;
   String? time;
+  bool isPaid = false;
 
   EventType eventType = EventType.public;
 
@@ -65,12 +66,13 @@ class CreateEventCubit extends Cubit<CreateEventState> {
                 ? '0.0'
                 : priceController!.text.trim())
           : '0.0',
+      isPaid: isPaid,
       image: uploadImages.thumbnail,
       coverImage: uploadImages.coverImage,
       location: location,
       date: dateRange,
       time: time,
-      type: eventType.name,
+      type: eventType.capitalizedName.toString(),
       isRecurring: 'Not Annual',
       host: user?.id,
       attendees: [],
@@ -137,8 +139,6 @@ class CreateEventCubit extends Cubit<CreateEventState> {
     _updateField<EventType>(eventType);
   }
 
-  bool isPaid = false;
-
   void setPaid(bool value) {
     isPaid = value;
     _updateField<bool>(value);
@@ -194,7 +194,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
       return false;
     }
 
-    if (name.isEmpty || name.length < 5) {
+    if (name.isEmpty || name.length < 3) {
       emit(
         ValidationFieldFailure(
           'Please enter an event name with at least 5 characters.',

@@ -13,6 +13,7 @@ class CreateEventModel {
   final String? time;
   final String? price;
   final String? type;
+  final bool? isPaid;
   final String? host;
   final List<dynamic>? attendees;
 
@@ -28,6 +29,7 @@ class CreateEventModel {
     this.time,
     this.price,
     this.type,
+    this.isPaid,
     this.host,
     this.attendees,
   });
@@ -47,6 +49,7 @@ class CreateEventModel {
       time: json.getValue<String>('time'),
       price: json.getValue<String>('price'),
       type: json.getValue<String>('type'),
+      isPaid: json.getValue<bool>('paid'),
       host: json.getValue<String>('host'),
       attendees: json.getValue<List<dynamic>>('attendees', defaultValue: []),
     );
@@ -64,6 +67,7 @@ class CreateEventModel {
     'time': time,
     'price': price,
     'type': type,
+    //'paid': isPaid,
     'host': host,
     'attendees': attendees,
   };

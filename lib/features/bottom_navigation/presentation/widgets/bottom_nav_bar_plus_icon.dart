@@ -13,32 +13,30 @@ class BottomNavBarPlusIcon extends StatelessWidget {
     final isDark = HelperFunctions.isDarkMode(context);
 
     return Positioned(
-      top: -28,
+      top: -35,
       left: 0,
       right: 0,
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(6),
-          decoration: ShapeDecoration(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
             color: isDark ? AppColors.mainblackColor : Colors.white,
-            shape: const CircleBorder(),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: isDark ? AppColors.mainblackColor : Colors.grey.shade200,
+                offset: const Offset(0, -3),
+                blurRadius: 0.0,
+                blurStyle: BlurStyle.outer,
+              ),
+            ],
           ),
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: AppColors.plushIconGradient,
-              boxShadow: [
-                BoxShadow(
-                  color: isDark
-                      ? AppColors.mainblackColor
-                      : Colors.grey.shade200,
-                  offset: const Offset(0, -3),
-                  blurRadius: 8.0,
-                  blurStyle: BlurStyle.outer,
-                ),
-              ],
             ),
             child: Center(
               child: SvgPicture.asset(
