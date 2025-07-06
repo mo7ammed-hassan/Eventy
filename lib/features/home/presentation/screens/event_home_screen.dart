@@ -23,8 +23,8 @@ class _EventHomeScreenState extends State<EventHomeScreen> {
   @override
   void initState() {
     super.initState();
-    // favoriteCubit = getIt.get<FavoriteEventsCubit>()..getEventsList();
-    // joinedEventsCubit = getIt.get<JoinedEventsCubit>()..getEventsList();
+    favoriteCubit = getIt.get<FavoriteEventsCubit>()..getEventsList();
+    joinedEventsCubit = getIt.get<JoinedEventsCubit>()..getEventsList();
     cubit = getIt.get<HomeCubit>();
     // Trigger cubit initialization after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) async {
