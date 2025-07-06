@@ -14,7 +14,7 @@ class EventEntity {
   final String isRecurring;
   final DateTime date;
   final String time;
-  final String price;
+  final String? price;
   final String type;
   final bool paid;
   final String host;

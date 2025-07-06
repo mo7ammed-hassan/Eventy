@@ -5,21 +5,38 @@ import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/features/sceduale/presentation/widgets/calendar_tab_bar/calender_section.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CalendarTabBarView extends StatelessWidget {
+class CalendarTabBarView extends StatefulWidget {
   const CalendarTabBarView({super.key});
 
   @override
+  State<CalendarTabBarView> createState() => _CalendarTabBarViewState();
+}
+
+class _CalendarTabBarViewState extends State<CalendarTabBarView>
+    with AutomaticKeepAliveClientMixin {
+  bool hasLoaded = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!hasLoaded) {
+      final cubit = context.read<ScheduleCubit>();
+      cubit.getEventsPerDay(selectedDate: cubit.state.selectedDate);
+      hasLoaded = true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    context.read<ScheduleCubit>().getEventsPerDay();
+    super.build(context);
     return Padding(
-      padding: const EdgeInsets.only(
-        right: AppSizes.defaultScreenPadding,
-        left: AppSizes.defaultScreenPadding,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSizes.defaultScreenPadding,
       ),
       child: CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: AppSizes.sm)),
-          SliverToBoxAdapter(child: CalenderSection()),
+          const SliverToBoxAdapter(child: CalenderSection()),
           const SliverToBoxAdapter(
             child: Divider(
               thickness: 1,
@@ -30,7 +47,6 @@ class CalendarTabBarView extends StatelessWidget {
           const SliverToBoxAdapter(
             child: SizedBox(height: AppSizes.defaultPadding),
           ),
-
           const EventsListView(isCalender: true),
           const SliverToBoxAdapter(
             child: SizedBox(height: AppSizes.spaceBtwSections),
@@ -39,4 +55,7 @@ class CalendarTabBarView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

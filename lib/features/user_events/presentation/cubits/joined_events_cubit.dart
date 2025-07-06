@@ -22,7 +22,11 @@ class JoinedEventsCubit extends PaginatedEventsCubit {
 
   @override
   List<EventEntity> searchEvents({required String query}) {
-    throw UnimplementedError();
+    return eventsList
+        .where(
+          (event) => event.name.toLowerCase().contains(query.toLowerCase()),
+        )
+        .toList();
   }
 
   void addJoinedEvent(EventEntity event) {

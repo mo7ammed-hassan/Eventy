@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:eventy/config/service_locator.dart';
+import 'package:eventy/core/manager/logout_manager.dart';
 import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
-import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
+import 'package:eventy/features/auth/data/datasources/auth_remote_datasource.dart';
 
 class AuthInterceptor extends Interceptor {
   final SecureStorage _storage = getIt.get<SecureStorage>();
@@ -84,7 +85,8 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  void _logout() async {
-    await getIt.get<UserCubit>().logout();
+  void _logout() {
+    LogoutManager.forceLogout();
+    getIt<AuthRemoteDataSource>().logout();
   }
 }

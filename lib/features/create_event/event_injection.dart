@@ -1,3 +1,4 @@
+import 'package:eventy/core/abstract_service/event_enricher_service.dart';
 import 'package:eventy/core/network/api_client.dart';
 import 'package:eventy/features/create_event/data/datasources/event_remote_data_source.dart';
 import 'package:eventy/features/create_event/data/repositories/event_repository_impl.dart';
@@ -14,7 +15,10 @@ void registerEventDependencies(GetIt getIt) {
 
   /// --- Repository
   getIt.registerLazySingleton<EventRepository>(
-    () => EventRepositoryImpl(getIt<EventRemoteDataSource>()),
+    () => EventRepositoryImpl(
+      getIt<EventRemoteDataSource>(),
+      getIt<EventEnricherService>(),
+    ),
   );
 
   getIt.registerLazySingleton<GetAllEventsUsecase>(

@@ -8,19 +8,8 @@ import 'package:eventy/core/constants/app_text_style.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalenderSection extends StatefulWidget {
+class CalenderSection extends StatelessWidget {
   const CalenderSection({super.key});
-
-  @override
-  State<CalenderSection> createState() => _CalenderSectionState();
-}
-
-class _CalenderSectionState extends State<CalenderSection> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<ScheduleCubit>().getEventsPerDay(selectedDate: DateTime.now());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +99,7 @@ class _CalenderSectionState extends State<CalenderSection> {
                     ),
                   ),
                   onDaySelected: (selectedDay, focusedDay) {
-                    cubit.getEventsPerDay(selectedDate: selectedDay);
+                    cubit.onSelectDay(selectedDay, focusedDay);
                   },
                   calendarFormat: CalendarFormat.month,
                   onPageChanged: (focusedDay) {

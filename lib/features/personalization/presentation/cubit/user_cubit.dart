@@ -72,8 +72,6 @@ class UserCubit extends Cubit<UserState> {
         state.copyWith(errorMessage: error.message, isLoggingOut: false),
       ),
       (_) async {
-        await _storage.deleteAllTokens();
-        await _storage.deleteUserId();
         emit(
           state.copyWith(
             isLoggingOut: false,

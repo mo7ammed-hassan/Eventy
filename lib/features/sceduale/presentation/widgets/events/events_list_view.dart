@@ -69,7 +69,10 @@ class BuildEventList extends StatelessWidget {
         itemBuilder: (context, index) =>
             state.isLoadMore && index == state.joinedEvents.length
             ? HorizontalEventCardShimmer()
-            : HorizontalEventCard(event: events[index]),
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: HorizontalEventCard(event: events[index]),
+              ),
         separatorBuilder: (context, index) =>
             const SizedBox(height: AppSizes.spaceBtwItems),
       ),

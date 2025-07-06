@@ -1,9 +1,11 @@
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/enums/enums.dart';
 import 'package:eventy/core/utils/helpers/mixins/pagination_mixin.dart';
 import 'package:eventy/core/utils/helpers/mixins/safe_emit_mixin.dart';
 import 'package:eventy/features/sceduale/presentation/cubits/schedule_state.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/features/user_events/domain/usecases/get_user_joined_events_usecase.dart';
+import 'package:eventy/features/user_events/presentation/cubits/joined_events_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ScheduleCubit extends Cubit<ScheduleState>
@@ -13,8 +15,10 @@ class ScheduleCubit extends Cubit<ScheduleState>
 
   final GetUserJoinedEventsUsecase getUserJoinedEventsUsecase;
 
+  final JoinedEventsCubit joinedEventsCubit = getIt<JoinedEventsCubit>();
+
   final List<EventEntity> joinedEvents = [];
-  DateTime sellectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
   DateTime focusedDate = DateTime.now();
 
   Future<void> getJoinedEvents({bool isLoadMore = false}) async {
@@ -42,7 +46,7 @@ class ScheduleCubit extends Cubit<ScheduleState>
         }
         joinedEvents.addAll(events);
         increasePage();
-        
+
         final newJoinedEvents = List.of(joinedEvents);
         safeEmit(
           state.copyWith(
@@ -57,13 +61,10 @@ class ScheduleCubit extends Cubit<ScheduleState>
   }
 
   Future<void> getEventsPerDay({DateTime? selectedDate}) async {
-    DateTime newSelectedDate = selectedDate ?? state.selectedDate;
-
-    if (selectedDate != null) {
-      sellectedDate = selectedDate;
-    } else {
-      newSelectedDate = DateTime.now();
-    }
+    safeEmit(state.copyWith(viewMode: ScheduleViewMode.daily));
+    
+    final newSelectedDate = selectedDate ?? this.selectedDate;
+    this.selectedDate = newSelectedDate;
 
     final filtered = joinedEvents.where((event) {
       return event.date.year == newSelectedDate.year &&
@@ -88,5 +89,14 @@ class ScheduleCubit extends Cubit<ScheduleState>
     );
     this.focusedDate = focusedDate;
     safeEmit(state.copyWith(focusedDate: newFocusedDate));
+  }
+
+  void onSelectDay(DateTime selectedDay, DateTime focusedDay) {
+    selectedDate = selectedDay;
+    focusedDate = focusedDay;
+    getEventsPerDay(selectedDate: selectedDay);
+    safeEmit(
+      state.copyWith(selectedDate: selectedDay, focusedDate: focusedDay),
+    );
   }
 }
