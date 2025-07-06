@@ -73,7 +73,7 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
             nearbyEvents: events,
             trendingEvents: trendingEvents,
             upcomingEvents: List.of(upcomingEvents),
-            filteredUpcomingEvents: upcomingEvents,
+            filteredUpcomingEvents: List.of(upcomingEvents),
             isLoading: false,
           ),
         );
