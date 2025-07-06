@@ -1,7 +1,7 @@
 import 'dart:math';
 
 ///  Haversine Formula
-double doublealculateDistanceInKm(
+double calculateDistanceInKm(
   double lat1,
   double lon1,
   double lat2,

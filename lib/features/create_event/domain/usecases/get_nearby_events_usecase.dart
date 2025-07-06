@@ -12,7 +12,7 @@ class GetNearbyEventsUseCase {
 
   Future<Either<Failure, List<EventEntity>>> call(
     LocationEntity location, {
-    double radiusInKm = 15,
+    double radiusInKm = 100,
     int page = 1,
     int limit = 15,
   }) async {
@@ -25,10 +25,12 @@ class GetNearbyEventsUseCase {
       final userLat = location.latitude;
       final userLng = location.longitude;
 
-      final minLat = userLat - 0.1;
-      final maxLat = userLat + 0.1;
-      final minLng = userLng - 0.1;
-      final maxLng = userLng + 0.1;
+      final delta = radiusInKm / 111; 
+
+      final minLat = userLat - delta;
+      final maxLat = userLat + delta;
+      final minLng = userLng - delta;
+      final maxLng = userLng + delta;
 
       final nearbyRough = allEvents.where((event) {
         final lat = event.location.latitude;
@@ -37,7 +39,7 @@ class GetNearbyEventsUseCase {
       }).toList();
 
       final nearbyAccurate = nearbyRough.where((event) {
-        final dist = doublealculateDistanceInKm(
+        final dist = calculateDistanceInKm(
           userLat,
           userLng,
           event.location.latitude,
@@ -47,13 +49,13 @@ class GetNearbyEventsUseCase {
       }).toList();
 
       nearbyAccurate.sort((a, b) {
-        final d1 = doublealculateDistanceInKm(
+        final d1 = calculateDistanceInKm(
           userLat,
           userLng,
           a.location.latitude,
           a.location.longitude,
         );
-        final d2 = doublealculateDistanceInKm(
+        final d2 = calculateDistanceInKm(
           userLat,
           userLng,
           b.location.latitude,

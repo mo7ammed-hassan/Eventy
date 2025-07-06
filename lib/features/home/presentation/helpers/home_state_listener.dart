@@ -4,7 +4,6 @@ import 'package:eventy/features/location/presentation/screens/request_location_s
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
 
-
 Future<void> handleHomeStateListener({
   required BuildContext context,
   required HomeState state,
