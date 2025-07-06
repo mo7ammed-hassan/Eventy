@@ -59,21 +59,24 @@ class OpenMapOptions extends StatelessWidget {
   }
 }
 
-Future<void> _openInGoogleMaps(double lat, double lng) async {
-  final googleMapsUri = Uri.parse('geo:$lat,$lng?q=$lat,$lng');
 
-  if (await canLaunchUrl(googleMapsUri)) {
+Future<void> _openInGoogleMaps(double lat, double lng) async {
+  final googleMapsAppUri = Uri.parse('comgooglemaps://?q=$lat,$lng');
+  final googleMapsWebUri = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lng');
+
+  if (await canLaunchUrl(googleMapsAppUri)) {
     final success = await launchUrl(
-      googleMapsUri,
+      googleMapsAppUri,
       mode: LaunchMode.externalApplication,
     );
-
     if (success) return;
   }
 
-  final webUri = Uri.parse('https://maps.google.com/?q=$lat,$lng');
-  if (await canLaunchUrl(webUri)) {
-    await launchUrl(webUri, mode: LaunchMode.externalApplication);
+  if (await canLaunchUrl(googleMapsWebUri)) {
+    await launchUrl(
+      googleMapsWebUri,
+      mode: LaunchMode.externalApplication,
+    );
   } else {
     debugPrint('❌ Could not open Google Maps (neither app nor web)');
   }
