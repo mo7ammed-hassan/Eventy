@@ -25,6 +25,20 @@ class ScheduleCubit extends Cubit<ScheduleState>
     bool isLoadMore = false,
     ScheduleViewMode? forceViewMode,
   }) async {
+    if (joinedEventsCubit.eventsList.isNotEmpty && !isLoadMore) {
+      joinedEvents.clear();
+      joinedEvents.addAll(joinedEventsCubit.eventsList);
+
+      safeEmit(
+        state.copyWith(
+          joinedEvents: List.of(joinedEvents),
+          isLoadMore: false,
+          viewMode: forceViewMode,
+        ),
+      );
+      return;
+    }
+
     if (joinedEvents.isNotEmpty && !isLoadMore) {
       safeEmit(
         state.copyWith(

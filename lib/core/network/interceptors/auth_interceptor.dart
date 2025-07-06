@@ -86,7 +86,7 @@ class AuthInterceptor extends Interceptor {
   }
 
   void _logout() {
-    LogoutManager.forceLogout();
     getIt<AuthRemoteDataSource>().logout();
+    LogoutManager.forceLogout();
   }
 }
