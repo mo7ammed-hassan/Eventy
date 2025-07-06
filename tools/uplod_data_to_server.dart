@@ -1,64 +1,105 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/features/create_event/data/mapper/create_event_mapper.dart';
 import 'package:eventy/features/create_event/data/models/create_event_model.dart';
-import 'package:eventy/features/create_event/domain/entities/create_event_entity.dart';
 import 'package:eventy/features/user_events/domain/repositories/manage_user_events_repository.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 
 class UploadDataToServer {
   final ManageUserEventsRepository _repository =
       getIt<ManageUserEventsRepository>();
 
-  /// Load events from local JSON file
-  Future<List<CreateEventModel>> _loadEventsFromJson() async {
-    final jsonString = await rootBundle.loadString('assets/data.json');
+  final String dataFile = 'assets/data.json';
+  final String failedFile = 'assets/failed_events.json';
+
+  Future<List<CreateEventModel>> _loadEventsFromFile(String path) async {
+    final file = File(path);
+    final jsonString = await file.readAsString();
     final Map<String, dynamic> jsonMap = json.decode(jsonString);
-
     final List<dynamic> jsonData = jsonMap['events'];
-
-    final events = jsonData
+    return jsonData
         .cast<Map<String, dynamic>>()
         .map(CreateEventModel.fromJson)
         .toList();
-
-    return events;
   }
 
-  /// Upload a single event
-  Future<void> _uploadEvent(CreateEventEntity event) async {
-    await _repository.createEvent(event: event);
+  Future<void> _saveFailedEvents(List<CreateEventModel> failed) async {
+    final file = File(failedFile);
+    final json = jsonEncode({'events': failed.map((e) => e.toJson()).toList()});
+    await file.writeAsString(json);
+    debugPrint('💾 Saved ${failed.length} failed events to $failedFile');
   }
 
-  /// Upload all events one by one
-  Future<void> uploadAllEvents() async {
-    final events = await _loadEventsFromJson();
-    final int total = events.length;
-    int successCount = 0;
-    int failureCount = 0;
-
-    debugPrint('📦 Starting upload of $total events...');
-
-    for (int i = 0; i < total; i++) {
-      final event = events[i];
+  Future<void> _uploadEventWithRetry(
+    CreateEventModel event, {
+    int maxRetries = 3,
+  }) async {
+    int attempt = 0;
+    while (attempt < maxRetries) {
       try {
-        await _uploadEvent(event.toEntity());
-        successCount++;
-        debugPrint('[$i/$total] ✅ Uploaded: ${event.name}');
-      } catch (e) {
-        failureCount++;
-        debugPrint('[$i/$total] ❌ Failed: ${event.name} - $e');
+        await _repository.createEvent(event: event.toEntity());
+        return;
+      } catch (_) {
+        attempt++;
+        await Future.delayed(const Duration(milliseconds: 300));
       }
+    }
+    throw Exception('Max retries reached for: ${event.name}');
+  }
 
-      await Future.delayed(const Duration(milliseconds: 300));
+  Future<bool> _upload(List<CreateEventModel> events) async {
+    int success = 0;
+    int failure = 0;
+    final failed = <CreateEventModel>[];
+
+    debugPrint('📦 Uploading ${events.length} events...');
+
+    for (final event in events) {
+      try {
+        await _uploadEventWithRetry(event);
+        success++;
+        debugPrint('✅ Uploaded: ${event.name}');
+      } catch (e) {
+        failure++;
+        failed.add(event);
+        debugPrint('❌ Failed: ${event.name}');
+      }
     }
 
-    debugPrint('------------------------------------------');
-    debugPrint('🎉 Upload complete');
-    debugPrint('📊 Total events: $total');
-    debugPrint('✅ Successfully uploaded: $successCount');
-    debugPrint('❌ Failed uploads: $failureCount');
-    debugPrint('------------------------------------------');
+    debugPrint('------------------------------');
+    debugPrint('📊 Total: ${events.length}');
+    debugPrint('✅ Success: $success');
+    debugPrint('❌ Failed: $failure');
+    debugPrint('------------------------------');
+
+    if (failed.isNotEmpty) {
+      await _saveFailedEvents(failed);
+      return true; 
+    }
+
+    final failedFileFile = File(failedFile);
+    if (await failedFileFile.exists()) {
+      await failedFileFile.delete();
+    }
+
+    return false;
+  }
+
+  Future<bool> uploadAllEvents() async {
+    final events = await _loadEventsFromFile(dataFile);
+    return await _upload(events);
+  }
+
+  Future<void> uploadFailedOnly() async {
+    final file = File(failedFile);
+    if (!await file.exists()) {
+      debugPrint('📂 No failed events file found.');
+      return;
+    }
+
+    final events = await _loadEventsFromFile(failedFile);
+    debugPrint('♻️ Retrying ${events.length} failed events...');
+    await _upload(events);
   }
 }

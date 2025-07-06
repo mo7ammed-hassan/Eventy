@@ -74,7 +74,9 @@ class SignInCubit extends Cubit<SignInState> {
         userId: autData.user.id,
       );
       registerUserEventsCubits(getIt);
-      getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt()));
+      if (!getIt.isRegistered<HomeCubit>()) {
+        getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt()));
+      }
       emit(const SignInSuccess('Successfully Login in'));
     });
   }

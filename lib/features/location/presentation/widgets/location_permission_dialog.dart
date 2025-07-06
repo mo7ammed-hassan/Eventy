@@ -42,7 +42,7 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
             message: 'Location permission is still not granted.',
           );
         } else {
-          Navigator.pop(context);
+          //Navigator.pop(context);
           Loaders.successSnackBar(
             title: 'Permission Granted',
             message: 'Location permission is granted.',
@@ -101,6 +101,7 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
               ),
               onPressed: () async {
                 openedSettings = true;
+                // TODO : Show Loading
                 await widget.locationCubit.openAppSettings();
               },
               child: const FittedBox(child: Text('Open App Settings')),
