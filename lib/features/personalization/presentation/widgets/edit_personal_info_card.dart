@@ -9,11 +9,13 @@ class EditPersonalInfoCard extends StatelessWidget {
     required this.title,
     this.onTap,
     this.controller,
+    this.enabled = true,
   });
 
   final String title;
   final VoidCallback? onTap;
   final TextEditingController? controller;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class EditPersonalInfoCard extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
+                  enabled: enabled,
                   controller: controller,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: isDark ? Colors.grey : Colors.blueGrey,
@@ -51,7 +54,7 @@ class EditPersonalInfoCard extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  onTap;
+                  onTap?.call();
                 },
                 icon: const Icon(
                   Iconsax.edit,

@@ -1,8 +1,5 @@
-import 'package:eventy/config/service_locator.dart';
-import 'package:eventy/core/storage/app_storage.dart';
-import 'package:eventy/features/location/data/location_model.dart';
+import 'package:eventy/features/location/domain/location_repository.dart';
 import 'package:eventy/features/location/presentation/cubits/location_state.dart';
-import 'package:eventy/features/user_events/data/mapper/location_mapper.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,11 +7,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit() : super(LocationState()) {
+  LocationCubit(this._loctaionRepository) : super(LocationState()) {
     _init();
   }
 
   LocationEntity location = LocationEntity.empty();
+  final LocationRepository _loctaionRepository;
 
   void _init() {
     final location = getLocation();
@@ -24,8 +22,6 @@ class LocationCubit extends Cubit<LocationState> {
       }
     }
   }
-
-  final _storage = getIt<AppStorage>();
 
   /// --- Detect user location --- ///
   Future<void> detectUserLocation({bool saveCurrentLocation = true}) async {
@@ -136,7 +132,8 @@ class LocationCubit extends Cubit<LocationState> {
       );
 
       final address = placemarks.first;
-      final fullAddress = '${address.subAdministrativeArea}, ${address.country}';
+      final fullAddress =
+          '${address.subAdministrativeArea}, ${address.country}';
       final userAddress = LocationEntity(
         address: fullAddress,
         city: address.subAdministrativeArea ?? '',
@@ -299,14 +296,11 @@ class LocationCubit extends Cubit<LocationState> {
 
   /// --- Save Location --- ///
   Future<void> saveLocation(LocationEntity location) async {
-    await _storage.setJson('location', location.toModel().toJson());
+    await _loctaionRepository.saveLocation(location);
   }
 
   /// --- Get Location --- ///
   LocationEntity? getLocation() {
-    final json = _storage.getJson('location');
-    if (json == null) return null;
-    location = (LocationModel.fromJson(json)).toEntity();
-    return location;
+    return _loctaionRepository.getLocation();
   }
 }

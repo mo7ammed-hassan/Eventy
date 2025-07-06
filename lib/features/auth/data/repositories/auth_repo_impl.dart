@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:eventy/core/errors/error_handler.dart';
 import 'package:eventy/core/errors/failure.dart';
-import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:eventy/features/auth/data/models/auth_data.dart';
 import 'package:eventy/features/auth/data/models/login_model.dart';
 import 'package:eventy/features/auth/data/models/reset_passwor_model.dart';
 import 'package:eventy/features/auth/data/models/signup_model.dart';
@@ -10,25 +10,17 @@ import 'package:eventy/features/auth/domain/repositories/auth_repo.dart';
 
 class AuthRepoImpl extends AuthRepo {
   final AuthRemoteDataSource authRemoteDataSource;
-  final SecureStorage _storage;
 
-  AuthRepoImpl(this.authRemoteDataSource, this._storage);
+  AuthRepoImpl(this.authRemoteDataSource);
 
   @override
-  Future<Either<Failure, Unit>> login({required LoginModel loginModel}) async {
+  Future<Either<Failure, AuthData>> login({
+    required LoginModel loginModel,
+  }) async {
     try {
       final response = await authRemoteDataSource.login(loginModel);
 
-      await _storage.saveTokens(
-        accessToken: response.data['data']['accessToken'],
-        refreshToken:
-            response.data['data']['refreshToken'] ??
-            response.data['data']['accessToken'],
-      );
-
-      await _storage.saveUserId(response.data['data']['user']['_id']);
-
-      return const Right(unit);
+      return Right(response);
     } catch (e) {
       final error = ErrorHandler.handle(e);
       return Left(mapErrorToFailure(error));

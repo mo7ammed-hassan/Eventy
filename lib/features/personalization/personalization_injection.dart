@@ -23,7 +23,7 @@ void registerPersonalizationDependencies(GetIt getIt) {
 
   /// -- Cubit
   getIt.registerLazySingleton<UserCubit>(
-    () => UserCubit(getIt<ProfileRepo>(), getIt<AuthRepo>()),
+    () => UserCubit(getIt<ProfileRepo>(), getIt<AuthRepo>(), getIt()),
   );
   getIt.registerFactory<UserEventCubit>(
     () => UserEventCubit(getIt<ProfileRepo>()),

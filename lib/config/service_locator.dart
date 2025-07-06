@@ -3,7 +3,7 @@ import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/features/create_event/event_injection.dart';
 import 'package:eventy/features/details/details_injection.dart';
 import 'package:eventy/features/home/home_injection.dart';
-import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
+import 'package:eventy/features/location/location_injection.dart';
 import 'package:eventy/features/personalization/personalization_injection.dart';
 import 'package:eventy/features/search/presentation/cubits/search_cubit.dart';
 import 'package:eventy/features/user_events/user_events_injection.dart';
@@ -23,8 +23,9 @@ Future<void> initializeDependencies() async {
   );
   getIt.registerLazySingleton<SecureStorage>(() => SecureStorage());
   getIt.registerLazySingleton<AppStorage>(() => AppStorage());
-
-  getIt.registerFactory<LocationCubit>(() => LocationCubit());
+  
+  /// ------------ Locations ------------
+  registerLocationInjection();
 
   /// ------------ Features ------------
   // --- Auth ---

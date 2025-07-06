@@ -12,14 +12,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 
 class RequestLocationScreen extends StatelessWidget {
-  const RequestLocationScreen({super.key, this.saveCurrentLocation = true, this.locationCubit});
+  const RequestLocationScreen({
+    super.key,
+    this.saveCurrentLocation = true,
+    this.locationCubit,
+  });
   final bool saveCurrentLocation;
   final LocationCubit? locationCubit;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => locationCubit?? LocationCubit(),
+      create: (context) => locationCubit ?? getIt<LocationCubit>(),
       child: BlocListener<LocationCubit, LocationState>(
         listener: (context, state) => handleLocationStateListener(
           context: context,

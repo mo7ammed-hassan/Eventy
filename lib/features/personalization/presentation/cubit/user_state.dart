@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
+import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 
 /// --- Unified State ---
 class UserState extends Equatable {
@@ -13,6 +14,7 @@ class UserState extends Equatable {
   final String? successMessage;
   final bool isUpdatingImage;
   final bool updateImageSuccess;
+  final LocationEntity? location;
 
   const UserState({
     this.user,
@@ -25,6 +27,7 @@ class UserState extends Equatable {
     this.errorMessage,
     this.successMessage,
     this.updateImageSuccess = false,
+    this.location,
   });
 
   UserState copyWith({
@@ -40,6 +43,7 @@ class UserState extends Equatable {
     String? errorMessage,
     String? successMessage,
     bool? updateImageSuccess = false,
+    LocationEntity? location,
   }) {
     return UserState(
       user: user ?? this.user,
@@ -52,6 +56,7 @@ class UserState extends Equatable {
       errorMessage: errorMessage,
       successMessage: successMessage,
       updateImageSuccess: updateImageSuccess ?? this.updateImageSuccess,
+      location: location ?? this.location,
     );
   }
 
@@ -69,6 +74,7 @@ class UserState extends Equatable {
     errorMessage,
     successMessage,
     updateImageSuccess,
+    location
   ];
 }
 

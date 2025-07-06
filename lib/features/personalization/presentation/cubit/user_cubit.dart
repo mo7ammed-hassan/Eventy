@@ -2,21 +2,29 @@ import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/core/utils/dialogs/custom_dialogs.dart';
 import 'package:eventy/features/auth/domain/repositories/auth_repo.dart';
+import 'package:eventy/features/home/presentation/cubits/home_cubit.dart';
+import 'package:eventy/features/location/domain/location_repository.dart';
 import 'package:eventy/features/personalization/data/mappers/user_mappers.dart';
 import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
+import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eventy/features/personalization/domain/repositories/profile_repo.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit(this._profileRepo, this._authRepo) : super(UserState());
+  UserCubit(this._profileRepo, this._authRepo, this._locationRepo)
+    : super(UserState()) {
+    getLocation();
+  }
 
   final ProfileRepo _profileRepo;
   final AuthRepo _authRepo;
   final SecureStorage _storage = getIt<SecureStorage>();
+  final LocationRepository _locationRepo;
 
   UserEntity? user;
   String profileLink = '';
+  LocationEntity? location;
 
   Future<void> getUserProfile() async {
     final accessToken = await _storage.getAccessToken();
@@ -158,6 +166,19 @@ class UserCubit extends Cubit<UserState> {
         updateImageSuccess: false,
       ),
     );
+  }
+
+  LocationEntity? getLocation() {
+    location = _locationRepo.getLocation();
+    emit(state.copyWith(location: location));
+    return location;
+  }
+
+  Future<void> updateLocation(LocationEntity location) async {
+    if (this.location == location) return;
+    await _locationRepo.saveLocation(location);
+    emit(state.copyWith(location: location));
+    getIt<HomeCubit>().fetchDependOnLocation(location, forceFetch: true);
   }
 
   // Future.wait

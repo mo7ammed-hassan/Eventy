@@ -1,7 +1,7 @@
 import 'package:eventy/core/constants/app_images.dart';
 
 class UserModel {
-  final String? id;
+  final String id;
   final String? name;
   final String? email;
   final String? phone;
@@ -10,7 +10,7 @@ class UserModel {
   final String? image;
 
   UserModel({
-    this.id,
+    required this.id,
     this.name,
     this.email,
     this.image,
@@ -24,15 +24,15 @@ class UserModel {
       id: json['_id'],
       name: json['name'],
       email: json['email'],
-      phone: json['phone'],
-      location: json['location'],
-      address: json['address'],
-      image: json['image'],
+      phone: json['phone'] ?? '',
+      location: json['location'] ?? '',
+      address: json['address'] ?? '',
+      image: json['image'] ?? AppImages.defaultUserImageUrl,
     );
   }
 
   // empty
-  static UserModel empty() => UserModel();
+  static UserModel empty() => UserModel(id: '');
 
   Map<String, dynamic> toJson() => {
     '_id': id,

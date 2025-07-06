@@ -1,10 +1,9 @@
-import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/constants/text_strings.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
-import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
-import 'package:eventy/features/location/presentation/cubits/location_state.dart';
 import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
+import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
+import 'package:eventy/features/personalization/presentation/cubit/user_state.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:eventy/shared/widgets/event_widgets/profile_avatar_widget.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +19,7 @@ class LocationSelectorHeader extends StatelessWidget {
       sliver: SliverToBoxAdapter(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            BlocProvider(
-              create: (context) => getIt.get<LocationCubit>(),
-              child: const _LocationSelector(),
-            ),
-            const ProfileAvatar(),
-          ],
+          children: [const _LocationSelector(), const ProfileAvatar()],
         ),
       ),
     );
@@ -38,7 +31,7 @@ class _LocationSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locationCubit = context.read<LocationCubit>();
+    final userCubit = context.read<UserCubit>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,9 +52,12 @@ class _LocationSelector extends StatelessWidget {
         Row(
           children: [
             // -- User Current Location
-            BlocSelector<LocationCubit, LocationState, LocationEntity>(
-              selector: (state) => state.location ?? locationCubit.location,
-
+            BlocSelector<UserCubit, UserState, LocationEntity>(
+              selector: (state) {
+                return state.location ??
+                    userCubit.location ??
+                    LocationEntity.empty();
+              },
               builder: (context, state) {
                 return FittedBox(
                   child: Text(
@@ -75,18 +71,20 @@ class _LocationSelector extends StatelessWidget {
                 );
               },
             ),
+
             const SizedBox(width: 6),
 
             // -- Dropdown Icon
             InkWell(
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                final res = await Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        RequestLocationScreen(locationCubit: locationCubit),
-                  ),
+                  MaterialPageRoute(builder: (_) => RequestLocationScreen()),
                 );
+
+                if (res != null) {
+                  userCubit.updateLocation(res);
+                }
               },
               borderRadius: BorderRadius.circular(12),
               child: const Icon(

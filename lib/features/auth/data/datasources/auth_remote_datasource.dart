@@ -1,11 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:eventy/core/network/api_client.dart';
+import 'package:eventy/features/auth/data/models/auth_data.dart';
 import 'package:eventy/features/auth/data/models/login_model.dart';
 import 'package:eventy/features/auth/data/models/reset_passwor_model.dart';
 import 'package:eventy/features/auth/data/models/signup_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<Response> login(LoginModel loginModel);
+  Future<AuthData> login(LoginModel loginModel);
 
   Future<void> signup(SignupModel signupModel);
 
@@ -31,12 +31,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   AuthRemoteDataSourceImpl(this.apiClient);
   @override
-  Future<Response> login(LoginModel loginModel) async {
-    return await apiClient.request(
+  Future<AuthData> login(LoginModel loginModel) async {
+    final res = await apiClient.request(
       path: 'ce6e.up.railway.app/api/auth/login',
       method: 'POST',
       data: loginModel.toJson(),
     );
+    
+    final data = res.data['data'];
+    return AuthData.fromJson(data);
   }
 
   @override

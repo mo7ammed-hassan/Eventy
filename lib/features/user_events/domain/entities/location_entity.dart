@@ -8,6 +8,15 @@ class LocationEntity extends Equatable {
   final String? city;
   final String? street;
 
+  const LocationEntity({
+    this.address,
+    required this.latitude,
+    required this.longitude,
+    this.country,
+    this.city,
+    this.street,
+  });
+
   String get fullAddress => '$street, $city, $country';
 
   LocationEntity copyWith({
@@ -22,19 +31,14 @@ class LocationEntity extends Equatable {
       address: address ?? this.address,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      country: country ?? this.country,
+      city: city ?? this.city,
+      street: street ?? this.street,
     );
   }
 
-  const LocationEntity({
-    this.address,
-    required this.latitude,
-    required this.longitude,
-    this.country,
-    this.city,
-    this.street,
-  });
-
-  static empty() => LocationEntity(address: 'Unknown', latitude: 0.0, longitude: 0.0);
+  static LocationEntity empty() =>
+      const LocationEntity(address: 'Unknown', latitude: 0.0, longitude: 0.0);
 
   @override
   List<Object?> get props => [

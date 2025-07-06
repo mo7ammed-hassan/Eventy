@@ -46,8 +46,11 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
     }
   }
 
-  Future<void> fetchDependOnLocation(LocationEntity location) async {
-    if (_hasFetched) return;
+  Future<void> fetchDependOnLocation(
+    LocationEntity location, {
+    bool forceFetch = false,
+  }) async {
+    if (_hasFetched && !forceFetch) return;
     safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
 
     final result = await getNearbyEventsUseCase(location);

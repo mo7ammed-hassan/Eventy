@@ -1,3 +1,4 @@
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_images.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
@@ -54,7 +55,7 @@ class _MapSectionState extends State<MapSection> with TickerProviderStateMixin {
   }
 
   LocationEntity? getCurrentLocation() {
-    final location = LocationCubit().getLocation();
+    final location = getIt<LocationCubit>().getLocation();
     if (location != null) {
       initialZoom = 12;
       return location;

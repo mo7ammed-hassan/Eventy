@@ -1,10 +1,13 @@
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
 import 'package:eventy/core/widgets/popups/loaders.dart';
+import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 import 'package:eventy/features/personalization/presentation/cubit/user_state.dart';
 import 'package:eventy/features/personalization/presentation/widgets/edit_personal_info_card.dart';
+import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,15 +26,19 @@ class _UserInfoFormSectionState extends State<UserInfoFormSection> {
   late final TextEditingController _addressController;
   late final TextEditingController _phoneController;
 
+  final cubit = getIt.get<UserCubit>();
+
   @override
   void initState() {
     super.initState();
-    final user = context.read<UserCubit>().state.user;
+    cubit.getLocation();
 
-    _nameController = TextEditingController(text: user?.name);
-    _locationController = TextEditingController(text: user?.location);
-    _addressController = TextEditingController(text: user?.address);
-    _phoneController = TextEditingController(text: user?.phone);
+    _nameController = TextEditingController(text: cubit.state.user?.name);
+    _locationController = TextEditingController(
+      text: cubit.location?.fullAddress,
+    );
+    _addressController = TextEditingController(text: cubit.location?.address);
+    _phoneController = TextEditingController(text: cubit.state.user?.phone);
   }
 
   @override
@@ -58,21 +65,46 @@ class _UserInfoFormSectionState extends State<UserInfoFormSection> {
           ),
           const SizedBox(height: AppSizes.spaceBtwItems + 2),
 
-          EditPersonalInfoCard(
-            title: 'Location',
-            controller: _locationController,
-            onTap: () => userCubit.updateProfile({
-              'location': _locationController.text.trim(),
-            }),
+          BlocSelector<UserCubit, UserState, LocationEntity>(
+            selector: (state) =>
+                state.location ?? cubit.location ?? LocationEntity.empty(),
+            builder: (context, state) {
+              return EditPersonalInfoCard(
+                title: 'Location',
+                enabled: false,
+                controller: _locationController,
+                onTap: () async {
+                  final res = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => RequestLocationScreen()),
+                  );
+
+                  if (res != null) {
+                    userCubit.updateLocation(res);
+                    _updateTextIfChanged(res);
+                  }
+                },
+              );
+            },
           ),
           const SizedBox(height: AppSizes.spaceBtwItems + 2),
 
           EditPersonalInfoCard(
             title: 'Address',
             controller: _addressController,
-            onTap: () => userCubit.updateProfile({
-              'address': _addressController.text.trim(),
-            }),
+            enabled: false,
+
+            onTap: () async {
+              final res = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => RequestLocationScreen()),
+              );
+
+              if (res != null) {
+                userCubit.updateLocation(res);
+                _updateTextIfChanged(res);
+              }
+            },
           ),
           const SizedBox(height: AppSizes.spaceBtwItems + 2),
 
@@ -138,10 +170,15 @@ class _UserInfoFormSectionState extends State<UserInfoFormSection> {
       final userCubit = context.read<UserCubit>();
       userCubit.updateProfile({
         'name': _nameController.text.trim(),
-        'location': _locationController.text.trim(),
-        'address': _addressController.text.trim(),
-        'phone': _phoneController.text.trim(),
+        // 'location': _locationController.text.trim(),
+        // 'address': _addressController.text.trim(),
+        // 'phone': _phoneController.text.trim(),
       });
     }
+  }
+
+  void _updateTextIfChanged(LocationEntity location) {
+    _locationController.text = location.fullAddress;
+    _addressController.text = location.address ?? '';
   }
 }

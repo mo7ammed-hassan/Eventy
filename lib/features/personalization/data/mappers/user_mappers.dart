@@ -5,7 +5,7 @@ import 'package:eventy/features/personalization/domain/entities/user_entity.dart
 extension UserModelMapper on UserModel {
   UserEntity toEntity() {
     return UserEntity(
-      id: id ?? 'unknown',
+      id: id,
       name: name ?? 'Guest',
       email: email ?? 'unknown@email',
       phone: '+00000000000',

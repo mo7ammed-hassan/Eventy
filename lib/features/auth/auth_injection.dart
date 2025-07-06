@@ -1,5 +1,4 @@
 import 'package:eventy/core/network/api_client.dart';
-import 'package:eventy/core/storage/secure_storage.dart';
 import 'package:eventy/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:eventy/features/auth/data/repositories/auth_repo_impl.dart';
 import 'package:eventy/features/auth/domain/repositories/auth_repo.dart';
@@ -13,7 +12,7 @@ void registerAuthDependencies(GetIt getIt) {
   );
 
   getIt.registerLazySingleton<AuthRepo>(
-    () => AuthRepoImpl(getIt<AuthRemoteDataSource>(), getIt<SecureStorage>()),
+    () => AuthRepoImpl(getIt<AuthRemoteDataSource>()),
   );
 
   getIt.registerFactory(() => SignInCubit(authRepo: getIt()));

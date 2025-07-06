@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:eventy/config/service_locator.dart';
+import 'package:eventy/core/storage/secure_storage.dart';
+import 'package:eventy/features/home/presentation/cubits/home_cubit.dart';
 import 'package:eventy/features/user_events/user_events_injection.dart';
 import 'package:flutter/material.dart';
-import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/features/auth/data/models/login_model.dart';
 import 'package:eventy/features/auth/domain/repositories/auth_repo.dart';
 import 'package:eventy/features/auth/presentation/cubits/signin_cubit/signin_state.dart';
@@ -22,18 +23,19 @@ class SignInCubit extends Cubit<SignInState> {
   final TextEditingController emailController = TextEditingController();
 
   // Storage
-  final appStorage = getIt.get<AppStorage>();
+  final SecureStorage _storage = getIt.get<SecureStorage>();
 
   bool validateForm() {
     return formKey.currentState?.validate() ?? false;
   }
 
   // show email and password that is storage in get storage
-  void getStorageEmailAndPassword() {
-    Future.microtask(() {
-      emailController.text = appStorage.getString('REMEMBER_ME_EMAIL');
-      passwordController.text = appStorage.getString('REMEMBER_ME_PASSWORD');
-    });
+  Future<void> getStorageEmailAndPassword() async {
+    final email = await _storage.readKey(key: 'REMEMBER_ME_EMAIL');
+    final password = await _storage.readKey(key: 'REMEMBER_ME_PASSWORD');
+
+    emailController.text = email ?? '';
+    passwordController.text = password ?? '';
   }
 
   Future<void> signInWithEmailAndPassword(bool isRememberMe) async {
@@ -43,14 +45,17 @@ class SignInCubit extends Cubit<SignInState> {
 
     // handle remember me
     if (isRememberMe) {
-      appStorage.setString('REMEMBER_ME_EMAIL', emailController.text.trim());
-      appStorage.setString(
-        'REMEMBER_ME_PASSWORD',
-        passwordController.text.trim(),
+      _storage.saveKey(
+        key: 'REMEMBER_ME_EMAIL',
+        value: emailController.text.trim(),
+      );
+      _storage.saveKey(
+        key: 'REMEMBER_ME_PASSWORD',
+        value: passwordController.text.trim(),
       );
     } else {
-      appStorage.remove('REMEMBER_ME_EMAIL');
-      appStorage.remove('REMEMBER_ME_PASSWORD');
+      _storage.deleteKey(key: 'REMEMBER_ME_EMAIL');
+      _storage.deleteKey(key: 'REMEMBER_ME_PASSWORD');
     }
 
     // Construct user creation model
@@ -62,11 +67,14 @@ class SignInCubit extends Cubit<SignInState> {
     final result = await authRepo.login(loginModel: user);
 
     result.fold((failure) => emit(SignInFailure(message: failure.toString())), (
-      _,
+      autData,
     ) async {
-      // Register user cubit
-      //await getIt.get<UserCubit>().getUserProfile();
+      await _storage.saveAuthData(
+        accessToken: autData.accessToken,
+        userId: autData.user.id,
+      );
       registerUserEventsCubits(getIt);
+      getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt()));
       emit(const SignInSuccess('Successfully Login in'));
     });
   }

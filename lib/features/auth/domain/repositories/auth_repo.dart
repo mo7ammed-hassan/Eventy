@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:eventy/core/errors/failure.dart';
+import 'package:eventy/features/auth/data/models/auth_data.dart';
 import 'package:eventy/features/auth/data/models/login_model.dart';
 import 'package:eventy/features/auth/data/models/reset_passwor_model.dart';
 import 'package:eventy/features/auth/data/models/signup_model.dart';
 
 abstract class AuthRepo {
-  Future<Either<Failure, Unit>> login({required LoginModel loginModel});
+  Future<Either<Failure, AuthData>> login({required LoginModel loginModel});
 
   Future<Either<Failure, Unit>> signup({required SignupModel signupModel});
 
