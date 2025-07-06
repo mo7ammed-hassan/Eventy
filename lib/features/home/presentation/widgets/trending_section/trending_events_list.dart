@@ -40,10 +40,13 @@ class TrendingEventsList extends StatelessWidget {
                   return ListView.separated(
                     clipBehavior: Clip.none,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 4,
+                    itemCount: state.trendingEvents?.length ?? 0,
                     itemBuilder: (context, index) => AspectRatio(
                       aspectRatio: 240 / 171,
-                      child: const TrendingEventCard(key: ValueKey('')),
+                      child: TrendingEventCard(
+                        key: ValueKey(''),
+                        event: state.trendingEvents?[index],
+                      ),
                     ),
                     separatorBuilder: (context, index) =>
                         const SizedBox(width: AppSizes.spaceBtwEventCards),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/core/constants/app_images.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/constants/app_styles.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
@@ -36,7 +37,7 @@ class TrendingEventCard extends StatelessWidget {
                 child: Stack(
                   children: [
                     // -- Event Image
-                    const _EventImageSection(),
+                    _EventImageSection(event?.image),
                     // -- Top ribbon
                     Positioned.fill(
                       child: _TopRibbon(event ?? EventEntity.empty()),
@@ -58,7 +59,7 @@ class TrendingEventCard extends StatelessWidget {
                         flex: 3,
                         child: FittedBox(
                           child: Text(
-                            'Laugh with Vir Das / 20.12.2025',
+                            '${event?.name} / ${event?.formattedDate}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.titleSmall!
@@ -74,7 +75,9 @@ class TrendingEventCard extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: FittedBox(
                             child: Text(
-                              'Rs 1000',
+                              event?.paid == true
+                                  ? 'Rs {${event?.price}}'
+                                  : 'Free',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodySmall
@@ -122,7 +125,8 @@ class TrendingEventCard extends StatelessWidget {
 }
 
 class _EventImageSection extends StatelessWidget {
-  const _EventImageSection();
+  const _EventImageSection(this.imageUrl);
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +134,7 @@ class _EventImageSection extends StatelessWidget {
       child: ClipRRect(
         borderRadius: AppStyles.eventCardRadius,
         child: CachedNetworkImage(
-          imageUrl:
-              'https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg',
+          imageUrl: imageUrl ?? AppImages.defaultEventImage,
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
@@ -177,7 +180,12 @@ class _TopRibbon extends StatelessWidget {
         // -- archive icon
         IconButton(
           padding: const EdgeInsets.only(top: 20.0),
-          icon: const Icon(Iconsax.archive_1, color: Colors.white),
+          icon: Icon(
+            Iconsax.archive_1,
+            color: getIt<FavoriteEventsCubit>().isFavorite(event: event)
+                ? AppColors.primaryColor
+                : Colors.white,
+          ),
           onPressed: () =>
               getIt<FavoriteEventsCubit>().toggleFavorite(event: event),
         ),

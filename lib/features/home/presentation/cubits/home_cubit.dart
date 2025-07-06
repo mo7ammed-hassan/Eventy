@@ -2,6 +2,7 @@ import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/core/utils/helpers/mixins/pagination_mixin.dart';
 import 'package:eventy/core/utils/helpers/mixins/safe_emit_mixin.dart';
+import 'package:eventy/features/create_event/domain/usecases/get_all_events_usecase.dart';
 import 'package:eventy/features/create_event/domain/usecases/get_nearby_events_usecase.dart';
 import 'package:eventy/features/home/presentation/cubits/home_state.dart';
 import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
@@ -10,8 +11,10 @@ import 'package:eventy/features/user_events/domain/entities/location_entity.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
-  HomeCubit(this.getNearbyEventsUseCase) : super(HomeState());
+  HomeCubit(this.getNearbyEventsUseCase, this.getAllEventsUsecase)
+    : super(HomeState());
   final GetNearbyEventsUseCase getNearbyEventsUseCase;
+  final GetAllEventsUsecase getAllEventsUsecase;
 
   final _storage = getIt<AppStorage>();
 
@@ -67,7 +70,7 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
       (events) {
         _hasFetched = true;
         // -- Extract trending events and upcoming events
-        final List<EventEntity> trendingEvents = [];
+        final List<EventEntity> trendingEvents = events;
         final List<EventEntity> upcomingEvents = events.where((event) {
           final eventDateOnly = DateTime(
             event.date.year,
@@ -91,19 +94,35 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
   }
 
   Future<void> fetchEvents() async {
+    if (_hasFetched) return;
+
     safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
 
-    // 1. Call your APIs or do the logic
-    await Future.delayed(Duration(seconds: 4));
-
-    // 2. Then stop loading
-    _hasFetched = true;
-    safeEmit(
-      state.copyWith(
-        isLoading: false,
-        fetchSuccess: true,
-        shouldRequestLocation: false,
-      ),
+    final result = await getAllEventsUsecase.call();
+    result.fold(
+      (failure) => safeEmit(state.copyWith(errorMessage: failure.message)),
+      (events) {
+        _hasFetched = true;
+        // -- Extract trending events and upcoming events
+        final List<EventEntity> trendingEvents = events;
+        final List<EventEntity> upcomingEvents = events.where((event) {
+          final eventDateOnly = DateTime(
+            event.date.year,
+            event.date.month,
+            event.date.day,
+          );
+          return eventDateOnly.isAfter(todayDateOnly);
+        }).toList();
+        safeEmit(
+          state.copyWith(
+            nearbyEvents: events,
+            trendingEvents: trendingEvents,
+            upcomingEvents: List.of(upcomingEvents),
+            filteredUpcomingEvents: List.of(upcomingEvents),
+            isLoading: false,
+          ),
+        );
+      },
     );
   }
 

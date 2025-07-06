@@ -7,5 +7,5 @@ void registerHomeDependencies(GetIt getIt) {
   getIt.registerLazySingleton<GetNearbyEventsUseCase>(
     () => GetNearbyEventsUseCase(getIt<EventRepository>()),
   );
-  getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt()));
+  getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt(),getIt()));
 }

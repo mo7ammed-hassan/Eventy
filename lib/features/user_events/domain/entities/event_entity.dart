@@ -1,5 +1,6 @@
 import 'package:eventy/features/personalization/domain/entities/user_entity.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
+import 'package:intl/intl.dart';
 
 class EventEntity {
   final String id;
@@ -22,6 +23,8 @@ class EventEntity {
   final int v;
 
   final UserEntity user;
+
+  String get formattedDate => DateFormat('dd.Mm.yyyy').format(date);
 
   EventEntity({
     required this.id,
