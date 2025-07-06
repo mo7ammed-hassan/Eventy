@@ -3,6 +3,7 @@ import 'package:eventy/features/location/presentation/screens/live_tracing_map_v
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io' show Platform;
 
 class OpenMapOptions extends StatelessWidget {
   const OpenMapOptions({super.key, required this.location});
@@ -16,8 +17,11 @@ class OpenMapOptions extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: TextButton.icon(
-              onPressed: () {
-                _openInGoogleMaps(location.latitude, location.longitude);
+              onPressed: () async {
+                await openDirections(
+                  destinationLat: location.latitude,
+                  destinationLng: location.longitude,
+                );
               },
               icon: const Icon(Icons.map_outlined),
               label: const Text('Open in Google Maps'),
@@ -28,7 +32,7 @@ class OpenMapOptions extends StatelessWidget {
           ),
         ),
         const SizedBox(width: AppSizes.md),
-        
+
         Expanded(
           child: FittedBox(
             fit: BoxFit.scaleDown,
@@ -59,25 +63,46 @@ class OpenMapOptions extends StatelessWidget {
   }
 }
 
+Future<void> openDirections({
+  required double destinationLat,
+  required double destinationLng,
+  double? originLat,
+  double? originLng,
+}) async {
+  Uri? uri;
 
-Future<void> _openInGoogleMaps(double lat, double lng) async {
-  final googleMapsAppUri = Uri.parse('comgooglemaps://?q=$lat,$lng');
-  final googleMapsWebUri = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lng');
-
-  if (await canLaunchUrl(googleMapsAppUri)) {
-    final success = await launchUrl(
-      googleMapsAppUri,
-      mode: LaunchMode.externalApplication,
-    );
-    if (success) return;
+  if (Platform.isAndroid) {
+    // Android → Google Maps App
+    if (originLat != null && originLng != null) {
+      uri = Uri.parse(
+        'https://www.google.com/maps/dir/?api=1'
+        '&origin=$originLat,$originLng'
+        '&destination=$destinationLat,$destinationLng'
+        '&travelmode=driving',
+      );
+    } else {
+      uri = Uri.parse(
+        'https://www.google.com/maps/dir/?api=1'
+        '&destination=$destinationLat,$destinationLng'
+        '&travelmode=driving',
+      );
+    }
+  } else if (Platform.isIOS) {
+    // iOS → Apple Maps
+    if (originLat != null && originLng != null) {
+      uri = Uri.parse(
+        'http://maps.apple.com/?saddr=$originLat,$originLng&daddr=$destinationLat,$destinationLng&dirflg=d',
+      );
+    } else {
+      uri = Uri.parse(
+        'http://maps.apple.com/?daddr=$destinationLat,$destinationLng&dirflg=d',
+      );
+    }
   }
 
-  if (await canLaunchUrl(googleMapsWebUri)) {
-    await launchUrl(
-      googleMapsWebUri,
-      mode: LaunchMode.externalApplication,
-    );
+  if (uri != null && await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   } else {
-    debugPrint('❌ Could not open Google Maps (neither app nor web)');
+    return;
   }
 }
