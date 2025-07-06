@@ -25,10 +25,11 @@ class BottomNavBarPlusIcon extends StatelessWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: isDark ? AppColors.mainblackColor : Colors.grey.shade200,
-                offset: const Offset(0, -3),
-                blurRadius: 0.0,
-                blurStyle: BlurStyle.outer,
+                color: isDark ? Colors.black : Colors.grey.shade200,
+                offset: const Offset(0, -2),
+                blurRadius: 80.0,
+                spreadRadius: 1.0,
+                blurStyle: BlurStyle.inner,
               ),
             ],
           ),
