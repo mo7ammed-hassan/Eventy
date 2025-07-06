@@ -19,7 +19,7 @@ class BottomNavBarPlusIcon extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: isDark ? AppColors.mainblackColor : Colors.white,
             shape: BoxShape.circle,
