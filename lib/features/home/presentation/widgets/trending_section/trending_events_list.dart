@@ -42,7 +42,7 @@ class TrendingEventsList extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: state.filterdTrendingEvents?.length ?? 0,
                     itemBuilder: (context, index) => AspectRatio(
-                      aspectRatio: 210 / 161,
+                      aspectRatio: 215 / 161,
                       child: TrendingEventCard(
                         key: ValueKey(''),
                         event: state.trendingEvents?[index],

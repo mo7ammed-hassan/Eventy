@@ -25,7 +25,7 @@ class TrendingEventCard extends StatelessWidget {
       decoration: _buildCardDecoration(isDark),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final imageHight = constraints.maxHeight * 0.65;
+          final imageHight = constraints.maxHeight * 0.67;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
