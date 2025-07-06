@@ -29,30 +29,32 @@ class AttendeeAvatars extends StatelessWidget {
       children: [
         Flexible(
           fit: FlexFit.loose,
-          child: SizedBox(
-            width: width ?? 70,
-            height: height ?? 30,
-            child: Stack(
-              children: List.generate(
-                attendees.length > 3 ? 3 : attendees.length,
-                (index) => Positioned(
-                  left: index * (avatarSize * 2 - 4),
-                  child: CircleAvatar(
-                    radius: avatarSize + 2,
-                    backgroundColor: isDark ? AppColors.dark : Colors.white,
-                    child: CachedNetworkImage(
-                      imageUrl: attendees[index],
-                      imageBuilder: (context, imageProvider) => CircleAvatar(
-                        radius: avatarSize,
-                        backgroundImage: imageProvider,
+          child: FittedBox(
+            child: SizedBox(
+              width: width ?? 70,
+              height: height ?? 30,
+              child: Stack(
+                children: List.generate(
+                  attendees.length > 3 ? 3 : attendees.length,
+                  (index) => Positioned(
+                    left: index * (avatarSize * 2 - 4),
+                    child: CircleAvatar(
+                      radius: avatarSize + 2,
+                      backgroundColor: isDark ? AppColors.dark : Colors.white,
+                      child: CachedNetworkImage(
+                        imageUrl: attendees[index],
+                        imageBuilder: (context, imageProvider) => CircleAvatar(
+                          radius: avatarSize,
+                          backgroundImage: imageProvider,
+                        ),
+                        placeholder: (_, __) => ShimmerWidget(
+                          width: 65,
+                          height: 25,
+                          shapeBorder: const CircleBorder(),
+                        ),
+                        errorWidget: (_, __, ___) =>
+                            const Icon(Icons.error, size: 12),
                       ),
-                      placeholder: (_, __) => ShimmerWidget(
-                        width: 65,
-                        height: 25,
-                        shapeBorder: const CircleBorder(),
-                      ),
-                      errorWidget: (_, __, ___) =>
-                          const Icon(Icons.error, size: 12),
                     ),
                   ),
                 ),

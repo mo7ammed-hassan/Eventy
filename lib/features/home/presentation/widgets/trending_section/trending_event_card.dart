@@ -28,6 +28,7 @@ class TrendingEventCard extends StatelessWidget {
           final imageHight = constraints.maxHeight * 0.65;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               // -- TrendingEventCard Header
               // -- Image
@@ -47,65 +48,58 @@ class TrendingEventCard extends StatelessWidget {
               ),
 
               // -- TrendingEventCard Body
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // -- Event title
-                      Expanded(
-                        flex: 3,
-                        child: FittedBox(
-                          child: Text(
-                            '${event?.name} / ${event?.formattedDate}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleSmall!
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 10.0,
+                  left: 10.0,
+                  right: 10.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // -- Event title
+                    Text(
+                      '${event?.name} / ${event?.formattedDate}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
                       ),
+                    ),
 
-                      // -- Event Price
-                      Flexible(
-                        flex: 2,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: FittedBox(
-                            child: Text(
-                              event?.paid == true
-                                  ? 'Rs {${event?.price}}'
-                                  : 'Free',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
+                    // -- Event Price
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          event?.paid == true ? 'Rs {${event?.price}}' : 'Free',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
                         ),
                       ),
+                    ),
 
-                      // -- User whos join
-                      Flexible(
-                        flex: 4,
-                        child: FittedBox(
-                          child: AttendeeAvatars(
-                            //width: constraints.maxWidth * 0.25,
-                            attendees: [
-                              'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5j8nUEqIX1fJuWCjZxWDh1rL-QL_cq2A-85035phw9d-hiWbpU7r6H2WKRJ2spHwcJGE&usqp=CAU',
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmx-wxle_unpBUp-PdatrfcHp3ljhBkIHdLeEmYmn6CYmJrpMAzOVfUxCu9CKX19zxsqA&usqp=CAU',
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    // -- User whos join
+                    AttendeeAvatars(
+                      avatarSize: 10,
+                      width: 60,
+                      fntSize: 12,
+                      attendees: [
+                        'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5j8nUEqIX1fJuWCjZxWDh1rL-QL_cq2A-85035phw9d-hiWbpU7r6H2WKRJ2spHwcJGE&usqp=CAU',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmx-wxle_unpBUp-PdatrfcHp3ljhBkIHdLeEmYmn6CYmJrpMAzOVfUxCu9CKX19zxsqA&usqp=CAU',
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],

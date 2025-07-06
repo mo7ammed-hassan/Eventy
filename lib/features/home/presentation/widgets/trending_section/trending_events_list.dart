@@ -29,7 +29,7 @@ class TrendingEventsList extends StatelessWidget {
 
             // -- Trending Events List
             SizedBox(
-              height: DeviceUtils.getScaledHeight(context, 0.28),
+              height: DeviceUtils.getScaledHeight(context, 0.31),
               child: BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   if (state.isLoading) {
@@ -42,10 +42,10 @@ class TrendingEventsList extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: state.filterdTrendingEvents?.length ?? 0,
                     itemBuilder: (context, index) => AspectRatio(
-                      aspectRatio: 240 / 171,
+                      aspectRatio: 210 / 161,
                       child: TrendingEventCard(
                         key: ValueKey(''),
-                        event: state.filterdTrendingEvents?[index],
+                        event: state.trendingEvents?[index],
                       ),
                     ),
                     separatorBuilder: (context, index) =>

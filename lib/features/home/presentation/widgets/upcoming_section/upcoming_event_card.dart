@@ -34,9 +34,7 @@ class UpcomingEventCard extends StatelessWidget {
                     ClipRRect(
                       borderRadius: AppStyles.eventCardRadius,
                       child: CachedNetworkImage(
-                        imageUrl:
-                            event.image ??
-                            'https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg',
+                        imageUrl: event.image,
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: imageHight,
@@ -72,8 +70,10 @@ class UpcomingEventCard extends StatelessWidget {
                         event.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleSmall!
-                            .copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13.0,
+                        ),
                       ),
 
                       // -- Event Price
@@ -81,12 +81,11 @@ class UpcomingEventCard extends StatelessWidget {
                         event.description,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodySmall
-                            ?.copyWith(
-                              fontSize: 12.0,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 12.0,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
                   ),

@@ -6,7 +6,7 @@ class EventEntity {
   final String id;
   final String name;
   final String description;
-  final String? image;
+  final String image;
   final String? coverImage;
   final String category;
   final LocationEntity location;
@@ -30,7 +30,7 @@ class EventEntity {
     required this.id,
     required this.name,
     required this.description,
-    this.image,
+    required this.image,
     this.coverImage,
     required this.category,
     required this.location,
