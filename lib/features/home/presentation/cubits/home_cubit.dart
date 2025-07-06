@@ -28,6 +28,8 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
     // _storage.remove('location');
     // _storage.remove('location_permission_denied');
 
+    // if (_hasFetched) return;
+
     final location = locationCubit.getLocation();
     final denied = _storage.getBool('location_permission_denied');
 
@@ -37,12 +39,16 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
       safeEmit(state.copyWith(shouldRequestLocation: false, isLoading: false));
 
       await fetchDependOnLocation(location);
-    } else if (denied == true) {
+    } else if (denied == true && location == null) {
       safeEmit(state.copyWith(shouldRequestLocation: false, isLoading: false));
 
       await fetchEvents();
     } else if (location == null && denied == false) {
       safeEmit(state.copyWith(shouldRequestLocation: true));
+    } else if (location != null && denied == true) {
+      safeEmit(state.copyWith(shouldRequestLocation: false, isLoading: false));
+
+      await fetchDependOnLocation(location);
     }
   }
 
@@ -91,7 +97,7 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
     await Future.delayed(Duration(seconds: 4));
 
     // 2. Then stop loading
-
+    _hasFetched = true;
     safeEmit(
       state.copyWith(
         isLoading: false,

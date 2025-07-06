@@ -61,7 +61,7 @@ class _LocationSelector extends StatelessWidget {
               builder: (context, state) {
                 return FittedBox(
                   child: Text(
-                    state.country ?? 'Egypt',
+                    state.country ?? 'No Location',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(

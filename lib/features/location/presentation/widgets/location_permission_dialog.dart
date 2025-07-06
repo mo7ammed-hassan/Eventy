@@ -1,4 +1,6 @@
+import 'package:eventy/config/service_locator.dart' show getIt;
 import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/core/storage/app_storage.dart';
 import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/core/widgets/popups/loaders.dart';
 import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
@@ -37,11 +39,13 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
       if (context.mounted) {
         if (!resultOfCheck) {
           Navigator.pop(context);
+          getIt<AppStorage>().setBool('location_permission_denied', true);
           Loaders.warningSnackBar(
             title: 'Permission Still Denied',
             message: 'Location permission is still not granted.',
           );
         } else {
+          getIt<AppStorage>().setBool('location_permission_denied', false);
           //Navigator.pop(context);
           Loaders.successSnackBar(
             title: 'Permission Granted',

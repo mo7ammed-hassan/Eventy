@@ -301,6 +301,7 @@ class LocationCubit extends Cubit<LocationState> {
 
   /// --- Get Location --- ///
   LocationEntity? getLocation() {
-    return _loctaionRepository.getLocation();
+    LocationEntity? location = _loctaionRepository.getLocation();
+    return location;
   }
 }
