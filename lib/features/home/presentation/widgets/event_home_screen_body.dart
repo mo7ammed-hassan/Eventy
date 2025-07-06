@@ -13,30 +13,30 @@ class EventHomeScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
+    return SafeArea(
+      child: Scaffold(
+        body: CustomScrollView(
           slivers: [
             /// -- Home Header
             /// -- LocationSelectorHeader
             const LocationSelectorHeader(),
             const SliverSizedBox(height: AppSizes.spaceBtwSections),
-
+        
             /// -- Search Bar
             const EventHomeSearchBar(),
             const SliverSizedBox(height: AppSizes.spaceBtwItems),
-
+        
             /// -- Home Body
             // -- EventCategoryTabs
             const EventCategoryTabs(),
             SliverToBoxAdapter(
               child: const SizedBox(height: AppSizes.spaceBtwSections),
             ),
-
+        
             // -- TrendingEventsList
             const TrendingEventsList(),
             SliverSizedBox(height: AppSizes.spaceBtwSections),
-
+        
             // -- UpcomingEventsGrid
             // -- Upcoming Events Header
             SliverPadding(
@@ -51,7 +51,7 @@ class EventHomeScreenBody extends StatelessWidget {
               ),
             ),
             const SliverSizedBox(height: AppSizes.spaceBtwItems),
-
+        
             // -- UpcomingEventsGrid
             const UpcomingEventsGrid(),
             const SliverSizedBox(height: AppSizes.spaceBtwItems),

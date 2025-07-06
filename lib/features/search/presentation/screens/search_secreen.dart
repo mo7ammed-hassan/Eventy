@@ -27,9 +27,9 @@ class _SearchSecreenState extends State<SearchSecreen> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _searchCubit,
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
+      child: SafeArea(
+        child: Scaffold(
+          body: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSizes.defaultScreenPadding,
             ),
