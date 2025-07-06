@@ -84,37 +84,36 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
           hasMore = false;
         }
         _hasFetched = true;
-        // -- Extract trending events and upcoming events
-        final List<EventEntity> trendingEvents = events;
+        final List<EventEntity> trendingEvents = events
+            .where((element) => element.attendees.length > 2)
+            .toList();
+
         final List<EventEntity> upcomingEvents = events.where((event) {
           final eventDateOnly = DateTime(
             event.date.year,
             event.date.month,
             event.date.day,
           );
-          return eventDateOnly.isAfter(todayDateOnly);
+          return eventDateOnly.isBefore(todayDateOnly);
         }).toList();
-
-        if (hasMore) {
-          upcomingEvents.addAll(state.upcomingEvents!);
-        }
 
         if (hasMore) {
           trendingEvents.addAll(state.trendingEvents!);
         }
 
         if (hasMore) {
-          events.addAll(state.nearbyEvents!);
+          upcomingEvents.addAll(state.upcomingEvents!);
         }
 
         increasePage();
 
         safeEmit(
           state.copyWith(
-            nearbyEvents: events,
-            trendingEvents: trendingEvents,
+            trendingEvents: List.of(trendingEvents),
             upcomingEvents: List.of(upcomingEvents),
             filteredUpcomingEvents: List.of(upcomingEvents),
+            filterdTrendingEvents: List.of(trendingEvents),
+            filteredEvents: List.of(events),
             isLoading: false,
           ),
         );
@@ -136,8 +135,6 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
       safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
     }
 
-    safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
-
     final result = await getAllEventsUsecase.call();
     result.fold(
       (failure) => safeEmit(state.copyWith(errorMessage: failure.message)),
@@ -148,7 +145,9 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
         }
         _hasFetched = true;
         // -- Extract trending events and upcoming events
-        final List<EventEntity> trendingEvents = events;
+        final List<EventEntity> trendingEvents = events
+            .where((element) => element.attendees.length > 2)
+            .toList();
         final List<EventEntity> upcomingEvents = events.where((event) {
           final eventDateOnly = DateTime(
             event.date.year,
@@ -166,16 +165,11 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
           trendingEvents.addAll(state.trendingEvents!);
         }
 
-        if (hasMore) {
-          events.addAll(state.nearbyEvents!);
-        }
-
         increasePage();
 
         safeEmit(
           state.copyWith(
-            nearbyEvents: events,
-            trendingEvents: trendingEvents,
+            trendingEvents: List.of(trendingEvents),
             upcomingEvents: List.of(upcomingEvents),
             filteredUpcomingEvents: List.of(upcomingEvents),
             isLoading: false,
@@ -187,10 +181,28 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
   }
 
   void filterEventsByCategory(String category) {
+    if (category == 'All' || category == 'Best') {
+      safeEmit(
+        state.copyWith(
+          filteredUpcomingEvents: state.upcomingEvents,
+          filterdTrendingEvents: state.trendingEvents,
+        ),
+      );
+      return;
+    }
     final filteredUpcomingEvents = state.upcomingEvents
         ?.where((event) => event.category == category)
         .toList();
 
-    safeEmit(state.copyWith(filteredUpcomingEvents: filteredUpcomingEvents));
+    final filteredTrendingEvents = state.trendingEvents
+        ?.where((event) => event.category == category)
+        .toList();
+
+    safeEmit(
+      state.copyWith(
+        filteredUpcomingEvents: filteredUpcomingEvents,
+        filterdTrendingEvents: filteredTrendingEvents,
+      ),
+    );
   }
 }
