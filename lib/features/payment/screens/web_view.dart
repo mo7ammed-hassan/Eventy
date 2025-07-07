@@ -1,11 +1,13 @@
 import 'package:eventy/features/payment/widgets/custom_payment_appbar.dart';
+import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/features/payment/screens/successful_payment_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebView extends StatefulWidget {
-  const WebView({super.key, required this.url});
+  const WebView({super.key, required this.url, required this.event});
   final String url;
+  final EventEntity event;
 
   @override
   State<WebView> createState() => _WebViewState();
@@ -55,7 +57,8 @@ class _WebViewState extends State<WebView> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const PaymentSuccessScreen(),
+                  builder: (context) =>
+                      PaymentSuccessScreen(event: widget.event),
                 ),
                 (_) => false,
               );

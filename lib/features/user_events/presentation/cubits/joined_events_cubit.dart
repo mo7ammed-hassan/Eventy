@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/errors/failure.dart';
+import 'package:eventy/features/details/presentation/cubits/details_cubit.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/features/user_events/domain/usecases/get_created_events_usecase.dart';
 import 'package:eventy/features/user_events/presentation/cubits/paginated_events_cubit.dart';
@@ -38,5 +40,9 @@ class JoinedEventsCubit extends PaginatedEventsCubit {
 
   bool isEventJoined(String eventId) {
     return eventsList.any((event) => event.id == eventId);
+  }
+
+  Future<void> joinEvent({required EventEntity event}) async {
+    getIt<DetailsCubit>().joinEvent(event: event);
   }
 }

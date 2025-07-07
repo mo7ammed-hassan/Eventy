@@ -33,7 +33,7 @@ class AppImages {
 
   static const String deliveredEmailIllustration =
       "assets/images/animations/sammy-line-man-receives-a-mail.png";
-      
+
   // -- Icons
   static const String lightChatBotIcon =
       'assets/icons/chat-bot/chatbot-icon.svg';
@@ -71,4 +71,6 @@ class AppImages {
 
   static const String defaultEventImage =
       'https://static.vecteezy.com/system/resources/thumbnails/041/388/388/small/ai-generated-concert-crowd-enjoying-live-music-event-photo.jpg';
+
+  static const String eventyCover = 'assets/images/eventy_cover.jpg';
 }

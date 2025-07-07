@@ -1,14 +1,16 @@
 import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/features/payment/screens/successful_payment_screen.dart';
 import 'package:eventy/features/payment/widgets/custom_payment_appbar.dart';
+import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:eventy/features/bottom_navigation/presentation/screens/navigation_screen.dart';
 
 class MeezaWalletScreen extends StatelessWidget {
   final String reference;
   final String qrCode;
   final String invoiceId;
   final String invoiceKey;
+  final EventEntity event;
 
   const MeezaWalletScreen({
     super.key,
@@ -16,6 +18,7 @@ class MeezaWalletScreen extends StatelessWidget {
     required this.qrCode,
     required this.invoiceId,
     required this.invoiceKey,
+    required this.event,
   });
 
   @override
@@ -88,7 +91,9 @@ class MeezaWalletScreen extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const NavigationScreen(),
+                    builder: (context) =>  PaymentSuccessScreen(
+                      event: event,
+                    ),
                   ),
                   (route) => false,
                 );

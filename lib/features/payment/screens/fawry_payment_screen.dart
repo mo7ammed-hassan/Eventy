@@ -1,16 +1,19 @@
 import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/features/payment/screens/successful_payment_screen.dart';
 import 'package:eventy/features/payment/widgets/custom_payment_appbar.dart';
+import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:eventy/features/bottom_navigation/presentation/screens/navigation_screen.dart';
 
 class FawryPaymentScreen extends StatelessWidget {
   final String fawryCode;
   final String expireDate;
+  final EventEntity event;
 
   const FawryPaymentScreen({
     super.key,
     required this.fawryCode,
     required this.expireDate,
+    required this.event,
   });
 
   @override
@@ -60,7 +63,9 @@ class FawryPaymentScreen extends StatelessWidget {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const NavigationScreen(),
+                      builder: (context) =>  PaymentSuccessScreen(
+                        event: event,
+                      ),
                     ),
                     (route) => false,
                   );

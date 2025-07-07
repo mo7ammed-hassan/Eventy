@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/features/payment/widgets/custom_payment_appbar.dart';
+import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:eventy/core/constants/app_colors.dart';
@@ -53,7 +54,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
     }
   }
 
-  Future<void> _processPayment() async {
+  Future<void> _processPayment({required EventEntity event}) async {
     if (_selectedPaymentId == null) return;
 
     setState(() => _isProcessing = true);
@@ -63,7 +64,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
         'https://staging.fawaterk.com/api/v2/invoiceInitPay',
         data: _buildPaymentRequest(_selectedPaymentId!),
       );
-      _handlePaymentResponse(_selectedPaymentId!, response.data);
+      _handlePaymentResponse(_selectedPaymentId!, response.data, event);
     } catch (e) {
       _showErrorSnackbar('Payment failed: ${e.toString()}');
     } finally {
@@ -95,7 +96,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
     ],
   };
 
-  void _handlePaymentResponse(int methodId, dynamic data) {
+  void _handlePaymentResponse(int methodId, dynamic data, EventEntity event) {
     switch (methodId) {
       case 2: // Visa
         final visaResponse = VisaResponseModel.fromJson(data);
@@ -103,8 +104,10 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) =>
-                  WebView(url: visaResponse.data!.paymentData!.redirectTo!),
+              builder: (_) => WebView(
+                url: visaResponse.data!.paymentData!.redirectTo!,
+                event: event,
+              ),
             ),
           );
         } else {
@@ -120,6 +123,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
             builder: (_) => FawryPaymentScreen(
               fawryCode: fawryResponse.data.paymentData.fawryCode,
               expireDate: fawryResponse.data.paymentData.expireDate,
+              event: event,
             ),
           ),
         );
@@ -131,6 +135,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
           context,
           MaterialPageRoute(
             builder: (_) => MeezaWalletScreen(
+              event: event,
               reference: meezaResponse.data.paymentData.meezaReference
                   .toString(),
               qrCode: meezaResponse.data.paymentData.meezaQrCode,
@@ -155,6 +160,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = HelperFunctions.isDarkMode(context);
+    final event = ModalRoute.of(context)!.settings.arguments as EventEntity;
     return Scaffold(
       appBar: CustomPaymentAppBar(title: 'Select Payment Method'),
       body: SafeArea(
@@ -265,7 +271,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
               ),
               AnimatedContinueButton(
                 isEnabled: _selectedPaymentId != null && !_isProcessing,
-                onPressed: _processPayment,
+                onPressed: () => _processPayment(event: event),
               ),
               SizedBox(height: kBottomNavigationBarHeight / 2),
             ],
