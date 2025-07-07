@@ -60,12 +60,27 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
     bool forceFetch = false,
     bool hasMore = false,
   }) async {
-    if (_hasFetched && !forceFetch && !hasMore) return;
+    if (forceFetch) {
+      resetPagination();
+      _hasFetched = false;
+      safeEmit(
+        state.copyWith(
+          trendingEvents: [],
+          upcomingEvents: [],
+          filteredUpcomingEvents: [],
+          filterdTrendingEvents: [],
+          filteredEvents: [],
+        ),
+      );
+    }
 
+    if (_hasFetched && !forceFetch && !hasMore) return;
     if (!canLoadMore()) return;
+
     isLoading = true;
 
-    if (hasMore && !_hasFetched) {
+    // ✅ Emit loading UI on first fetch or refresh
+    if (!hasMore && !_hasFetched || forceFetch) {
       safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
     }
 
@@ -74,18 +89,22 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
       limit: limit,
       page: page,
     );
+
     result.fold(
-      (failure) => safeEmit(
-        state.copyWith(errorMessage: failure.message, isLoading: false),
-      ),
+      (failure) {
+        safeEmit(
+          state.copyWith(errorMessage: failure.message, isLoading: false),
+        );
+      },
       (events) {
         if (events.isEmpty || events.length < limit) {
           hasMore = false;
-          hasMore = false;
         }
+
         _hasFetched = true;
+
         final List<EventEntity> trendingEvents = events
-            .where((element) => element.attendees.length > 2)
+            .where((e) => e.attendees.length > 2)
             .toList();
 
         final List<EventEntity> upcomingEvents = events.where((event) {
@@ -98,11 +117,83 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
         }).toList();
 
         if (hasMore) {
-          trendingEvents.addAll(state.trendingEvents!);
+          trendingEvents.addAll(state.trendingEvents ?? []);
+          upcomingEvents.addAll(state.upcomingEvents ?? []);
         }
 
+        increasePage();
+
+        safeEmit(
+          state.copyWith(
+            trendingEvents: List.of(trendingEvents),
+            upcomingEvents: List.of(upcomingEvents),
+            filteredUpcomingEvents: List.of(upcomingEvents),
+            filterdTrendingEvents: List.of(trendingEvents),
+            filteredEvents: List.of(events),
+            isLoading: false,
+          ),
+        );
+        
+      },
+    );
+
+    isLoading = false;
+  }
+
+  Future<void> fetchEvents({
+    bool forceFetch = false,
+    bool hasMore = false,
+  }) async {
+    if (forceFetch) {
+      resetPagination();
+      _hasFetched = false;
+      safeEmit(
+        state.copyWith(
+          trendingEvents: [],
+          upcomingEvents: [],
+          filteredUpcomingEvents: [],
+          filterdTrendingEvents: [],
+          filteredEvents: [],
+        ),
+      );
+    }
+
+    if (_hasFetched && !forceFetch && !hasMore) return;
+    if (!canLoadMore()) return;
+
+    isLoading = true;
+
+    if (!hasMore && !_hasFetched || forceFetch) {
+      safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
+    }
+
+    final result = await getAllEventsUsecase.call();
+
+    result.fold(
+      (failure) => safeEmit(state.copyWith(errorMessage: failure.message)),
+      (events) {
+        if (events.isEmpty || events.length < limit) {
+          hasMore = false;
+        }
+
+        _hasFetched = true;
+
+        final List<EventEntity> trendingEvents = events
+            .where((e) => e.attendees.length > 2)
+            .toList();
+
+        final List<EventEntity> upcomingEvents = events.where((event) {
+          final eventDateOnly = DateTime(
+            event.date.year,
+            event.date.month,
+            event.date.day,
+          );
+          return eventDateOnly.isAfter(todayDateOnly);
+        }).toList();
+
         if (hasMore) {
-          upcomingEvents.addAll(state.upcomingEvents!);
+          trendingEvents.addAll(state.trendingEvents ?? []);
+          upcomingEvents.addAll(state.upcomingEvents ?? []);
         }
 
         increasePage();
@@ -119,64 +210,7 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
         );
       },
     );
-    isLoading = false;
-  }
 
-  Future<void> fetchEvents({
-    bool forceFetch = false,
-    bool hasMore = false,
-  }) async {
-    if (_hasFetched && !forceFetch && !hasMore) return;
-
-    if (!canLoadMore()) return;
-    isLoading = true;
-
-    if (hasMore && !_hasFetched) {
-      safeEmit(state.copyWith(isLoading: true, shouldRequestLocation: false));
-    }
-
-    final result = await getAllEventsUsecase.call();
-    result.fold(
-      (failure) => safeEmit(state.copyWith(errorMessage: failure.message)),
-      (events) {
-        if (events.isEmpty || events.length < limit) {
-          hasMore = false;
-          hasMore = false;
-        }
-        _hasFetched = true;
-        // -- Extract trending events and upcoming events
-        final List<EventEntity> trendingEvents = events
-            .where((element) => element.attendees.length > 2)
-            .toList();
-        final List<EventEntity> upcomingEvents = events.where((event) {
-          final eventDateOnly = DateTime(
-            event.date.year,
-            event.date.month,
-            event.date.day,
-          );
-          return eventDateOnly.isAfter(todayDateOnly);
-        }).toList();
-
-        if (hasMore) {
-          upcomingEvents.addAll(state.upcomingEvents!);
-        }
-
-        if (hasMore) {
-          trendingEvents.addAll(state.trendingEvents!);
-        }
-
-        increasePage();
-
-        safeEmit(
-          state.copyWith(
-            trendingEvents: List.of(trendingEvents),
-            upcomingEvents: List.of(upcomingEvents),
-            filteredUpcomingEvents: List.of(upcomingEvents),
-            isLoading: false,
-          ),
-        );
-      },
-    );
     isLoading = false;
   }
 
@@ -190,12 +224,13 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
       );
       return;
     }
-    final filteredUpcomingEvents = state.upcomingEvents
-        ?.where((event) => event.category == category)
+
+    final filteredUpcomingEvents = (state.upcomingEvents ?? [])
+        .where((event) => event.category == category)
         .toList();
 
-    final filteredTrendingEvents = state.trendingEvents
-        ?.where((event) => event.category == category)
+    final filteredTrendingEvents = (state.trendingEvents ?? [])
+        .where((event) => event.category == category)
         .toList();
 
     safeEmit(
