@@ -1,4 +1,3 @@
-import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
@@ -26,11 +25,12 @@ class _UserInfoFormSectionState extends State<UserInfoFormSection> {
   late final TextEditingController _addressController;
   late final TextEditingController _phoneController;
 
-  final cubit = getIt.get<UserCubit>();
+  late final UserCubit cubit;
 
   @override
   void initState() {
     super.initState();
+    cubit = context.read<UserCubit>();
     cubit.getLocation();
 
     _nameController = TextEditingController(text: cubit.state.user?.name);

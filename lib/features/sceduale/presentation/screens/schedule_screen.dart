@@ -10,8 +10,8 @@ class ScheduleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: getIt.get<ScheduleCubit>(),
+    return BlocProvider(
+      create: (context) => getIt.get<ScheduleCubit>(),
       child: const Scaffold(
         appBar: EventAppBar(),
         body: SafeArea(child: ScheduleScreenBody()),

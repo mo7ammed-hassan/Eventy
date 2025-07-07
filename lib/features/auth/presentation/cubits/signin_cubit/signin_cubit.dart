@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/storage/secure_storage.dart';
-import 'package:eventy/features/home/presentation/cubits/home_cubit.dart';
-import 'package:eventy/features/user_events/user_events_injection.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/features/auth/data/models/login_model.dart';
 import 'package:eventy/features/auth/domain/repositories/auth_repo.dart';
@@ -73,12 +71,6 @@ class SignInCubit extends Cubit<SignInState> {
         accessToken: autData.accessToken,
         userId: autData.user.id,
       );
-      registerUserEventsCubits(getIt);
-      if (!getIt.isRegistered<HomeCubit>()) {
-        getIt.registerLazySingleton<HomeCubit>(
-          () => HomeCubit(getIt(), getIt()),
-        );
-      }
       emit(const SignInSuccess('Successfully Login in'));
     });
   }

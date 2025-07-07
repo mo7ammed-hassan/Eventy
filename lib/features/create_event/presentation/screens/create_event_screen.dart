@@ -5,6 +5,7 @@ import 'package:eventy/core/widgets/popups/loaders.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_cubit.dart';
 import 'package:eventy/features/create_event/presentation/cubits/create_event_state.dart';
 import 'package:eventy/features/create_event/presentation/screens/create_event_screen_body.dart';
+import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +15,9 @@ class CreateEventScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt.get<CreateEventCubit>()..init(),
+      create: (context) =>
+          getIt.get<CreateEventCubit>()
+            ..init(userCubit: context.read<UserCubit>()),
       child: Scaffold(
         appBar: AppBar(
           title: Text(

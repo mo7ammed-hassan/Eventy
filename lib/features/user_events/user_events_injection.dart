@@ -105,41 +105,8 @@ void registerUserEventsDependencies(GetIt getIt) {
   );
 }
 
-void unRegisterUserEventsCubits(GetIt getIt) {
-  getIt.unregisterAll();
-}
-
-void registerUserEventsCubits(GetIt getIt) {
-  if (!getIt.isRegistered<JoinedEventsCubit>()) {
-    getIt.registerLazySingleton<JoinedEventsCubit>(
-      () => JoinedEventsCubit(getCreatedEventsUsecase: getIt()),
-    );
-  }
-
-  if (!getIt.isRegistered<FavoriteEventsCubit>()) {
-    getIt.registerLazySingleton<FavoriteEventsCubit>(
-      () => FavoriteEventsCubit(getIt()),
-    );
-  }
-
-  if (!getIt.isRegistered<PendingEventsCubit>()) {
-    getIt.registerLazySingleton<PendingEventsCubit>(
-      () => PendingEventsCubit(getPendingEventsUsecase: getIt()),
-    );
-  }
-
-  if (!getIt.isRegistered<ScheduleCubit>()) {
-    getIt.registerLazySingleton<ScheduleCubit>(
-      () => ScheduleCubit(getUserJoinedEventsUsecase: getIt()),
-    );
-  }
-}
-
-extension on GetIt {
-  void unregisterAll() {
-    unregister<JoinedEventsCubit>();
-    unregister<FavoriteEventsCubit>();
-    unregister<PendingEventsCubit>();
-    unregister<ScheduleCubit>();
-  }
+Future<void> resetUserCubits() async {
+  await GetIt.I.resetLazySingleton<JoinedEventsCubit>();
+  await GetIt.I.resetLazySingleton<FavoriteEventsCubit>();
+  await GetIt.I.resetLazySingleton<PendingEventsCubit>();
 }

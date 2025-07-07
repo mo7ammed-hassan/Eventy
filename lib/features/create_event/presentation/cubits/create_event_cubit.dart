@@ -1,4 +1,3 @@
-import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/enums/enums.dart';
 import 'package:eventy/core/utils/dialogs/loading_dialogs.dart';
 import 'package:eventy/core/utils/helpers/app_context.dart';
@@ -19,12 +18,12 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
   final CreateEventUsecase _createEventUsecase;
 
-  final UserCubit userCubit = getIt.get<UserCubit>();
+
   UserEntity? userEntity;
 
   late UserEntity? user;
 
-  void init() async {
+  void init({required UserCubit userCubit}) async {
     userEntity = userCubit.user;
     if (userEntity != null) {
       user = userEntity!;

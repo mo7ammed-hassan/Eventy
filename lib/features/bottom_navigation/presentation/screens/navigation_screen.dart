@@ -6,6 +6,7 @@ import 'package:eventy/features/personalization/presentation/cubit/user_cubit.da
 import 'package:flutter/material.dart';
 import 'package:eventy/features/bottom_navigation/presentation/widgets/navigation_screen_body.dart';
 import 'package:eventy/features/bottom_navigation/presentation/widgets/custom_bottom_naviagtion_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -22,7 +23,7 @@ class NavigationScreenState extends State<NavigationScreen> {
 
   @override
   void initState() {
-    getIt.get<UserCubit>().getUserProfile();
+    context.read<UserCubit>().getUserProfile();
     super.initState();
   }
 

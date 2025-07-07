@@ -9,6 +9,7 @@ import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/features/user_events/presentation/cubits/favorite_events_cubit.dart';
 import 'package:eventy/features/user_events/presentation/cubits/joined_events_cubit.dart';
 import 'package:eventy/features/user_events/presentation/cubits/paginated_events_state.dart';
+import 'package:eventy/shared/widgets/popup/qr_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -95,7 +96,14 @@ class EventActionButtons extends StatelessWidget {
                               backgroundColor: AppColors.primaryColor,
                               foregroundColor: Colors.white,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) =>  QrPassPopup(
+                                 passCode: event.id,
+                                ),
+                              );
+                            },
                           )
                         : OutlinedButton.icon(
                             icon: const Icon(Icons.event_available, size: 20),
@@ -120,15 +128,3 @@ class EventActionButtons extends StatelessWidget {
   }
 }
 
-void showQRCode(BuildContext context) {
-  showDialog(context: context, builder: (context) => const QRCodePopup());
-}
-
-class QRCodePopup extends StatelessWidget {
-  const QRCodePopup({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}

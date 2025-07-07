@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: ThemeService.themeNotifier,
       builder: (context, currentThemeMode, child) {
-        return BlocProvider.value(
-          value: getIt.get<UserCubit>(),
+        return BlocProvider(
+          create: (context) => getIt.get<UserCubit>(),
           child: AppFocusHandler(
             child: MaterialApp(
               title: 'Smart Event Planner',
@@ -41,3 +41,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
