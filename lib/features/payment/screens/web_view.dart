@@ -1,3 +1,4 @@
+import 'package:eventy/features/payment/widgets/custom_payment_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:eventy/features/payment/screens/successful_payment_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -75,9 +76,15 @@ class _WebViewState extends State<WebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _isLoading ? Colors.black : Colors.white,
+      appBar: CustomPaymentAppBar(
+        title: 'Payment',
+        textColor: _isLoading ? Colors.white : Colors.black,
+        backgroundColor: _isLoading ? Colors.black : Colors.white,
+      ),
       body: Stack(
         children: [
-          WebViewWidget(controller: _controller),
+          Positioned.fill(child: WebViewWidget(controller: _controller)),
           if (_isLoading) const Center(child: CircularProgressIndicator()),
         ],
       ),

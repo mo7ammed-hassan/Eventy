@@ -110,6 +110,7 @@ class QrPassPopup extends StatelessWidget {
                 label: const Text('Done', style: TextStyle(letterSpacing: 1.1)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
+                  side: BorderSide.none,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                     side: BorderSide.none,

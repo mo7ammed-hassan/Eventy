@@ -6,6 +6,7 @@ import 'package:eventy/features/details/presentation/screens/event_details_scree
 import 'package:eventy/features/home/presentation/screens/event_home_screen.dart';
 import 'package:eventy/features/location/presentation/screens/request_location_screen.dart';
 import 'package:eventy/features/onboarding/screens/onboarding_screen.dart';
+import 'package:eventy/features/payment/screens/payment_options_screen.dart';
 import 'package:eventy/features/personalization/presentation/screens/edit_personal_info_screen.dart';
 import 'package:eventy/features/personalization/presentation/screens/profile_screen.dart';
 import 'package:eventy/features/personalization/presentation/screens/settings_screen.dart';
@@ -70,7 +71,11 @@ class AppRouter {
     Routes.profileScreen: (_) => const ProfileScreen(),
     Routes.editPersonalInfoScreen: (_) => const EditPersonalInfoScreen(),
     Routes.settingsScreen: (_) => const SettingsScreen(),
+
+    /// --- Payment Screen ---
+    Routes.paymentOptionsScreen: (_) => const PaymentOptionsScreen(),
   };
+
 
   static Future<String> getInitialRoute() async {
     final secureStorage = getIt.get<SecureStorage>();

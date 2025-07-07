@@ -26,4 +26,5 @@ class DeviceUtils {
   static getScaledWidth(BuildContext context, double d) {
     return screenWidth(context) * d;
   }
+
 }

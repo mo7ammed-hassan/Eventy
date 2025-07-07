@@ -1,3 +1,5 @@
+import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/features/payment/widgets/custom_payment_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:eventy/features/bottom_navigation/presentation/screens/navigation_screen.dart';
@@ -20,13 +22,7 @@ class MeezaWalletScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meeza Mobile Wallet'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+      appBar: CustomPaymentAppBar(title: 'Meeza Wallet'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -41,7 +37,7 @@ class MeezaWalletScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: QrImageView(
                 data: qrCode.trim(),
@@ -84,8 +80,9 @@ class MeezaWalletScreen extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
+                side: BorderSide.none,
                 minimumSize: const Size(double.infinity, 50),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.eventyPrimaryColor,
               ),
               onPressed: () {
                 Navigator.pushAndRemoveUntil(

@@ -34,4 +34,6 @@ class Routes {
   static const String requestLocationScreen = '/requestLocationScreen';
 
   static const String eventDetailsScreen = '/eventDetailsScreen';
+
+  static const String paymentOptionsScreen = '/paymentOptionsScreen';
 }

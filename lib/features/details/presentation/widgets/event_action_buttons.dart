@@ -1,6 +1,8 @@
+import 'package:eventy/config/routing/routes.dart';
 import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_images.dart';
+import 'package:eventy/core/utils/helpers/extensions/navigation_extension.dart';
 import 'package:eventy/core/widgets/popups/full_screen_loader.dart';
 import 'package:eventy/core/widgets/popups/loaders.dart';
 import 'package:eventy/features/details/presentation/cubits/details_cubit.dart';
@@ -99,23 +101,33 @@ class EventActionButtons extends StatelessWidget {
                             onPressed: () {
                               showDialog(
                                 context: context,
-                                builder: (context) =>  QrPassPopup(
-                                 passCode: event.id,
-                                ),
+                                builder: (context) =>
+                                    QrPassPopup(passCode: event.id),
                               );
                             },
                           )
                         : OutlinedButton.icon(
-                            icon: const Icon(Icons.event_available, size: 20),
+                            icon: Icon(
+                              !event.paid
+                                  ? Icons.event_seat
+                                  : Icons.event_available,
+                              size: 20,
+                            ),
                             label: Text(
-                              event.price == '0' ? 'Register' : 'Get Tickets',
+                              !event.paid ? 'Reserve a seat' : 'Get Tickets',
                             ),
                             style: OutlinedButton.styleFrom(
                               backgroundColor: AppColors.primaryColor,
                               foregroundColor: Colors.white,
                             ),
-                            onPressed: () =>
-                                detailsCubit.joinEvent(eventId: event.id),
+                            onPressed: !event.paid
+                                ? () {
+                                    context.pushNamedPage(
+                                      Routes.paymentOptionsScreen,
+                                    );
+                                  }
+                                : () =>
+                                      detailsCubit.joinEvent(eventId: event.id),
                           ),
                   );
                 },
@@ -127,4 +139,3 @@ class EventActionButtons extends StatelessWidget {
     );
   }
 }
-
