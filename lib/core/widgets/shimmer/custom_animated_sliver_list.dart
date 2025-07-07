@@ -42,7 +42,7 @@ class CustomAnimatedSliverListView<T> extends StatelessWidget {
 
           return TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.5, end: 1),
-            duration: Duration(milliseconds: 400 + index * 80),
+            duration: Duration(milliseconds: 500),
             builder: (context, value, animatedChild) {
               return Opacity(
                 opacity: value,

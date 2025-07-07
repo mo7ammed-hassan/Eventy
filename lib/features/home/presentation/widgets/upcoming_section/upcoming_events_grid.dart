@@ -31,7 +31,7 @@ class UpcomingEventsGrid extends StatelessWidget {
             ),
             itemBuilder: (context, index) => TweenAnimationBuilder<double>(
               tween: Tween(begin: 0, end: 1),
-              duration: Duration(milliseconds: 500 + index * 100),
+              duration: Duration(milliseconds: 500),
               builder: (context, value, child) => Opacity(
                 opacity: value,
                 child: Transform.translate(

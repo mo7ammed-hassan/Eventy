@@ -46,7 +46,7 @@ class TrendingEventsList extends StatelessWidget {
                       return TweenAnimationBuilder<double>(
                         tween: Tween(begin: 0, end: 1),
                         duration: Duration(
-                          milliseconds: 500 + index * 100,
+                          milliseconds: 500,
                         ), // Staggered effect
                         builder: (context, value, child) {
                           return Opacity(
