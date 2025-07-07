@@ -7,8 +7,8 @@ import 'package:eventy/core/utils/helpers/extensions/navigation_extension.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
 import 'package:eventy/core/widgets/shimmer/shimmer_widget.dart';
 import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
+import 'package:eventy/shared/widgets/event_widgets/archive_icon_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 
 class UpcomingEventCard extends StatelessWidget {
   const UpcomingEventCard({super.key, required this.event});
@@ -54,13 +54,7 @@ class UpcomingEventCard extends StatelessWidget {
                       // -- Top ribbon
                       Align(
                         alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(
-                            Iconsax.archive_1,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
+                        child: ArchiveIconWidget(padding: 0, event: event),
                       ),
                     ],
                   ),

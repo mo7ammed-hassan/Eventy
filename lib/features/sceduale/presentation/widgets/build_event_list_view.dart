@@ -31,7 +31,12 @@ class BuildEventList extends StatelessWidget {
       child: CustomAnimatedSliverListView<EventEntity>(
         items: events,
         itemCount: events.length + (state.isLoadMore ? 1 : 0),
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.only(
+          right: 8.0,
+          left: 8.0,
+          bottom: 16.0,
+          top: 8.0,
+        ),
         stopAnimationNearEnd: 3,
         itemBuilder: (context, event, index) =>
             state.isLoadMore && index == events.length

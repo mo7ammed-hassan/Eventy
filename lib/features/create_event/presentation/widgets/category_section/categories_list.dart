@@ -15,11 +15,11 @@ class _CategoriesListState extends State<CategoriesList> {
 
   final List<String> events = [
     'Birthday',
-    'Friendsgiving',
-    'Graduation Gala',
     'Wedding',
     'Anniversary',
     'Study group',
+    'Friendsgiving',
+    'Graduation Gala',
   ];
 
   @override
