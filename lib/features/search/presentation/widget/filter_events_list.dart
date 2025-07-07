@@ -1,7 +1,9 @@
+import 'package:eventy/core/constants/app_sizes.dart' show AppSizes;
 import 'package:eventy/features/search/presentation/cubits/search_cubit.dart';
 import 'package:eventy/features/search/presentation/cubits/search_state.dart';
+import 'package:eventy/features/user_events/domain/entities/event_entity.dart';
 import 'package:eventy/features/user_events/presentation/widgets/shimmer_event_list.dart';
-import 'package:eventy/shared/widgets/animated_widget/animated_list_layout.dart';
+import 'package:eventy/shared/widgets/animated_widget/custom_animation_list_view.dart';
 import 'package:eventy/shared/widgets/empty_event_list.dart';
 import 'package:eventy/shared/widgets/event_widgets/horizontal_event_card.dart';
 import 'package:flutter/widgets.dart';
@@ -23,10 +25,17 @@ class FilterEventsList extends StatelessWidget {
         }
 
         return Expanded(
-          child: AnimatedListLayout(
+          child: CustomAnimatedListView<EventEntity>(
+            padding: const EdgeInsets.only(
+              bottom: AppSizes.spaceBtwSections + 6,
+              top: 6,
+            ),
+            items: state.filterList,
             itemCount: state.filterList.length,
-            itemBuilder: (context, index) =>
-                HorizontalEventCard(event: state.filterList[index]),
+            scrollDirection: Axis.vertical,
+            separator: const SizedBox(height: AppSizes.spaceBtwEventCards),
+            itemBuilder: (context, event, index) =>
+                HorizontalEventCard(event: event),
           ),
         );
       },

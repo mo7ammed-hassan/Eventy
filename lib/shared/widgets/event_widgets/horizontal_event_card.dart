@@ -41,7 +41,7 @@ class HorizontalEventCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     // User Info
-                    Flexible(child: _UserInfoSection(event)),
+                    _UserInfoSection(event),
                     const SizedBox(height: AppSizes.lg),
 
                     // -- Event Title & Location
@@ -115,35 +115,33 @@ class _UserInfoSection extends StatelessWidget {
 
           // -- User email & name
           Expanded(
-            child: Align(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      event?.user.name ?? 'Unknown',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: isDark ? Colors.white : Colors.black,
-                        fontSize: 12,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    event?.user.name ?? 'Unknown',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 12,
                     ),
-                    Text(
-                      event?.user.email ?? 'Unknown',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey,
-                        fontSize: 11,
-                      ),
+                  ),
+                  Text(
+                    event?.user.email ?? 'Unknown',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.grey,
+                      fontSize: 11,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

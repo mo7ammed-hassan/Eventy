@@ -41,13 +41,30 @@ class TrendingEventsList extends StatelessWidget {
                     clipBehavior: Clip.none,
                     scrollDirection: Axis.horizontal,
                     itemCount: state.filterdTrendingEvents?.length ?? 0,
-                    itemBuilder: (context, index) => AspectRatio(
-                      aspectRatio: 215 / 161,
-                      child: TrendingEventCard(
-                        key: ValueKey(''),
-                        event: state.trendingEvents?[index],
-                      ),
-                    ),
+                    itemBuilder: (context, index) {
+                      final event = state.trendingEvents?[index];
+                      return TweenAnimationBuilder<double>(
+                        tween: Tween(begin: 0, end: 1),
+                        duration: Duration(
+                          milliseconds: 500 + index * 100,
+                        ), // Staggered effect
+                        builder: (context, value, child) {
+                          return Opacity(
+                            opacity: value,
+                            child: Transform.translate(
+                              offset: Offset(50 * (1 - value), 0),
+                              child: AspectRatio(
+                                aspectRatio: 215 / 161,
+                                child: TrendingEventCard(
+                                  key: ValueKey(event?.id ?? index),
+                                  event: event,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                     separatorBuilder: (context, index) =>
                         const SizedBox(width: AppSizes.spaceBtwEventCards),
                   );

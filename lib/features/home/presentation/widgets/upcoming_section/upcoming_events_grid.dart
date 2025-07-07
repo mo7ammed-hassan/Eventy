@@ -29,10 +29,21 @@ class UpcomingEventsGrid extends StatelessWidget {
               crossAxisSpacing: 18,
               childAspectRatio: 2 / 2.4,
             ),
-            itemBuilder: (context, index) => UpcomingEventCard(
-              key: ValueKey(state.filteredUpcomingEvents?[index].id ?? ''),
-              event:
-                  state.filteredUpcomingEvents?[index] ?? EventEntity.empty(),
+            itemBuilder: (context, index) => TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0, end: 1),
+              duration: Duration(milliseconds: 500 + index * 100),
+              builder: (context, value, child) => Opacity(
+                opacity: value,
+                child: Transform.translate(
+                  offset: Offset(0, 50 * (1 - value)),
+                  child: child,
+                ),
+              ),
+              child: UpcomingEventCard(
+                key: ValueKey(state.filteredUpcomingEvents?[index].id ?? ''),
+                event:
+                    state.filteredUpcomingEvents?[index] ?? EventEntity.empty(),
+              ),
             ),
             itemCount: state.filteredUpcomingEvents?.length ?? 0,
           );

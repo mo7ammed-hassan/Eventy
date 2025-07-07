@@ -8,8 +8,6 @@ import 'package:eventy/features/user_events/user_events_injection.dart';
 
 class LogoutManager {
   static Future<void> forceLogout() async {
-    AppContext.context.pushNamedAndRemoveUntilPage(Routes.loginScreen);
-    
     // -- After new view is rendered --
     Future.microtask(() async {
       final storage = getIt<SecureStorage>();
@@ -18,5 +16,7 @@ class LogoutManager {
       unRegisterUserEventsCubits(getIt);
       getIt.unregister<HomeCubit>();
     });
+
+    AppContext.context.pushNamedAndRemoveUntilPage(Routes.loginScreen);
   }
 }
