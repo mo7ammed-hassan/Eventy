@@ -20,7 +20,7 @@ class _ChatBotBodyState extends State<ChatBotBody> {
   final ChatUser currentUser = ChatUser(
     id: "0",
     firstName: "User",
-    profileImage: AppImages.userAvatar,
+    profileImage: AppImages.defaultUserImageUrl,
   );
   final ChatUser botUser = ChatUser(
     id: "1",

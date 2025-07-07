@@ -1,3 +1,5 @@
+import 'package:eventy/core/constants/app_colors.dart';
+import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -8,7 +10,7 @@ class QrPassPopup extends StatelessWidget {
   const QrPassPopup({
     super.key,
     required this.passCode,
-    this.accentColor = const Color(0xFF6200EE),
+    this.accentColor = AppColors.eventyPrimaryColor,
   });
 
   @override
@@ -53,7 +55,7 @@ class QrPassPopup extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSizes.spaceBtwSections),
 
             // QR Code Card
             Container(
@@ -89,10 +91,7 @@ class QrPassPopup extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
-
-            // Optional passcode text (you can remove this if not needed)
-            const SizedBox(height: 10),
+            const SizedBox(height: AppSizes.spaceBtwSections),
 
             Text(
               'Scan this QR code at the event entrance',
@@ -107,13 +106,13 @@ class QrPassPopup extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.check_circle_outline),
+                icon: const Icon(Icons.check_circle_outline, size: 20),
                 label: const Text('Done', style: TextStyle(letterSpacing: 1.1)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: accentColor,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
+                    side: BorderSide.none,
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),

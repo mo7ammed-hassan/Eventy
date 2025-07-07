@@ -33,10 +33,7 @@ class AppImages {
 
   static const String deliveredEmailIllustration =
       "assets/images/animations/sammy-line-man-receives-a-mail.png";
-
-  // -- User
-  static const String userAvatar = 'assets/images/user/user-avatar.png';
-
+      
   // -- Icons
   static const String lightChatBotIcon =
       'assets/icons/chat-bot/chatbot-icon.svg';

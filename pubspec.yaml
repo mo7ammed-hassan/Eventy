@@ -86,7 +86,6 @@ flutter:
   assets:
     - assets/logos/
     - assets/icons/
-    - assets/images/user/
     - assets/images/animations/
     - assets/images/
     - assets/images/auth/
