@@ -1,3 +1,4 @@
+import 'package:eventy/core/utils/device/device_utils.dart';
 import 'package:eventy/features/sceduale/presentation/cubits/schedule_cubit.dart';
 import 'package:eventy/features/sceduale/presentation/cubits/schedule_state.dart';
 import 'package:eventy/features/sceduale/presentation/widgets/events/events_list_view.dart';
@@ -45,9 +46,12 @@ class _CalendarTabBarViewState extends State<CalendarTabBarView>
           const SliverToBoxAdapter(
             child: SizedBox(height: AppSizes.defaultPadding),
           ),
-        BlocBuilder<ScheduleCubit, ScheduleState>(
+          BlocBuilder<ScheduleCubit, ScheduleState>(
             builder: (context, state) {
-              return EventsListView(events: state.eventsPerDay);
+              return EventsListView(
+                events: state.eventsPerDay,
+                height: DeviceUtils.getScaledHeight(context, 0.2),
+              );
             },
           ),
 

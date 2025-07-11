@@ -108,19 +108,28 @@ class EventActionButtons extends StatelessWidget {
                           )
                         : OutlinedButton.icon(
                             icon: Icon(
-                              event.paid
+                              (event.paid == true && event.price != '0.0') &&
+                                      event.price != '0' &&
+                                      event.price != ''
                                   ? Icons.event_seat
                                   : Icons.event_available,
                               size: 20,
                             ),
                             label: Text(
-                              event.paid ? 'Reserve a seat' : 'Get Tickets',
+                              (event.paid == true && event.price != '0.0') &&
+                                      event.price != '0' &&
+                                      event.price != ''
+                                  ? 'Reserve a seat'
+                                  : 'Get Tickets',
                             ),
                             style: OutlinedButton.styleFrom(
                               backgroundColor: AppColors.primaryColor,
                               foregroundColor: Colors.white,
                             ),
-                            onPressed: event.paid
+                            onPressed:
+                                (event.paid == true && event.price != '0.0') &&
+                                    event.price != '0' &&
+                                    event.price != ''
                                 ? () {
                                     context.pushNamedPage(
                                       Routes.paymentOptionsScreen,

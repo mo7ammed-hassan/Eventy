@@ -54,6 +54,7 @@ class HorizontalEventCard extends StatelessWidget {
                       child: AttendeeAvatars(
                         avatarSize: 10,
                         width: 60,
+                        attendsLength: event?.attendees.length ?? 0,
                         fntSize: 12,
                         attendees: [
                           'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',

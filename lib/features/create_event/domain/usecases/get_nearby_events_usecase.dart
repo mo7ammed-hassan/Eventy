@@ -12,7 +12,7 @@ class GetNearbyEventsUseCase {
 
   Future<Either<Failure, List<EventEntity>>> call(
     LocationEntity location, {
-    double radiusInKm = 100,
+    double radiusInKm = 300,
     int page = 1,
     int limit = 15,
   }) async {

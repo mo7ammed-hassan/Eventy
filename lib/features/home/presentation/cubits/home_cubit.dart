@@ -107,13 +107,17 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
             .where((e) => e.attendees.length > 2)
             .toList();
 
+        if (trendingEvents.isEmpty) {
+          trendingEvents.addAll(events);
+        }
+
         final List<EventEntity> upcomingEvents = events.where((event) {
           final eventDateOnly = DateTime(
             event.date.year,
             event.date.month,
             event.date.day,
           );
-          return eventDateOnly.isBefore(todayDateOnly);
+          return eventDateOnly.isAfter(todayDateOnly);
         }).toList();
 
         if (hasMore) {
@@ -133,7 +137,6 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
             isLoading: false,
           ),
         );
-        
       },
     );
 
@@ -226,18 +229,82 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
     }
 
     final filteredUpcomingEvents = (state.upcomingEvents ?? [])
-        .where((event) => event.category == category)
+        .where(
+          (event) =>
+              event.category.trim().toLowerCase() ==
+              category.trim().toLowerCase(),
+        )
         .toList();
 
     final filteredTrendingEvents = (state.trendingEvents ?? [])
-        .where((event) => event.category == category)
+        .where(
+          (event) =>
+              event.category.trim().toLowerCase() ==
+              category.trim().toLowerCase(),
+        )
         .toList();
 
-    safeEmit(
-      state.copyWith(
-        filteredUpcomingEvents: filteredUpcomingEvents,
-        filterdTrendingEvents: filteredTrendingEvents,
-      ),
-    );
+    if (filteredUpcomingEvents.isEmpty && filteredTrendingEvents.isEmpty) {
+      safeEmit(
+        state.copyWith(
+          filteredUpcomingEvents: state.upcomingEvents,
+          filterdTrendingEvents: state.trendingEvents,
+        ),
+      );
+    } else {
+      safeEmit(
+        state.copyWith(
+          filteredUpcomingEvents: filteredUpcomingEvents,
+          filterdTrendingEvents: filteredTrendingEvents,
+        ),
+      );
+    }
   }
+
+  void searchEvents(String query) {
+    final trimmedQuery = query.trim().toLowerCase();
+
+    if (trimmedQuery.isEmpty) {
+      safeEmit(
+        state.copyWith(
+          filteredUpcomingEvents: state.upcomingEvents,
+          filterdTrendingEvents: state.trendingEvents,
+        ),
+      );
+      return;
+    }
+
+    final filteredUpcomingEvents = (state.upcomingEvents ?? [])
+        .where(
+          (event) =>
+              event.name.toLowerCase().contains(trimmedQuery) ||
+              event.name.toLowerCase().contains(trimmedQuery),
+        )
+        .toList();
+
+    final filteredTrendingEvents = (state.trendingEvents ?? [])
+        .where(
+          (event) =>
+              event.name.toLowerCase().contains(trimmedQuery) ||
+              event.name.toLowerCase().contains(trimmedQuery),
+        )
+        .toList();
+
+    if (filteredUpcomingEvents.isEmpty && filteredTrendingEvents.isEmpty) {
+      safeEmit(
+        state.copyWith(
+          filteredUpcomingEvents: state.upcomingEvents,
+          filterdTrendingEvents: state.trendingEvents,
+        ),
+      );
+    } else {
+      safeEmit(
+        state.copyWith(
+          filteredUpcomingEvents: filteredUpcomingEvents,
+          filterdTrendingEvents: filteredTrendingEvents,
+        ),
+      );
+    }
+  }
+
 }

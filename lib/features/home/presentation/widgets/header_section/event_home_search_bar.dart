@@ -1,8 +1,10 @@
 import 'package:eventy/core/constants/app_colors.dart';
 import 'package:eventy/core/constants/app_sizes.dart';
 import 'package:eventy/core/utils/helpers/helper_functions.dart';
+import 'package:eventy/features/home/presentation/cubits/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
 class EventHomeSearchBar extends StatelessWidget {
   const EventHomeSearchBar({super.key});
@@ -19,6 +21,7 @@ class EventHomeSearchBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: TextField(
+            onChanged: (value) => context.read<HomeCubit>().searchEvents(value),
             decoration: InputDecoration(
               hintText: 'Enter city or region',
               border: InputBorder.none,
@@ -31,6 +34,7 @@ class EventHomeSearchBar extends StatelessWidget {
                 Iconsax.search_normal,
                 color: isDark ? Colors.white : Colors.black,
               ),
+
               suffixIcon: IconButton(
                 icon: Icon(
                   Icons.tune,

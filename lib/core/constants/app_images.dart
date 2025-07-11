@@ -66,6 +66,9 @@ class AppImages {
   static const String defaultUserImageUrl =
       'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D';
 
+  // static const String defaultUserImageUrl =
+  //     'https://thumbs.dreamstime.com/b/faceless-male-avatar-hoodie-illustration-minimalist-default-photo-placeholder-wearing-light-gray-background-ideal-377566416.jpg';
+
   static const String defaultEventImageUrl =
       'https://media.istockphoto.com/id/499517325/photo/a-man-speaking-at-a-business-conference.jpg?s=612x612&w=0&k=20&c=gWTTDs_Hl6AEGOunoQ2LsjrcTJkknf9G8BGqsywyEtE=';
 

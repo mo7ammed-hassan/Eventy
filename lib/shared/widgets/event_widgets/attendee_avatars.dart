@@ -13,9 +13,11 @@ class AttendeeAvatars extends StatelessWidget {
     this.height,
     this.width,
     this.fntSize,
+    this.attendsLength = 3,
   });
 
   final List<String> attendees;
+  final int attendsLength;
   final double avatarSize;
   final double? height, width;
   final double? fntSize;
@@ -65,18 +67,19 @@ class AttendeeAvatars extends StatelessWidget {
         const SizedBox(width: AppSizes.sm),
 
         // -- User count
-        Expanded(
-          child: Text(
-            "+${attendees.length} Going",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.grey,
-              fontWeight: FontWeight.w600,
-              fontSize: fntSize,
+        if (attendees.isNotEmpty)
+          Expanded(
+            child: Text(
+              "+${attendees.length}Going",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.grey,
+                fontWeight: FontWeight.w600,
+                fontSize: fntSize,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

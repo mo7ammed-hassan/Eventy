@@ -1,5 +1,7 @@
+import 'package:eventy/config/service_locator.dart';
 import 'package:eventy/features/location/domain/location_repository.dart';
 import 'package:eventy/features/location/presentation/cubits/location_state.dart';
+import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 import 'package:eventy/features/user_events/domain/entities/location_entity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,6 +75,7 @@ class LocationCubit extends Cubit<LocationState> {
             message: 'Location detected successfully',
           ),
         );
+        getIt<UserCubit>().updateLocation(userAddress);
       }
     } catch (e) {
       if (!isClosed) {

@@ -44,7 +44,12 @@ class EventMetadataSection extends StatelessWidget {
         _BuildDetailsRow(
           key: ValueKey(event.price),
           icon: Icons.money,
-          text: !event.paid ? 'Free' : '${event.price} EGP',
+          text:
+              (event.paid == true && event.price != '0.0') &&
+                  event.price != '0' &&
+                  event.price != ''
+              ? '${event.price} EGP'
+              : 'Free',
         ),
         const SizedBox(height: AppSizes.lg),
         _BuildDetailsRow(

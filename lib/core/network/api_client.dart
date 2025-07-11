@@ -48,7 +48,7 @@ class ApiClient {
       // Auth interceptor
       AuthInterceptor(dio),
       // Retry interceptor
-      _retryInterceptor(),
+      //_retryInterceptor(),
 
       // Log interceptor
       LogInterceptor(
@@ -61,27 +61,27 @@ class ApiClient {
   }
 
   // Retry Interceptor
-  Interceptor _retryInterceptor() {
-    return InterceptorsWrapper(
-      onError: (error, handler) async {
-        if (_shouldRetry(error)) {
-          await Future.delayed(const Duration(seconds: 1));
-          try {
-            return handler.resolve(await dio.fetch(error.requestOptions));
-          } catch (e) {
-            return handler.next(error);
-          }
-        }
-        return handler.next(error);
-      },
-    );
-  }
+  // Interceptor _retryInterceptor() {
+  //   return InterceptorsWrapper(
+  //     onError: (error, handler) async {
+  //       if (_shouldRetry(error)) {
+  //         await Future.delayed(const Duration(seconds: 1));
+  //         try {
+  //           return handler.resolve(await dio.fetch(error.requestOptions));
+  //         } catch (e) {
+  //           return handler.next(error);
+  //         }
+  //       }
+  //       return handler.next(error);
+  //     },
+  //   );
+  // }
 
-  bool _shouldRetry(DioException error) {
-    return error.type == DioExceptionType.connectionTimeout ||
-        error.type == DioExceptionType.receiveTimeout ||
-        error.response?.statusCode == 502;
-  }
+  // bool _shouldRetry(DioException error) {
+  //   return error.type == DioExceptionType.connectionTimeout ||
+  //       error.type == DioExceptionType.receiveTimeout ||
+  //       error.response?.statusCode == 502;
+  // }
 
   // Method to make API requests
   Future<Response> request({

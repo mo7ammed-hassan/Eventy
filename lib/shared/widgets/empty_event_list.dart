@@ -31,8 +31,10 @@ class EmptyEventList extends StatelessWidget {
           title ?? 'There are no events to show',
           style: height == null
               ? Theme.of(context).textTheme.bodyMedium
-              : Theme.of(context).textTheme.bodySmall,
+              : Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13),
         ),
+
+        const SizedBox(height: kTextTabBarHeight),
       ],
     );
   }

@@ -78,8 +78,10 @@ class TrendingEventCard extends StatelessWidget {
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            event?.paid == true
-                                ? 'Rs {${event?.price}}'
+                            (event?.paid == true && event?.price != '0.0') &&
+                                    event?.price != '0' &&
+                                    event?.price != ''
+                                ? 'Rs ${event?.price}'
                                 : 'Free',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -98,6 +100,7 @@ class TrendingEventCard extends StatelessWidget {
                         avatarSize: 10,
                         width: 60,
                         fntSize: 12,
+                        attendsLength: event?.attendees.length ?? 0,
                         attendees: [
                           'https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5j8nUEqIX1fJuWCjZxWDh1rL-QL_cq2A-85035phw9d-hiWbpU7r6H2WKRJ2spHwcJGE&usqp=CAU',
@@ -183,5 +186,3 @@ class _TopRibbon extends StatelessWidget {
     );
   }
 }
-
-
