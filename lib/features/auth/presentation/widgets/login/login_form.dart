@@ -36,6 +36,7 @@ class LoginForm extends StatelessWidget {
               const SizedBox(height: AppSizes.spaceBtwTextField),
               PasswordField(
                 controller: context.read<SignInCubit>().passwordController,
+                applyValidator: false,
               ),
               const SizedBox(height: AppSizes.spaceBtwTextField / 2),
               // Remember Me & Forget Password

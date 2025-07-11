@@ -12,10 +12,13 @@ class PasswordField extends StatelessWidget {
     this.controller,
     this.labelText = 'Password',
     this.passwordField = true,
+    this.applyValidator = true,
   });
   final TextEditingController? controller;
   final String? labelText;
   final bool passwordField;
+  final bool applyValidator;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PasswordAndSelectionCubit, PasswordAndSelectionState>(
@@ -25,7 +28,7 @@ class PasswordField extends StatelessWidget {
               ? state.isPasswordHidden
               : state.isConfirmPasswordHidden,
           controller: controller,
-          validator: (value) => TValidator.validatePassword(value),
+          validator: (value) => applyValidator? TValidator.validatePassword(value) : null,
           textInputAction: TextInputAction.done,
           autofillHints: const [AutofillHints.password],
           onEditingComplete: () => TextInput.finishAutofillContext(),
