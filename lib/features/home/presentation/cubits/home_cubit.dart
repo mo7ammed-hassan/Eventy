@@ -306,5 +306,4 @@ class HomeCubit extends Cubit<HomeState> with SafeEmitMixin, PaginationMixin {
       );
     }
   }
-
 }

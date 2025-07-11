@@ -54,9 +54,7 @@ class _LocationSelector extends StatelessWidget {
             // -- User Current Location
             BlocSelector<UserCubit, UserState, LocationEntity>(
               selector: (state) {
-                return state.location ??
-                    userCubit.location ??
-                    LocationEntity.empty();
+                return state.location ?? LocationEntity.empty();
               },
               builder: (context, state) {
                 return FittedBox(

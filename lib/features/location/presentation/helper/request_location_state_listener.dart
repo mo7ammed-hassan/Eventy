@@ -4,7 +4,9 @@ import 'package:eventy/core/widgets/popups/loaders.dart';
 import 'package:eventy/features/location/presentation/cubits/location_cubit.dart';
 import 'package:eventy/features/location/presentation/cubits/location_state.dart';
 import 'package:eventy/features/location/presentation/widgets/location_permission_dialog.dart';
+import 'package:eventy/features/personalization/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 
 void handleLocationStateListener({
@@ -41,6 +43,7 @@ void handleLocationStateListener({
   if (state.location != null) {
     LoadingDialogs.hideLoadingDialog(context);
     Navigator.pop(context, state.location);
+    context.read<UserCubit>().updateLocation(state.location!);
     return;
   }
 }

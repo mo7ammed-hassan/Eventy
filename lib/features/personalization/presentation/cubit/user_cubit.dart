@@ -177,8 +177,10 @@ class UserCubit extends Cubit<UserState> {
   Future<void> updateLocation(LocationEntity location) async {
     if (this.location == location) return;
     await _locationRepo.saveLocation(location);
-    emit(state.copyWith(location: location));
-    getIt<HomeCubit>().fetchDependOnLocation(location, forceFetch: true);
+    final newLocation = location;
+    this.location = newLocation;
+    emit(state.copyWith(location: newLocation));
+    getIt<HomeCubit>().fetchDependOnLocation(newLocation, forceFetch: true);
   }
 
   // Future.wait
