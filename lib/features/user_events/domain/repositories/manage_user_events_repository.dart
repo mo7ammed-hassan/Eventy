@@ -16,5 +16,7 @@ abstract class ManageUserEventsRepository {
 
   Future<Either<Failure, Unit>> addToFavorite({required String eventId});
 
-  Future<Either<Failure, CreateEventEntity>> createEvent({required CreateEventEntity event});
+  Future<Either<Failure, CreateEventEntity>> createEvent({
+    required CreateEventEntity event,
+  });
 }

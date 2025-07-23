@@ -33,6 +33,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             child: CachedNetworkImage(
               // imageUrl:
               //     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+              //https://www.shutterstock.com/image-vector/kids-learning-coding-programming-online-260nw-1777292972.jpg
               imageUrl:
                   'https://i.pinimg.com/736x/26/37/13/26371389ebabd0424e8a482b8e2f4b4f.jpg',
               fit: BoxFit.cover,

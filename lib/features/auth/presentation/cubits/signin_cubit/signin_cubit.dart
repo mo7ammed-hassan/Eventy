@@ -33,7 +33,7 @@ class SignInCubit extends Cubit<SignInState> {
     final password = await _storage.readKey(key: 'REMEMBER_ME_PASSWORD');
 
     if (isClosed) return;
-    
+
     emailController.text = email ?? '';
     passwordController.text = password ?? '';
   }
